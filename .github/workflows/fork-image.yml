@@ -8,7 +8,7 @@ on:
     branches: [build/global-board-image]
 
 env:
-  IMAGE_TAG: 2.46.2-gb-c535c77
+  IMAGE_TAG: 2.46.2-gb-92bf02b
 
 permissions:
   contents: read
@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: c535c773a420be29be51a17ba97db448deb5618e
+          ref: 92bf02bb5a74ed7aa91f196f8ce2bbf64fab48b1
           persist-credentials: false
       # Alpine replaced nginx 1.30.4 with a 1.30.x patch release; the source
       # Dockerfile still pins the old patch version.
