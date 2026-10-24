@@ -1,0 +1,10 @@
+{
+	"id": "kaneo",
+	"name": "Kaneo",
+	"version": "0.1.0",
+	"minAppVersion": "1.11.4",
+	"description": "Show live Kaneo task lists in your notes and check tasks off without leaving Obsidian.",
+	"author": "Kaneo",
+	"authorUrl": "https://kaneo.app",
+	"isDesktopOnly": false
+}
