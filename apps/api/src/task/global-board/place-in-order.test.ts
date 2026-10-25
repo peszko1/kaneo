@@ -38,6 +38,16 @@ describe("placeInOrder", () => {
     expect(place(["a", "x", "b"], { a: 1, x: 99, b: 2 })).toEqual({ x: 1.5 });
   });
 
+  it("follows the lane as shown when cards sit out of their positions", () => {
+    // t1 comes first on the project board, so it shows in t0's slot and t0
+    // shows below it; x must not be placed from t0's own position.
+    expect(place(["t1", "t0", "x"], { t0: 4, x: 5 })).toEqual({
+      t1: 4,
+      t0: 5,
+      x: 6,
+    });
+  });
+
   it("writes nothing when the task is not in the lane", () => {
     expect(place(["a"], { a: 1 })).toEqual({});
   });
