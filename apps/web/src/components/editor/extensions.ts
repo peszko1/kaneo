@@ -15,6 +15,7 @@ import { MermaidBlock } from "@/components/task/extensions/mermaid-block";
 import { SafeHardBreak } from "@/components/task/extensions/safe-hard-break";
 import { ShikiCodeBlock } from "@/components/task/extensions/shiki-code-block";
 import { TaskItemWithCheckbox } from "@/components/task/extensions/task-item-with-checkbox";
+import { BulletToTaskItem } from "./bullet-to-task-item";
 import { EditorKeymap } from "./editor-keymap";
 import { detectCodeLanguage } from "./detect-code-language";
 
@@ -62,6 +63,7 @@ export function createEditorExtensions({
       HTMLAttributes: { class: "kaneo-editor-image", loading: "lazy" },
     }),
     TaskItemWithCheckbox.configure({ nested: true }),
+    BulletToTaskItem,
     Placeholder.configure({ placeholder }),
     Table.configure({ resizable: true }),
     TableRow,
