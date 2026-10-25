@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useRememberTaskReturn } from "@/components/common/task-return";
 import { FocusRoot } from "@/components/focus/focus-root";
 import { GlobalShortcuts } from "@/components/shortcuts/global-shortcuts";
 import { useTrackSignup } from "@/hooks/use-track-signup";
@@ -50,6 +51,7 @@ function AuthenticatedLayout() {
   const { session } = Route.useRouteContext();
   useUserWebSocket();
   useTrackSignup(session?.user);
+  useRememberTaskReturn();
   return (
     <>
       <GlobalShortcuts />

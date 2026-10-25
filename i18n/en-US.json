@@ -2440,6 +2440,9 @@
 				"fallback": "Results"
 			}
 		},
+		"taskHeader": {
+			"back": "Back"
+		},
 		"settingsLayout": {
 			"toggleSidebar": "Toggle sidebar",
 			"back": "Back"
