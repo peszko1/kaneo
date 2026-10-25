@@ -3054,7 +3054,8 @@
 			"startDate": "Data de início",
 			"noDate": "Sem data",
 			"dates": "Datas",
-			"project": "Projeto"
+			"project": "Projeto",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Mover tarefa",

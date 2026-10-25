@@ -2958,7 +2958,8 @@
 			"startDate": "開始日",
 			"noDate": "日付なし",
 			"dates": "日付",
-			"project": "プロジェクト"
+			"project": "プロジェクト",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "タスクを移動",

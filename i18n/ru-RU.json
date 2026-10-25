@@ -3110,7 +3110,8 @@
 			"startDate": "Дата начала",
 			"noDate": "Без даты",
 			"dates": "Даты",
-			"project": "Проект"
+			"project": "Проект",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Переместить задачу",

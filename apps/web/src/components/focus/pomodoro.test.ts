@@ -3,6 +3,8 @@ import { formatCountdown } from "./format-countdown";
 import {
   advance,
   currentRound,
+  focusSegment,
+  MIN_RECORDED_MS,
   PHASE_DURATION_MS,
   pause,
   remainingMs,
@@ -70,6 +72,34 @@ describe("pomodoro", () => {
       rounds.push(currentRound(session));
     }
     expect(rounds).toEqual([1, 1, 2, 2, 3, 3, 4, 4, 1]);
+  });
+});
+
+describe("focusSegment", () => {
+  it("covers the focus time since the timer last started", () => {
+    const resumed = resume(pause(startSession(task, 0), 120_000), 500_000);
+    expect(focusSegment(resumed, 800_000)).toEqual({
+      taskId: "t1",
+      startTime: 500_000,
+      endTime: 800_000,
+    });
+  });
+
+  it("ends at the phase end when settled late", () => {
+    const session = startSession(task, 0);
+    expect(focusSegment(session, PHASE_DURATION_MS.focus + 999_999)).toEqual({
+      taskId: "t1",
+      startTime: 0,
+      endTime: PHASE_DURATION_MS.focus,
+    });
+  });
+
+  it("skips breaks, paused timers, and stretches under a minute", () => {
+    const session = startSession(task, 0);
+    expect(focusSegment(session, MIN_RECORDED_MS - 1)).toBeNull();
+    expect(focusSegment(pause(session, 120_000), 130_000)).toBeNull();
+    const onBreak = resume(advance(session), 0);
+    expect(focusSegment(onBreak, 120_000)).toBeNull();
   });
 });
 

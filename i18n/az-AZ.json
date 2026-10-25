@@ -3006,7 +3006,8 @@
 			"startDate": "Başlama tarixi",
 			"noDate": "Tarix yoxdur",
 			"dates": "Tarixlər",
-			"project": "Layihə"
+			"project": "Layihə",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Tapşırığı köçür",

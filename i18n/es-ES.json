@@ -3054,7 +3054,8 @@
 			"startDate": "Fecha de inicio",
 			"noDate": "Sin fecha",
 			"dates": "Fechas",
-			"project": "Proyecto"
+			"project": "Proyecto",
+			"timeTracked": "Time tracked"
 		},
 		"popover": {
 			"assignee": {
