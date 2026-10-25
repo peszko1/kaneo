@@ -3459,7 +3459,8 @@
 				"resume": "Resume",
 				"skip": "Skip",
 				"start": "Start",
-				"stop": "Stop"
+				"stop": "Stop",
+				"stopAlarm": "Stop alarm"
 			},
 			"phase": {
 				"focus": "Focus",

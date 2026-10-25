@@ -3408,7 +3408,8 @@
 				"resume": "Resume",
 				"skip": "Skip",
 				"stop": "Stop",
-				"minimize": "Minimize"
+				"minimize": "Minimize",
+				"stopAlarm": "Stop alarm"
 			}
 		}
 	},
