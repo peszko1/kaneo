@@ -166,6 +166,28 @@ export function advance(
   };
 }
 
+// A phase that has not started yet takes new lengths from the settings.
+export function applySettings(
+  session: FocusSession,
+  settings: FocusSettings,
+): FocusSession {
+  if (session.runningSince !== null || session.elapsedMs > 0) return session;
+  if (session.mode !== settings.mode || session.mode === "flowtime") {
+    return session;
+  }
+  const durationMs =
+    session.phase === "focus"
+      ? focusDuration(settings)
+      : minutes(
+          session.phase === "longBreak"
+            ? settings.longBreakMinutes
+            : settings.shortBreakMinutes,
+        );
+  return durationMs === session.durationMs
+    ? session
+    : { ...session, durationMs };
+}
+
 export function isDue(session: FocusSession, now: number) {
   const end = phaseEndsAt(session);
   return end !== null && end <= now;

@@ -125,6 +125,13 @@ describe("focus store alarm", () => {
     expect(session?.runningSince).toBe(FOCUS_MS + 30_000);
   });
 
+  it("applies a new length to the phase that waits to start", () => {
+    vi.setSystemTime(FOCUS_MS);
+    useFocusStore.getState().settle();
+    useFocusSettingsStore.getState().changeSettings({ shortBreakMinutes: 1 });
+    expect(useFocusStore.getState().session?.durationMs).toBe(60_000);
+  });
+
   it("stays silent with sound off and notifies only when enabled", () => {
     useFocusSettingsStore
       .getState()

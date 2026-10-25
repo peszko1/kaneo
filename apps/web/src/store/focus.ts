@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import {
   advance,
+  applySettings,
   type FocusMode,
   type FocusSession,
   type FocusTask,
@@ -172,3 +173,10 @@ export const useFocusStore = create<FocusStore>()(
     },
   ),
 );
+
+useFocusSettingsStore.subscribe(({ settings }) => {
+  const { session } = useFocusStore.getState();
+  if (!session) return;
+  const applied = applySettings(session, settings);
+  if (applied !== session) useFocusStore.setState({ session: applied });
+});

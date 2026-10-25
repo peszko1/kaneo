@@ -1,4 +1,4 @@
-import { Settings2 } from "lucide-react";
+import { Settings2, Volume2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useFocusSettingsStore } from "@/store/focus-settings";
+import { playTestSound } from "./alarm-sound";
 import { FocusMinutesField } from "./focus-minutes-field";
 import { canNotify, requestNotificationPermission } from "./focus-notification";
 import { FocusToggleField } from "./focus-toggle-field";
@@ -99,6 +100,15 @@ export function FocusSettingsPopover() {
               checked={settings.sound}
               onChange={(sound) => changeSettings({ sound })}
             />
+            <Button
+              variant="outline"
+              size="sm"
+              className="self-start"
+              onClick={() => void playTestSound()}
+            >
+              <Volume2 />
+              {t("tasks:focus.settings.testSound")}
+            </Button>
             {canNotify() && (
               <FocusToggleField
                 label={t("tasks:focus.settings.desktopNotifications")}

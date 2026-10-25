@@ -3833,9 +3833,10 @@
 				"roundsPerLongBreak": "Rundy przed długą przerwą",
 				"countdownMinutes": "Odliczanie (min)",
 				"flowtimeHint": "Czas skupienia liczy się w górę, aż zrobisz przerwę. Przerwa trwa jedną piątą czasu skupienia.",
-				"appliesNext": "Zmiany obowiązują od następnej fazy.",
+				"appliesNext": "Zmiany obowiązują od fazy, która jeszcze się nie zaczęła.",
 				"reset": "Przywróć",
 				"sound": "Dźwięk alarmu",
+				"testSound": "Odtwórz dźwięk testowy",
 				"desktopNotifications": "Powiadomienia na pulpicie",
 				"notificationsBlocked": "Powiadomienia są zablokowane w ustawieniach przeglądarki.",
 				"autoStartNext": "Uruchamiaj następną fazę automatycznie"

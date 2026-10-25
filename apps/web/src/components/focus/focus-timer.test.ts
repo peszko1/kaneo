@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import {
   advance,
+  applySettings,
   currentRound,
   DEFAULT_FOCUS_SETTINGS,
   displayMs,
@@ -93,6 +94,24 @@ describe("countdown", () => {
     expect(next.runningSince).toBeNull();
     expect(next.completedFocusRounds).toBe(1);
     expect(displayMs(next, 0)).toBe(min(45));
+  });
+});
+
+describe("applySettings", () => {
+  it("changes the length of a phase that has not started", () => {
+    const waiting = advance(startSession(task, countdown, 0), countdown, 0);
+    const changed = applySettings(waiting, {
+      ...countdown,
+      countdownMinutes: 1,
+    });
+    expect(changed.durationMs).toBe(min(1));
+  });
+
+  it("keeps the length of a started phase", () => {
+    const running = startSession(task, countdown, 0);
+    expect(applySettings(running, { ...countdown, countdownMinutes: 1 })).toBe(
+      running,
+    );
   });
 });
 
