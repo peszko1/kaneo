@@ -3572,7 +3572,9 @@
 				"updated": "updated the task",
 				"empty": "Nothing has happened in the last 30 days.",
 				"loadError": "Activity couldn't be loaded."
-			}
+			},
+			"focusToday_one": "Tracked today: {{time}} in {{count}} entry",
+			"focusToday_other": "Tracked today: {{time}} in {{count}} entries"
 		},
 		"myWork": {
 			"empty": "Nothing assigned to you",

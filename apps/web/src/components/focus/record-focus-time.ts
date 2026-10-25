@@ -44,6 +44,7 @@ async function send(segment: FocusSegment) {
     void queryClient.invalidateQueries({
       queryKey: ["time-entries", segment.taskId],
     });
+    void queryClient.invalidateQueries({ queryKey: ["time-summary"] });
     return "sent";
   } catch (error) {
     // A 4xx (no permission, deleted task) will never succeed, so drop it.

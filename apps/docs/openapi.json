@@ -2249,6 +2249,22 @@
           "updatedAt"
         ]
       },
+      "TimeSummary": {
+        "type": "object",
+        "properties": {
+          "totalSeconds": {
+            "type": "number",
+            "description": "Seconds of finished time entries that started in the range."
+          },
+          "entryCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "totalSeconds",
+          "entryCount"
+        ]
+      },
       "PinnedLabel": {
         "allOf": [
           {
@@ -15316,6 +15332,106 @@
           },
           "404": {
             "description": "Task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiKeyRateLimited"
+          }
+        }
+      }
+    },
+    "/time-entry/summary": {
+      "get": {
+        "operationId": "getTimeSummary",
+        "tags": [
+          "Time Entries"
+        ],
+        "summary": "Get my time summary",
+        "description": "Total the caller's own finished time entries that started in a range, across the workspace's projects the caller can access. Running entries are not counted.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "required": true,
+            "name": "workspaceId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2026-01-31T09:00:00Z",
+              "description": "Start of the range, inclusive. Usually the caller's local midnight."
+            },
+            "required": true,
+            "description": "Start of the range, inclusive. Usually the caller's local midnight.",
+            "name": "from",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2026-01-31T09:00:00Z",
+              "description": "End of the range, exclusive."
+            },
+            "required": true,
+            "description": "End of the range, exclusive.",
+            "name": "to",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The caller's tracked time in the range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid workspace ID or timestamps",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing task:read permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found",
             "content": {
               "application/json": {
                 "schema": {

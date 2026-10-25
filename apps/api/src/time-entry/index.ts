@@ -9,12 +9,18 @@ import { workspaceAccess } from "../utils/workspace-access-middleware";
 import createTimeEntry from "./controllers/create-time-entry";
 import getTimeEntriesByTaskId from "./controllers/get-time-entries";
 import getTimeEntry from "./controllers/get-time-entry";
+import getTimeSummary from "./controllers/get-time-summary";
 import updateTimeEntry from "./controllers/update-time-entry";
-import { timeEntryListSchema, timeEntrySchema } from "./response";
+import {
+  timeEntryListSchema,
+  timeEntrySchema,
+  timeSummarySchema,
+} from "./response";
 import {
   createTimeEntryBody,
   taskIdParam,
   timeEntryParam,
+  timeSummaryQuery,
   updateTimeEntryBody,
 } from "./schema";
 
@@ -31,6 +37,30 @@ const getTaskTimeEntriesRoute = createRoute({
     200: jsonResponse("List of time entries for the task", timeEntryListSchema),
     403: errorResponse("No access to the project"),
     404: errorResponse("Task not found"),
+  },
+});
+
+const getTimeSummaryRoute = createRoute({
+  method: "get",
+  operationId: "getTimeSummary",
+  path: "/summary",
+  tags: ["Time Entries"],
+  summary: "Get my time summary",
+  description:
+    "Total the caller's own finished time entries that started in a range, across the workspace's projects the caller can access. Running entries are not counted.",
+  middleware: [
+    workspaceAccess.fromQuery(),
+    requireWorkspacePermission({ task: ["read"] }),
+  ] as const,
+  request: { query: timeSummaryQuery },
+  responses: {
+    200: jsonResponse(
+      "The caller's tracked time in the range",
+      timeSummarySchema,
+    ),
+    400: errorResponse("Invalid workspace ID or timestamps"),
+    403: errorResponse("Missing task:read permission"),
+    404: errorResponse("Workspace not found"),
   },
 });
 
@@ -111,6 +141,18 @@ const timeEntry = apiRouter()
   .openapi(getTaskTimeEntriesRoute, async (c) =>
     c.json(await getTimeEntriesByTaskId(c.req.valid("param").taskId), 200),
   )
+  .openapi(getTimeSummaryRoute, async (c) => {
+    const { workspaceId, from, to } = c.req.valid("query");
+    return c.json(
+      await getTimeSummary({
+        workspaceId,
+        userId: c.get("userId"),
+        from: new Date(from),
+        to: new Date(to),
+      }),
+      200,
+    );
+  })
   .openapi(getTimeEntryRoute, async (c) =>
     c.json(await getTimeEntry(c.req.valid("param").id), 200),
   )

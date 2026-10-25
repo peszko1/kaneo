@@ -3572,7 +3572,9 @@
 				"more_one": "+{{count}} weitere",
 				"more_other": "+{{count}} weitere",
 				"truncated": "Die Wochenvorschau enthält nur die ersten {{shown}} von {{total}} zugewiesenen Aufgaben."
-			}
+			},
+			"focusToday_one": "Tracked today: {{time}} in {{count}} entry",
+			"focusToday_other": "Tracked today: {{time}} in {{count}} entries"
 		},
 		"myTasks": {
 			"emptyDescription": "Hier erscheinen die Aufgaben, die dir in diesem Workspace zugewiesen sind.",
