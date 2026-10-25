@@ -3333,7 +3333,25 @@
 			"unmappedDescription": "These tasks sit in a column that can't be placed on To Do, In Progress, or Done, such as one named Done that isn't marked final. Move them with the task menu.",
 			"moveToTop": "Move to top"
 		},
-		"parentHint": "parent: {{id}} {{title}}"
+		"parentHint": "parent: {{id}} {{title}}",
+		"focus": {
+			"actions": {
+				"minimize": "Minimize",
+				"pause": "Pause",
+				"resume": "Resume",
+				"skip": "Skip",
+				"start": "Start",
+				"stop": "Stop"
+			},
+			"phase": {
+				"focus": "Focus",
+				"longBreak": "Long break",
+				"shortBreak": "Short break"
+			},
+			"round": "Round {{current}} of {{total}}",
+			"start": "Focus on this task",
+			"title": "Focus mode"
+		}
 	},
 	"invitations": {
 		"email": {

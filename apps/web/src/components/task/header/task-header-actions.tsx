@@ -1,6 +1,7 @@
 import type { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog";
 import { GitBranch, Link2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { FocusTaskButton } from "@/components/focus/focus-task-button";
 import { HeaderIconButton } from "./header-icon-button";
 import { TaskMoreMenu } from "./task-more-menu";
 import { useTaskCopyActions } from "./use-task-copy-actions";
@@ -23,6 +24,7 @@ export function TaskHeaderActions({
 
   return (
     <div className="flex items-center gap-1">
+      <FocusTaskButton task={{ taskId, projectId, workspaceId }} />
       <HeaderIconButton
         label={t("tasks:properties.copyTaskLink")}
         shortcutId="copyTaskUrl"

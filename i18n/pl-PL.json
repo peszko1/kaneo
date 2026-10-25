@@ -3792,7 +3792,25 @@
 			"unmappedDescription": "These tasks sit in a column that can't be placed on To Do, In Progress, or Done, such as one named Done that isn't marked final. Move them with the task menu.",
 			"moveToTop": "Przenieś na górę"
 		},
-		"parentHint": "parent: {{id}} {{title}}"
+		"parentHint": "parent: {{id}} {{title}}",
+		"focus": {
+			"start": "Skup się na tym zadaniu",
+			"title": "Tryb skupienia",
+			"phase": {
+				"focus": "Skupienie",
+				"shortBreak": "Krótka przerwa",
+				"longBreak": "Długa przerwa"
+			},
+			"round": "Runda {{current}} z {{total}}",
+			"actions": {
+				"start": "Start",
+				"pause": "Pauza",
+				"resume": "Wznów",
+				"skip": "Pomiń",
+				"stop": "Zakończ",
+				"minimize": "Zminimalizuj"
+			}
+		}
 	},
 	"press": {
 		"title": "Press kit",
