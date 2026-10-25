@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { MarkdownRenderer } from "@/components/public-project/markdown-renderer";
 import CircularProgress from "@/components/ui/circular-progress";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { useFocusStore } from "@/store/focus";
@@ -113,9 +114,16 @@ function FocusPanel({ session }: { session: FocusSession }) {
           </span>
         </div>
 
-        <DialogPrimitive.Description className="max-w-md text-balance text-center font-medium text-lg">
-          {task?.title}
-        </DialogPrimitive.Description>
+        <div className="flex w-full max-w-xl flex-col items-center gap-3">
+          <DialogPrimitive.Description className="max-w-md text-balance text-center font-medium text-lg">
+            {task?.title}
+          </DialogPrimitive.Description>
+          {task?.description?.trim() && (
+            <div className="max-h-[30vh] w-full overflow-y-auto rounded-lg border border-border/60 px-4 py-3 text-left text-muted-foreground text-sm">
+              <MarkdownRenderer content={task.description} />
+            </div>
+          )}
+        </div>
 
         {alarm && (
           <Button
