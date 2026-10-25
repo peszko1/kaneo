@@ -3817,6 +3817,8 @@
 				"minimize": "Zminimalizuj",
 				"stopAlarm": "Wyłącz alarm",
 				"takeBreak": "Zrób przerwę",
+				"extendBreak": "+5 min",
+				"extendBreakLabel": "Dodaj 5 minut do przerwy",
 				"markDone": "Gotowe"
 			},
 			"mode": {

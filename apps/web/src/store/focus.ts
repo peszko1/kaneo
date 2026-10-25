@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import {
   advance,
   applySettings,
+  extendBreak,
   type FocusMode,
   type FocusSession,
   type FocusTask,
@@ -36,6 +37,7 @@ type FocusStore = {
   pause: () => void;
   resume: () => void;
   skip: () => void;
+  extendBreak: () => void;
   stop: () => void;
   stopAlarm: () => void;
   settle: () => void;
@@ -112,6 +114,7 @@ export const useFocusStore = create<FocusStore>()(
         pause: () => update(pause),
         resume: () => update(resume),
         skip: () => update((session, now) => advance(session, settings(), now)),
+        extendBreak: () => update(extendBreak),
         stop: () => {
           const { session } = get();
           if (session) recordUntil(session, Date.now());

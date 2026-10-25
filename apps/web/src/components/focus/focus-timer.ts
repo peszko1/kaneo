@@ -166,6 +166,13 @@ export function advance(
   };
 }
 
+export const BREAK_EXTENSION_MS = 5 * 60_000;
+
+export function extendBreak(session: FocusSession): FocusSession {
+  if (session.phase === "focus" || session.durationMs === null) return session;
+  return { ...session, durationMs: session.durationMs + BREAK_EXTENSION_MS };
+}
+
 // A phase that has not started yet takes new lengths from the settings.
 export function applySettings(
   session: FocusSession,

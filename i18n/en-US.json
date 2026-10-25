@@ -3413,6 +3413,8 @@
 				"minimize": "Minimize",
 				"stopAlarm": "Stop alarm",
 				"takeBreak": "Take a break",
+				"extendBreak": "+5 min",
+				"extendBreakLabel": "Add 5 minutes to the break",
 				"markDone": "Done"
 			},
 			"mode": {
