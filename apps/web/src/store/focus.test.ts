@@ -50,6 +50,15 @@ describe("focus store alarm", () => {
     expect(useFocusStore.getState().session?.phase).toBe("shortBreak");
   });
 
+  it("rings from the phase end even when the check runs late", () => {
+    vi.setSystemTime(FOCUS_MS + 40_000);
+    useFocusStore.getState().settle();
+    expect(useFocusStore.getState().alarmAt).toBe(FOCUS_MS);
+
+    useFocusStore.getState().stopAlarm();
+    expect(useFocusStore.getState().alarmAt).toBeNull();
+  });
+
   it("does not ring when the user skips a phase", () => {
     useFocusStore.getState().skip();
     expect(useFocusStore.getState().alarm).toBe(false);
