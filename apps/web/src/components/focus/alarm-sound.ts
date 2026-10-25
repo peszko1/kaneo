@@ -17,9 +17,16 @@ function audioContext() {
 }
 
 // Browsers keep audio suspended until the page gets a user gesture. Calling
-// this from a click lets a later alarm play without one.
+// this from a click lets a later alarm play without one. Safari also needs a
+// sound to start inside the gesture, so this plays one silent sample.
 export function unlockAlarmSound() {
-  void audioContext()?.resume();
+  const ctx = audioContext();
+  if (!ctx || ctx.state === "running") return;
+  void ctx.resume();
+  const source = ctx.createBufferSource();
+  source.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
+  source.connect(ctx.destination);
+  source.start();
 }
 
 function beep(ctx: AudioContext, output: AudioNode, at: number) {
@@ -39,6 +46,7 @@ function beep(ctx: AudioContext, output: AudioNode, at: number) {
 export async function playTestSound() {
   const ctx = audioContext();
   if (!ctx) return;
+  unlockAlarmSound();
   await ctx.resume();
   const at = ctx.currentTime + 0.05;
   beep(ctx, ctx.destination, at);
@@ -73,12 +81,15 @@ export function startAlarmSound(fromMs: number) {
   };
 
   ctx.addEventListener("statechange", topUp);
+  // Safari interrupts audio while the page is hidden.
+  document.addEventListener("visibilitychange", topUp);
   topUp();
   const timer = setInterval(topUp, TOP_UP_MS);
 
   return () => {
     clearInterval(timer);
     ctx.removeEventListener("statechange", topUp);
+    document.removeEventListener("visibilitychange", topUp);
     // Queued beeps stay scheduled but no longer reach the speakers.
     output.disconnect();
   };
