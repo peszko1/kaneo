@@ -3810,7 +3810,25 @@
 				"skip": "Pomiń",
 				"stop": "Zakończ",
 				"minimize": "Zminimalizuj",
-				"stopAlarm": "Wyłącz alarm"
+				"stopAlarm": "Wyłącz alarm",
+				"takeBreak": "Zrób przerwę"
+			},
+			"mode": {
+				"label": "Tryb timera",
+				"pomodoro": "Pomodoro",
+				"flowtime": "Flowtime",
+				"countdown": "Odliczanie"
+			},
+			"settings": {
+				"title": "Ustawienia timera",
+				"focusMinutes": "Skupienie (min)",
+				"shortBreakMinutes": "Krótka przerwa (min)",
+				"longBreakMinutes": "Długa przerwa (min)",
+				"roundsPerLongBreak": "Rundy przed długą przerwą",
+				"countdownMinutes": "Odliczanie (min)",
+				"flowtimeHint": "Czas skupienia liczy się w górę, aż zrobisz przerwę. Przerwa trwa jedną piątą czasu skupienia.",
+				"appliesNext": "Zmiany obowiązują od następnej fazy.",
+				"reset": "Przywróć"
 			}
 		}
 	},

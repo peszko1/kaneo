@@ -1,6 +1,7 @@
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import {
   BellOff,
+  Coffee,
   Minimize2,
   Pause,
   Play,
@@ -12,16 +13,13 @@ import { Button } from "@/components/ui/button";
 import CircularProgress from "@/components/ui/circular-progress";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { useFocusStore } from "@/store/focus";
+import { useFocusSettingsStore } from "@/store/focus-settings";
 import { unlockAlarmSound } from "./alarm-sound";
+import { FocusModeSwitch } from "./focus-mode-switch";
+import { FocusSettingsPopover } from "./focus-settings-popover";
+import { currentRound, type FocusSession, isRunning } from "./focus-timer";
 import { formatCountdown } from "./format-countdown";
-import {
-  currentRound,
-  FOCUS_ROUNDS_PER_LONG_BREAK,
-  isRunning,
-  PHASE_DURATION_MS,
-  type PomodoroSession,
-} from "./pomodoro";
-import { usePomodoroClock } from "./use-pomodoro-clock";
+import { useFocusClock } from "./use-focus-clock";
 
 export function FocusView() {
   const session = useFocusStore((state) => state.session);
@@ -42,28 +40,35 @@ export function FocusView() {
   );
 }
 
-function FocusPanel({ session }: { session: PomodoroSession }) {
+function FocusPanel({ session }: { session: FocusSession }) {
   const { t } = useTranslation();
   const { data: task } = useGetTask(session.taskId);
-  const left = usePomodoroClock();
+  const shown = useFocusClock();
   const { alarm, pause, resume, skip, stop, stopAlarm, closeView } =
     useFocusStore();
-  const duration = PHASE_DURATION_MS[session.phase];
+  const rounds = useFocusSettingsStore(
+    (state) => state.settings.roundsPerLongBreak,
+  );
   const running = isRunning(session);
-  const notStarted = !running && session.pausedRemainingMs === duration;
+  const notStarted = !running && session.elapsedMs === 0;
+  const takesBreak = session.mode === "flowtime" && session.phase === "focus";
 
   return (
     <>
-      <div className="flex justify-end p-3">
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label={t("tasks:focus.actions.minimize")}
-          onClick={closeView}
-          className="text-muted-foreground hover:text-foreground"
-        >
-          <Minimize2 />
-        </Button>
+      <div className="flex items-center justify-between gap-2 p-3">
+        <FocusModeSwitch mode={session.mode} />
+        <div className="flex items-center gap-1">
+          <FocusSettingsPopover />
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={t("tasks:focus.actions.minimize")}
+            onClick={closeView}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <Minimize2 />
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center gap-8 px-4 pb-16">
@@ -72,18 +77,22 @@ function FocusPanel({ session }: { session: PomodoroSession }) {
             {t(`tasks:focus.phase.${session.phase}`)}
             <span className="sr-only"> · {t("tasks:focus.title")}</span>
           </DialogPrimitive.Title>
-          <p className="text-muted-foreground/80 text-xs">
-            {t("tasks:focus.round", {
-              current: currentRound(session),
-              total: FOCUS_ROUNDS_PER_LONG_BREAK,
-            })}
-          </p>
+          {session.mode === "pomodoro" && (
+            <p className="text-muted-foreground/80 text-xs">
+              {t("tasks:focus.round", {
+                current: currentRound(session, rounds),
+                total: rounds,
+              })}
+            </p>
+          )}
         </div>
 
         <div className="relative grid place-items-center">
           <CircularProgress
-            completed={duration - left}
-            total={duration}
+            completed={
+              session.durationMs === null ? 0 : session.durationMs - shown
+            }
+            total={session.durationMs ?? 0}
             size={280}
             strokeWidth={6}
           />
@@ -91,7 +100,7 @@ function FocusPanel({ session }: { session: PomodoroSession }) {
             role="timer"
             className="absolute font-semibold text-6xl tabular-nums tracking-tight"
           >
-            {formatCountdown(left)}
+            {formatCountdown(shown)}
           </span>
         </div>
 
@@ -112,7 +121,7 @@ function FocusPanel({ session }: { session: PomodoroSession }) {
           </Button>
         )}
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           {running ? (
             <Button size="lg" onClick={pause}>
               <Pause />
@@ -134,8 +143,10 @@ function FocusPanel({ session }: { session: PomodoroSession }) {
             </Button>
           )}
           <Button size="lg" variant="outline" onClick={skip}>
-            <SkipForward />
-            {t("tasks:focus.actions.skip")}
+            {takesBreak ? <Coffee /> : <SkipForward />}
+            {takesBreak
+              ? t("tasks:focus.actions.takeBreak")
+              : t("tasks:focus.actions.skip")}
           </Button>
           <Button size="lg" variant="ghost" onClick={stop}>
             <Square />

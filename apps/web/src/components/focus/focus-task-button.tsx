@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { HeaderIconButton } from "@/components/task/header/header-icon-button";
 import { useFocusStore } from "@/store/focus";
 import { unlockAlarmSound } from "./alarm-sound";
-import type { FocusTask } from "./pomodoro";
+import type { FocusTask } from "./focus-timer";
 
 export function FocusTaskButton({ task }: { task: FocusTask }) {
   const { t } = useTranslation();
