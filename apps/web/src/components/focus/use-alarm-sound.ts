@@ -24,11 +24,15 @@ export function useAlarmSound() {
   // any one of them unlocks it before the alarm is due.
   useEffect(() => {
     if (!hasSession) return;
-    document.addEventListener("pointerdown", unlockAlarmSound);
-    document.addEventListener("keydown", unlockAlarmSound);
+    // Browsers differ on which events count as a gesture, so listen to all.
+    const events = ["pointerdown", "click", "touchend", "keydown"];
+    for (const event of events) {
+      document.addEventListener(event, unlockAlarmSound);
+    }
     return () => {
-      document.removeEventListener("pointerdown", unlockAlarmSound);
-      document.removeEventListener("keydown", unlockAlarmSound);
+      for (const event of events) {
+        document.removeEventListener(event, unlockAlarmSound);
+      }
     };
   }, [hasSession]);
 }
