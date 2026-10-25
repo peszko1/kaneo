@@ -6,8 +6,9 @@ import {
   it,
   vi,
 } from "vite-plus/test";
-import { PHASE_DURATION_MS } from "@/components/focus/pomodoro";
+import { DEFAULT_FOCUS_SETTINGS } from "@/components/focus/focus-timer";
 import { useFocusStore } from "./focus";
+import { useFocusSettingsStore } from "./focus-settings";
 
 const recordFocusSegment = vi.hoisted(() => vi.fn());
 vi.mock("@/components/focus/record-focus-time", () => ({
@@ -15,12 +16,14 @@ vi.mock("@/components/focus/record-focus-time", () => ({
 }));
 
 const task = { taskId: "t1", projectId: "p1", workspaceId: "w1" };
+const FOCUS_MS = DEFAULT_FOCUS_SETTINGS.focusMinutes * 60_000;
 
 describe("focus store alarm", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(0);
     recordFocusSegment.mockClear();
+    useFocusSettingsStore.getState().resetSettings();
     useFocusStore.setState(useFocusStore.getInitialState());
     useFocusStore.getState().focusOn(task);
     useFocusStore.getState().closeView();
@@ -31,11 +34,11 @@ describe("focus store alarm", () => {
   });
 
   it("rings and opens the view when a phase runs out", () => {
-    vi.setSystemTime(PHASE_DURATION_MS.focus - 1);
+    vi.setSystemTime(FOCUS_MS - 1);
     useFocusStore.getState().settle();
     expect(useFocusStore.getState().alarm).toBe(false);
 
-    vi.setSystemTime(PHASE_DURATION_MS.focus);
+    vi.setSystemTime(FOCUS_MS);
     useFocusStore.getState().settle();
     expect(useFocusStore.getState().alarm).toBe(true);
     expect(useFocusStore.getState().viewOpen).toBe(true);
@@ -48,7 +51,7 @@ describe("focus store alarm", () => {
   });
 
   it("stops ringing on stopAlarm or when the next phase starts", () => {
-    vi.setSystemTime(PHASE_DURATION_MS.focus);
+    vi.setSystemTime(FOCUS_MS);
     useFocusStore.getState().settle();
     useFocusStore.getState().stopAlarm();
     expect(useFocusStore.getState().alarm).toBe(false);
@@ -59,16 +62,16 @@ describe("focus store alarm", () => {
   });
 
   it("records the focus round when it runs out, not the break", () => {
-    vi.setSystemTime(PHASE_DURATION_MS.focus + 5_000);
+    vi.setSystemTime(FOCUS_MS + 5_000);
     useFocusStore.getState().settle();
     expect(recordFocusSegment).toHaveBeenCalledWith({
       taskId: "t1",
       startTime: 0,
-      endTime: PHASE_DURATION_MS.focus,
+      endTime: FOCUS_MS,
     });
 
     useFocusStore.getState().resume();
-    vi.setSystemTime(PHASE_DURATION_MS.focus + 120_000);
+    vi.setSystemTime(FOCUS_MS + 120_000);
     useFocusStore.getState().skip();
     expect(recordFocusSegment).toHaveBeenCalledTimes(1);
   });
@@ -82,5 +85,20 @@ describe("focus store alarm", () => {
       [{ taskId: "t1", startTime: 0, endTime: 300_000 }],
       [{ taskId: "t2", startTime: 300_000, endTime: 500_000 }],
     ]);
+  });
+
+  it("restarts paused in the new mode and records the time so far", () => {
+    vi.setSystemTime(300_000);
+    useFocusStore.getState().switchMode("flowtime");
+    const { session } = useFocusStore.getState();
+    expect(session?.mode).toBe("flowtime");
+    expect(session?.runningSince).toBeNull();
+    expect(session?.durationMs).toBeNull();
+    expect(useFocusSettingsStore.getState().settings.mode).toBe("flowtime");
+    expect(recordFocusSegment).toHaveBeenCalledWith({
+      taskId: "t1",
+      startTime: 0,
+      endTime: 300_000,
+    });
   });
 });

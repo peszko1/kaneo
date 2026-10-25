@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useFocusStore } from "@/store/focus";
-import { remainingMs } from "./pomodoro";
+import { displayMs } from "./focus-timer";
 
 const TICK_MS = 250;
 
 // Re-renders while the timer runs and moves to the next phase once the
-// current one ends. Returns the time left in the current phase.
-export function usePomodoroClock() {
+// current one ends. Returns the time left, or the time spent when the phase
+// counts up.
+export function useFocusClock() {
   const session = useFocusStore((state) => state.session);
   const settle = useFocusStore((state) => state.settle);
   const [now, setNow] = useState(() => Date.now());
-  const running = session?.endsAt != null;
+  const running = session?.runningSince != null;
 
   useEffect(() => {
     if (!running) return;
@@ -23,5 +24,5 @@ export function usePomodoroClock() {
     return () => clearInterval(timer);
   }, [running, settle]);
 
-  return session ? remainingMs(session, running ? now : Date.now()) : 0;
+  return session ? displayMs(session, running ? now : Date.now()) : 0;
 }

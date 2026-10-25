@@ -1,7 +1,7 @@
 import createTimeEntry from "@/fetchers/time-entry/create-time-entry";
 import { HttpError } from "@/lib/http-error";
 import queryClient from "@/query-client";
-import type { FocusSegment } from "./pomodoro";
+import type { FocusSegment } from "./focus-timer";
 
 const RECORDED_KEY = "focus-recorded";
 const PENDING_KEY = "focus-pending";

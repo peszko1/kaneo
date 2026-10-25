@@ -3572,7 +3572,8 @@
 				"skip": "Skip",
 				"start": "Start",
 				"stop": "Stop",
-				"stopAlarm": "Stop alarm"
+				"stopAlarm": "Stop alarm",
+				"takeBreak": "Take a break"
 			},
 			"phase": {
 				"focus": "Focus",
@@ -3581,7 +3582,24 @@
 			},
 			"round": "Round {{current}} of {{total}}",
 			"start": "Focus on this task",
-			"title": "Focus mode"
+			"title": "Focus mode",
+			"mode": {
+				"countdown": "Countdown",
+				"flowtime": "Flowtime",
+				"label": "Timer mode",
+				"pomodoro": "Pomodoro"
+			},
+			"settings": {
+				"appliesNext": "Changes apply from the next phase.",
+				"countdownMinutes": "Countdown (min)",
+				"flowtimeHint": "Focus counts up until you take a break. The break lasts a fifth of your focus time.",
+				"focusMinutes": "Focus (min)",
+				"longBreakMinutes": "Long break (min)",
+				"reset": "Reset",
+				"roundsPerLongBreak": "Rounds before long break",
+				"shortBreakMinutes": "Short break (min)",
+				"title": "Timer settings"
+			}
 		}
 	},
 	"invitations": {

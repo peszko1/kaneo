@@ -3410,7 +3410,25 @@
 				"skip": "Skip",
 				"stop": "Stop",
 				"minimize": "Minimize",
-				"stopAlarm": "Stop alarm"
+				"stopAlarm": "Stop alarm",
+				"takeBreak": "Take a break"
+			},
+			"mode": {
+				"label": "Timer mode",
+				"pomodoro": "Pomodoro",
+				"flowtime": "Flowtime",
+				"countdown": "Countdown"
+			},
+			"settings": {
+				"title": "Timer settings",
+				"focusMinutes": "Focus (min)",
+				"shortBreakMinutes": "Short break (min)",
+				"longBreakMinutes": "Long break (min)",
+				"roundsPerLongBreak": "Rounds before long break",
+				"countdownMinutes": "Countdown (min)",
+				"flowtimeHint": "Focus counts up until you take a break. The break lasts a fifth of your focus time.",
+				"appliesNext": "Changes apply from the next phase.",
+				"reset": "Reset"
 			}
 		}
 	},

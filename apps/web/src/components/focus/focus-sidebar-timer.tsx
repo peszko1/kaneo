@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/sidebar";
 import { useFocusStore } from "@/store/focus";
 import { formatCountdown } from "./format-countdown";
-import { isRunning } from "./pomodoro";
-import { usePomodoroClock } from "./use-pomodoro-clock";
+import { isRunning } from "./focus-timer";
+import { useFocusClock } from "./use-focus-clock";
 
 export function FocusSidebarTimer() {
   const session = useFocusStore((state) => state.session);
@@ -21,7 +21,7 @@ function FocusSidebarTimerButton({ running }: { running: boolean }) {
   const openView = useFocusStore((state) => state.openView);
   const phase = useFocusStore((state) => state.session?.phase ?? "focus");
   const alarm = useFocusStore((state) => state.alarm);
-  const left = usePomodoroClock();
+  const left = useFocusClock();
   const Icon = alarm ? BellRing : running ? Timer : Pause;
 
   return (
