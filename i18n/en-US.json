@@ -3429,9 +3429,10 @@
 				"roundsPerLongBreak": "Rounds before long break",
 				"countdownMinutes": "Countdown (min)",
 				"flowtimeHint": "Focus counts up until you take a break. The break lasts a fifth of your focus time.",
-				"appliesNext": "Changes apply from the next phase.",
+				"appliesNext": "Changes apply to a phase that has not started yet.",
 				"reset": "Reset",
 				"sound": "Alarm sound",
+				"testSound": "Play test sound",
 				"desktopNotifications": "Desktop notifications",
 				"notificationsBlocked": "Notifications are blocked in your browser settings.",
 				"autoStartNext": "Start the next phase automatically"

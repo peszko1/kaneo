@@ -3481,7 +3481,7 @@
 				"pomodoro": "Pomodoro"
 			},
 			"settings": {
-				"appliesNext": "Changes apply from the next phase.",
+				"appliesNext": "Changes apply to a phase that has not started yet.",
 				"countdownMinutes": "Countdown (min)",
 				"flowtimeHint": "Focus counts up until you take a break. The break lasts a fifth of your focus time.",
 				"focusMinutes": "Focus (min)",
@@ -3493,7 +3493,8 @@
 				"autoStartNext": "Start the next phase automatically",
 				"desktopNotifications": "Desktop notifications",
 				"notificationsBlocked": "Notifications are blocked in your browser settings.",
-				"sound": "Alarm sound"
+				"sound": "Alarm sound",
+				"testSound": "Play test sound"
 			},
 			"notification": {
 				"breakEnded": "Break is over. Back to focus.",

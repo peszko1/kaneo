@@ -35,6 +35,16 @@ function beep(ctx: AudioContext, output: AudioNode, at: number) {
   oscillator.stop(at + BEEP_SECONDS);
 }
 
+// Call from a click: the resume() call must run before the first await.
+export async function playTestSound() {
+  const ctx = audioContext();
+  if (!ctx) return;
+  await ctx.resume();
+  const at = ctx.currentTime + 0.05;
+  beep(ctx, ctx.destination, at);
+  beep(ctx, ctx.destination, at + BEEP_SECONDS + BEEP_GAP_SECONDS);
+}
+
 // Plays a double beep every REPEAT_MS from `fromMs` (a wall-clock time, which
 // may be in the future) until the returned function is called.
 export function startAlarmSound(fromMs: number) {
