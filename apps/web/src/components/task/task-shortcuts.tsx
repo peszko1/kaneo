@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { UserRoundIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { unlockAlarmSound } from "@/components/focus/alarm-sound";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import { useUpdateTaskAssignee } from "@/hooks/mutations/task/use-update-task-assignee";
 import { useUpdateTaskDueDate } from "@/hooks/mutations/task/use-update-task-due-date";
@@ -9,6 +10,7 @@ import useGetTaskRelations from "@/hooks/queries/task-relation/use-get-task-rela
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { useShortcut } from "@/lib/shortcuts/use-shortcut";
 import { toast } from "@/lib/toast";
+import { useFocusStore } from "@/store/focus";
 import { useTaskCopyActions } from "./header/use-task-copy-actions";
 import { clickTaskAction, focusTaskAction } from "./task-action-target";
 import { useRelationPickerStore } from "./task-relation-picker-store";
@@ -35,6 +37,7 @@ export function TaskShortcuts({
   const { mutateAsync: updateAssignee } = useUpdateTaskAssignee();
   const { mutateAsync: updateDueDate } = useUpdateTaskDueDate();
   const openRelationPicker = useRelationPickerStore((state) => state.open);
+  const focusOn = useFocusStore((state) => state.focusOn);
   const { canUpdateTasks, canAssignTasks } = useWorkspacePermission();
   const active = { enabled: enabled && Boolean(task) };
   const editable = { enabled: active.enabled && canUpdateTasks() };
@@ -64,6 +67,14 @@ export function TaskShortcuts({
     editable,
   );
   useShortcut("commentOnTask", () => focusTaskAction("comment"), active);
+  useShortcut(
+    "startFocus",
+    () => {
+      unlockAlarmSound();
+      focusOn({ taskId, projectId, workspaceId });
+    },
+    active,
+  );
 
   useShortcut(
     "assignToMe",

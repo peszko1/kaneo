@@ -2573,7 +2573,8 @@
 				"editorNumberedList": "Numbered list",
 				"editorCodeBlock": "Code block",
 				"editorUndo": "Undo",
-				"editorRedo": "Redo"
+				"editorRedo": "Redo",
+				"startFocus": "Focus on task"
 			},
 			"title": "Keyboard shortcuts",
 			"searchPlaceholder": "Search by action or key",
@@ -3411,7 +3412,8 @@
 				"stop": "Stop",
 				"minimize": "Minimize",
 				"stopAlarm": "Stop alarm",
-				"takeBreak": "Take a break"
+				"takeBreak": "Take a break",
+				"markDone": "Done"
 			},
 			"mode": {
 				"label": "Timer mode",
@@ -3428,7 +3430,15 @@
 				"countdownMinutes": "Countdown (min)",
 				"flowtimeHint": "Focus counts up until you take a break. The break lasts a fifth of your focus time.",
 				"appliesNext": "Changes apply from the next phase.",
-				"reset": "Reset"
+				"reset": "Reset",
+				"sound": "Alarm sound",
+				"desktopNotifications": "Desktop notifications",
+				"notificationsBlocked": "Notifications are blocked in your browser settings.",
+				"autoStartNext": "Start the next phase automatically"
+			},
+			"notification": {
+				"focusEnded": "Focus time is over. Take a break.",
+				"breakEnded": "Break is over. Back to focus."
 			}
 		}
 	},
