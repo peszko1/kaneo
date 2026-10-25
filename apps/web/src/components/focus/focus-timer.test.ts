@@ -2,9 +2,11 @@ import { describe, expect, it } from "vite-plus/test";
 import {
   advance,
   applySettings,
+  BREAK_EXTENSION_MS,
   currentRound,
   DEFAULT_FOCUS_SETTINGS,
   displayMs,
+  extendBreak,
   type FocusSettings,
   focusSegment,
   MIN_RECORDED_MS,
@@ -94,6 +96,17 @@ describe("countdown", () => {
     expect(next.runningSince).toBeNull();
     expect(next.completedFocusRounds).toBe(1);
     expect(displayMs(next, 0)).toBe(min(45));
+  });
+});
+
+describe("extendBreak", () => {
+  it("adds five minutes to a break and nothing to focus", () => {
+    const focus = startSession(task, pomodoro, 0);
+    expect(extendBreak(focus)).toBe(focus);
+    const pause = advance(focus, pomodoro, 0);
+    expect(extendBreak(pause).durationMs).toBe(
+      min(pomodoro.shortBreakMinutes) + BREAK_EXTENSION_MS,
+    );
   });
 });
 

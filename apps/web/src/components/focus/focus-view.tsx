@@ -45,8 +45,16 @@ function FocusPanel({ session }: { session: FocusSession }) {
   const { t } = useTranslation();
   const { data: task } = useGetTask(session.taskId);
   const shown = useFocusClock();
-  const { alarm, pause, resume, skip, stop, stopAlarm, closeView } =
-    useFocusStore();
+  const {
+    alarm,
+    pause,
+    resume,
+    skip,
+    extendBreak,
+    stop,
+    stopAlarm,
+    closeView,
+  } = useFocusStore();
   const rounds = useFocusSettingsStore(
     (state) => state.settings.roundsPerLongBreak,
   );
@@ -149,6 +157,16 @@ function FocusPanel({ session }: { session: FocusSession }) {
               ? t("tasks:focus.actions.takeBreak")
               : t("tasks:focus.actions.skip")}
           </Button>
+          {session.phase !== "focus" && (
+            <Button
+              size="lg"
+              variant="outline"
+              aria-label={t("tasks:focus.actions.extendBreakLabel")}
+              onClick={extendBreak}
+            >
+              {t("tasks:focus.actions.extendBreak")}
+            </Button>
+          )}
           <FocusDoneButton taskId={session.taskId} />
           <Button size="lg" variant="ghost" onClick={stop}>
             <Square />

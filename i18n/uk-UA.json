@@ -3523,7 +3523,9 @@
 				"stop": "Stop",
 				"stopAlarm": "Stop alarm",
 				"takeBreak": "Take a break",
-				"markDone": "Done"
+				"markDone": "Done",
+				"extendBreak": "+5 min",
+				"extendBreakLabel": "Add 5 minutes to the break"
 			},
 			"phase": {
 				"focus": "Focus",
