@@ -1,0 +1,24 @@
+{
+	"name": "@kaneo/obsidian",
+	"private": true,
+	"version": "0.1.0",
+	"description": "Obsidian plugin that shows live Kaneo task queries in notes",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"build": "vp run bundle",
+		"dev": "node esbuild.config.mjs --watch",
+		"lint": "vp check .",
+		"typecheck": "vp run check:types",
+		"test": "vp run test:run"
+	},
+	"devDependencies": {
+		"@kaneo/api": "workspace:*",
+		"@kaneo/typescript-config": "workspace:*",
+		"esbuild": "0.28.2",
+		"hono": "^4.13.12",
+		"obsidian": "1.14.4",
+		"typescript": "^7.0.2",
+		"vite-plus": "catalog:"
+	}
+}

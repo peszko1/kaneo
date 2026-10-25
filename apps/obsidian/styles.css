@@ -1,0 +1,81 @@
+.kaneo-query {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  padding: var(--size-4-2) var(--size-4-3);
+}
+
+.kaneo-query-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-4-2);
+  font-weight: var(--font-semibold);
+}
+
+.kaneo-query-refresh.is-loading svg {
+  animation: kaneo-spin 1s linear infinite;
+}
+
+@keyframes kaneo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kaneo-query-refresh.is-loading svg {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+.kaneo-query-group {
+  margin-top: var(--size-4-2);
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  font-weight: var(--font-semibold);
+}
+
+.kaneo-query-message,
+.kaneo-query-error {
+  margin-top: var(--size-4-2);
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+}
+
+.kaneo-query-error {
+  color: var(--text-error);
+}
+
+.kaneo-task.is-checked .kaneo-task-title {
+  color: var(--text-faint);
+  text-decoration: line-through;
+}
+
+.kaneo-task-details {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--size-4-1) var(--size-4-2);
+  margin-left: var(--size-4-2);
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.kaneo-task-ticket {
+  font-family: var(--font-monospace);
+}
+
+.kaneo-task-due.is-overdue {
+  color: var(--text-error);
+}
+
+.kaneo-task-label {
+  padding: 0 var(--size-4-1);
+  border: 1px solid var(--kaneo-label-color, var(--background-modifier-border));
+  border-radius: var(--radius-s);
+}
+
+.kaneo-task-priority[data-priority="urgent"],
+.kaneo-task-priority[data-priority="high"] {
+  color: var(--text-warning);
+}
