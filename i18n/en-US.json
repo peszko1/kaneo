@@ -3392,7 +3392,25 @@
 			},
 			"moveToTop": "Move to top"
 		},
-		"parentHint": "parent: {{id}} {{title}}"
+		"parentHint": "parent: {{id}} {{title}}",
+		"focus": {
+			"start": "Focus on this task",
+			"title": "Focus mode",
+			"phase": {
+				"focus": "Focus",
+				"shortBreak": "Short break",
+				"longBreak": "Long break"
+			},
+			"round": "Round {{current}} of {{total}}",
+			"actions": {
+				"start": "Start",
+				"pause": "Pause",
+				"resume": "Resume",
+				"skip": "Skip",
+				"stop": "Stop",
+				"minimize": "Minimize"
+			}
+		}
 	},
 	"invitations": {
 		"email": {

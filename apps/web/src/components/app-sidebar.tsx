@@ -2,6 +2,7 @@ import { useLocation } from "@tanstack/react-router";
 import type * as React from "react";
 import { useEffect } from "react";
 
+import { FocusSidebarTimer } from "@/components/focus/focus-sidebar-timer";
 import { NavMain } from "@/components/nav-main";
 import { NavPinnedLabels } from "@/components/nav-pinned-labels";
 import { NavProjects } from "@/components/nav-projects";
@@ -44,6 +45,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavPinnedLabels />
       </SidebarContent>
       <SidebarFooter>
+        <FocusSidebarTimer />
         <NavSecondary />
         <TrialCard />
         <div className="flex items-center justify-between">
