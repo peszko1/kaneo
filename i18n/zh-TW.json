@@ -3509,7 +3509,8 @@
 				"updated": "更新了任務",
 				"empty": "過去 30 天沒有任何動態。",
 				"loadError": "無法載入動態。"
-			}
+			},
+			"focusToday_other": "Tracked today: {{time}} in {{count}} entries"
 		},
 		"myWork": {
 			"empty": "沒有指派給你的任務",

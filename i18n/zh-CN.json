@@ -3509,7 +3509,8 @@
 			"week": {
 				"more_other": "还有 {{count}} 个",
 				"truncated": "本周预览只显示前 {{shown}} 个指派给你的任务（共 {{total}} 个）。"
-			}
+			},
+			"focusToday_other": "Tracked today: {{time}} in {{count}} entries"
 		},
 		"myTasks": {
 			"emptyDescription": "指派给你的任务都会汇总在这里。",

@@ -3635,7 +3635,10 @@
 				"more_one": "+{{count}} more",
 				"more_other": "+{{count}} more",
 				"truncated": "The week preview includes only the first {{shown}} of {{total}} assigned tasks."
-			}
+			},
+			"focusToday_many": "Tracked today: {{time}} in {{count}} entries",
+			"focusToday_one": "Tracked today: {{time}} in {{count}} entry",
+			"focusToday_other": "Tracked today: {{time}} in {{count}} entries"
 		},
 		"myTasks": {
 			"emptyDescription": "Tasks assigned to you across this workspace show up here.",

@@ -25,3 +25,13 @@ export const timeEntryListSchema = z.array(
     .extend({ userName: z.string().nullable() })
     .openapi("TimeEntryWithUser"),
 );
+
+export const timeSummarySchema = z
+  .object({
+    totalSeconds: z.number().openapi({
+      description:
+        "Seconds of finished time entries that started in the range.",
+    }),
+    entryCount: z.number(),
+  })
+  .openapi("TimeSummary");

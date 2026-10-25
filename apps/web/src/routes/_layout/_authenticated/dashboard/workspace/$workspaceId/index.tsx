@@ -6,6 +6,7 @@ import { TrialExpiredCallout } from "@/components/billing/trial-expired-callout"
 import WorkspaceLayout from "@/components/common/workspace-layout";
 import { ActivityFeed } from "@/components/home/activity-feed";
 import { getDayPart } from "@/components/home/day-part";
+import { FocusToday } from "@/components/home/focus-today";
 import { HomeProjects } from "@/components/home/home-projects";
 import { UpNext } from "@/components/home/up-next";
 import { WeekStrip } from "@/components/home/week-strip";
@@ -65,6 +66,7 @@ function RouteComponent() {
                     day: "numeric",
                   })}
                 </p>
+                <FocusToday workspaceId={workspaceId} />
                 <h1 className="font-semibold text-3xl text-foreground tracking-tight">
                   {greetings[getDayPart()]}
                 </h1>

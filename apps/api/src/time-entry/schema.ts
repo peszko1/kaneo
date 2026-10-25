@@ -46,3 +46,12 @@ export const updateTimeEntryBody = z.object({
   endTime: timestamp.optional(),
   description: z.string().optional(),
 });
+
+export const timeSummaryQuery = z.object({
+  workspaceId: z.string().min(1),
+  from: timestamp.openapi({
+    description:
+      "Start of the range, inclusive. Usually the caller's local midnight.",
+  }),
+  to: timestamp.openapi({ description: "End of the range, exclusive." }),
+});
