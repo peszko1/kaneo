@@ -1,4 +1,5 @@
 import { Settings2 } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,6 +9,8 @@ import {
 } from "@/components/ui/popover";
 import { useFocusSettingsStore } from "@/store/focus-settings";
 import { FocusMinutesField } from "./focus-minutes-field";
+import { canNotify, requestNotificationPermission } from "./focus-notification";
+import { FocusToggleField } from "./focus-toggle-field";
 
 const MAX_MINUTES = 240;
 
@@ -16,6 +19,7 @@ export function FocusSettingsPopover() {
   const settings = useFocusSettingsStore((state) => state.settings);
   const changeSettings = useFocusSettingsStore((state) => state.changeSettings);
   const resetSettings = useFocusSettingsStore((state) => state.resetSettings);
+  const [notificationsBlocked, setNotificationsBlocked] = useState(false);
 
   return (
     <Popover>
@@ -88,6 +92,39 @@ export function FocusSettingsPopover() {
               {t("tasks:focus.settings.flowtimeHint")}
             </p>
           )}
+
+          <div className="flex flex-col gap-3 border-border border-t pt-3">
+            <FocusToggleField
+              label={t("tasks:focus.settings.sound")}
+              checked={settings.sound}
+              onChange={(sound) => changeSettings({ sound })}
+            />
+            {canNotify() && (
+              <FocusToggleField
+                label={t("tasks:focus.settings.desktopNotifications")}
+                hint={
+                  notificationsBlocked
+                    ? t("tasks:focus.settings.notificationsBlocked")
+                    : undefined
+                }
+                checked={settings.desktopNotifications}
+                onChange={async (desktopNotifications) => {
+                  const allowed =
+                    !desktopNotifications ||
+                    (await requestNotificationPermission());
+                  setNotificationsBlocked(!allowed);
+                  changeSettings({
+                    desktopNotifications: allowed && desktopNotifications,
+                  });
+                }}
+              />
+            )}
+            <FocusToggleField
+              label={t("tasks:focus.settings.autoStartNext")}
+              checked={settings.autoStartNext}
+              onChange={(autoStartNext) => changeSettings({ autoStartNext })}
+            />
+          </div>
 
           <div className="flex items-center justify-between gap-3 border-border border-t pt-3">
             <p className="text-muted-foreground text-xs">

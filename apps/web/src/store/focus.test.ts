@@ -14,6 +14,10 @@ const recordFocusSegment = vi.hoisted(() => vi.fn());
 vi.mock("@/components/focus/record-focus-time", () => ({
   recordFocusSegment,
 }));
+const showPhaseEndedNotification = vi.hoisted(() => vi.fn());
+vi.mock("@/components/focus/focus-notification", () => ({
+  showPhaseEndedNotification,
+}));
 
 const task = { taskId: "t1", projectId: "p1", workspaceId: "w1" };
 const FOCUS_MS = DEFAULT_FOCUS_SETTINGS.focusMinutes * 60_000;
@@ -23,6 +27,7 @@ describe("focus store alarm", () => {
     vi.useFakeTimers();
     vi.setSystemTime(0);
     recordFocusSegment.mockClear();
+    showPhaseEndedNotification.mockClear();
     useFocusSettingsStore.getState().resetSettings();
     useFocusStore.setState(useFocusStore.getInitialState());
     useFocusStore.getState().focusOn(task);
@@ -100,5 +105,24 @@ describe("focus store alarm", () => {
       startTime: 0,
       endTime: 300_000,
     });
+  });
+
+  it("starts the next phase from now when auto-start is on", () => {
+    useFocusSettingsStore.getState().changeSettings({ autoStartNext: true });
+    vi.setSystemTime(FOCUS_MS + 30_000);
+    useFocusStore.getState().settle();
+    const { session } = useFocusStore.getState();
+    expect(session?.phase).toBe("shortBreak");
+    expect(session?.runningSince).toBe(FOCUS_MS + 30_000);
+  });
+
+  it("stays silent with sound off and notifies only when enabled", () => {
+    useFocusSettingsStore
+      .getState()
+      .changeSettings({ sound: false, desktopNotifications: true });
+    vi.setSystemTime(FOCUS_MS);
+    useFocusStore.getState().settle();
+    expect(useFocusStore.getState().alarm).toBe(false);
+    expect(showPhaseEndedNotification).toHaveBeenCalledTimes(1);
   });
 });

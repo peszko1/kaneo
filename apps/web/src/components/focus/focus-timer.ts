@@ -10,6 +10,9 @@ export type FocusSettings = {
   longBreakMinutes: number;
   roundsPerLongBreak: number;
   countdownMinutes: number;
+  sound: boolean;
+  desktopNotifications: boolean;
+  autoStartNext: boolean;
 };
 
 export const DEFAULT_FOCUS_SETTINGS: FocusSettings = {
@@ -19,6 +22,9 @@ export const DEFAULT_FOCUS_SETTINGS: FocusSettings = {
   longBreakMinutes: 15,
   roundsPerLongBreak: 4,
   countdownMinutes: 50,
+  sound: true,
+  desktopNotifications: false,
+  autoStartNext: false,
 };
 
 // Flowtime breaks last a fifth of the focus time, but at least a minute.

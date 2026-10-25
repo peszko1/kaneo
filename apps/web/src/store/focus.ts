@@ -12,6 +12,7 @@ import {
   settle,
   startSession,
 } from "@/components/focus/focus-timer";
+import { showPhaseEndedNotification } from "@/components/focus/focus-notification";
 import { recordFocusSegment } from "@/components/focus/record-focus-time";
 import { useFocusSettingsStore } from "./focus-settings";
 
@@ -118,7 +119,16 @@ export const useFocusStore = create<FocusStore>()(
           const settled = settle(session, settings(), now);
           if (settled !== session) {
             recordUntil(session, now);
-            set({ session: settled, alarm: true, viewOpen: true });
+            const current = settings();
+            if (current.desktopNotifications)
+              showPhaseEndedNotification(session);
+            set({
+              // Auto-start counts from now, not the phase end, so time away
+              // from the computer is never recorded as focus.
+              session: current.autoStartNext ? resume(settled, now) : settled,
+              alarm: current.sound,
+              viewOpen: true,
+            });
           }
         },
       };

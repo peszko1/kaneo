@@ -12,6 +12,7 @@ export function FocusTaskButton({ task }: { task: FocusTask }) {
   return (
     <HeaderIconButton
       label={t("tasks:focus.start")}
+      shortcutId="startFocus"
       onClick={() => {
         unlockAlarmSound();
         focusOn(task);

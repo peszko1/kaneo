@@ -15,6 +15,7 @@ import useGetTask from "@/hooks/queries/task/use-get-task";
 import { useFocusStore } from "@/store/focus";
 import { useFocusSettingsStore } from "@/store/focus-settings";
 import { unlockAlarmSound } from "./alarm-sound";
+import { FocusDoneButton } from "./focus-done-button";
 import { FocusModeSwitch } from "./focus-mode-switch";
 import { FocusSettingsPopover } from "./focus-settings-popover";
 import { currentRound, type FocusSession, isRunning } from "./focus-timer";
@@ -148,6 +149,7 @@ function FocusPanel({ session }: { session: FocusSession }) {
               ? t("tasks:focus.actions.takeBreak")
               : t("tasks:focus.actions.skip")}
           </Button>
+          <FocusDoneButton taskId={session.taskId} />
           <Button size="lg" variant="ghost" onClick={stop}>
             <Square />
             {t("tasks:focus.actions.stop")}

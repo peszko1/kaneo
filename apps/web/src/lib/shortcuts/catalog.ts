@@ -99,6 +99,7 @@ export const SHORTCUTS = {
   copyBranchName: { keys: ["mod+shift+."], category: "tasks", scope: "task" },
   copyTaskTitle: { keys: ["mod+shift+'"], category: "tasks", scope: "task" },
   copyAsMarkdown: { keys: ["mod+alt+c"], category: "tasks", scope: "task" },
+  startFocus: { keys: ["ctrl+shift+f"], category: "tasks", scope: "task" },
 
   peekTask: { keys: ["space"], category: "list", scope: "view" },
   openFocusedTask: { keys: ["enter"], category: "list", scope: "view" },

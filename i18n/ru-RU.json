@@ -2665,7 +2665,8 @@
 				"editorNumberedList": "Нумерованный список",
 				"editorCodeBlock": "Блок кода",
 				"editorUndo": "Отменить",
-				"editorRedo": "Повторить"
+				"editorRedo": "Повторить",
+				"startFocus": "Focus on task"
 			},
 			"title": "Сочетания клавиш",
 			"searchPlaceholder": "Поиск по действию или клавише",
@@ -3573,7 +3574,8 @@
 				"start": "Start",
 				"stop": "Stop",
 				"stopAlarm": "Stop alarm",
-				"takeBreak": "Take a break"
+				"takeBreak": "Take a break",
+				"markDone": "Done"
 			},
 			"phase": {
 				"focus": "Focus",
@@ -3598,7 +3600,15 @@
 				"reset": "Reset",
 				"roundsPerLongBreak": "Rounds before long break",
 				"shortBreakMinutes": "Short break (min)",
-				"title": "Timer settings"
+				"title": "Timer settings",
+				"autoStartNext": "Start the next phase automatically",
+				"desktopNotifications": "Desktop notifications",
+				"notificationsBlocked": "Notifications are blocked in your browser settings.",
+				"sound": "Alarm sound"
+			},
+			"notification": {
+				"breakEnded": "Break is over. Back to focus.",
+				"focusEnded": "Focus time is over. Take a break."
 			}
 		}
 	},
