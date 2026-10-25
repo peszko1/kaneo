@@ -19,6 +19,7 @@ import { dueDateTextClass } from "./due-date-text-class";
 import { LabelsValue } from "./labels-value";
 import { PropertyRow } from "./property-row";
 import { PropertyValue } from "./property-value";
+import { TrackedTimeRow } from "./tracked-time-row";
 import { useTaskProperties } from "./use-task-properties";
 
 type PropertiesRailProps = {
@@ -158,6 +159,8 @@ export function PropertiesRail({
             </div>
           )}
         </PropertyRow>
+
+        <TrackedTimeRow taskId={taskId} />
       </div>
 
       <TaskCustomFieldRows taskId={taskId} projectId={projectId} />

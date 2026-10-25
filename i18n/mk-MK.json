@@ -3006,7 +3006,8 @@
 			"startDate": "Почетен датум",
 			"noDate": "Без датум",
 			"dates": "Датуми",
-			"project": "Проект"
+			"project": "Проект",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Премести задача",

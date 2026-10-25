@@ -3006,7 +3006,8 @@
 			"startDate": "Başlangıç tarihi",
 			"noDate": "Tarih yok",
 			"dates": "Tarihler",
-			"project": "Proje"
+			"project": "Proje",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Talebi taşı",

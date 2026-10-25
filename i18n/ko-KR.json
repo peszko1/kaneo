@@ -2958,7 +2958,8 @@
 			"startDate": "시작일",
 			"noDate": "날짜 없음",
 			"dates": "날짜",
-			"project": "프로젝트"
+			"project": "프로젝트",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "작업 이동",

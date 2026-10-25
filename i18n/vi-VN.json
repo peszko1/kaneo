@@ -2958,7 +2958,8 @@
 			"startDate": "Ngày bắt đầu",
 			"noDate": "Không có ngày",
 			"dates": "Ngày",
-			"project": "Dự án"
+			"project": "Dự án",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Di chuyển công việc",

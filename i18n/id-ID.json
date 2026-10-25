@@ -2958,7 +2958,8 @@
 			"startDate": "Tanggal mulai",
 			"noDate": "Tanpa tanggal",
 			"dates": "Tanggal",
-			"project": "Proyek"
+			"project": "Proyek",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Pindahkan tugas",

@@ -3007,7 +3007,8 @@
 			"startDate": "Start date",
 			"noDate": "No date",
 			"dates": "Dates",
-			"project": "Project"
+			"project": "Project",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Move task",

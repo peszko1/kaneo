@@ -18,6 +18,7 @@ import TaskStatusPopover from "../task-status-popover";
 import { AssigneeAvatar } from "./assignee-avatar";
 import { dueDateTextClass } from "./due-date-text-class";
 import { LabelsValue } from "./labels-value";
+import { TrackedTimeChip } from "./tracked-time-chip";
 import { useTaskProperties } from "./use-task-properties";
 
 type PropertyChipsProps = {
@@ -152,6 +153,7 @@ export function PropertyChips({
             {projectContent}
           </span>
         )}
+        <TrackedTimeChip taskId={taskId} />
         <TaskCustomFieldChips
           taskId={taskId}
           projectId={projectId}

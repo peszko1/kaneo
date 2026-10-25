@@ -3006,7 +3006,8 @@
 			"startDate": "Ημερομηνία έναρξης",
 			"noDate": "Χωρίς ημερομηνία",
 			"dates": "Ημερομηνίες",
-			"project": "Έργο"
+			"project": "Έργο",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Μετακίνηση εργασίας",

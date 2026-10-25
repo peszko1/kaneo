@@ -9,12 +9,18 @@ import {
 import { PHASE_DURATION_MS } from "@/components/focus/pomodoro";
 import { useFocusStore } from "./focus";
 
+const recordFocusSegment = vi.hoisted(() => vi.fn());
+vi.mock("@/components/focus/record-focus-time", () => ({
+  recordFocusSegment,
+}));
+
 const task = { taskId: "t1", projectId: "p1", workspaceId: "w1" };
 
 describe("focus store alarm", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(0);
+    recordFocusSegment.mockClear();
     useFocusStore.setState(useFocusStore.getInitialState());
     useFocusStore.getState().focusOn(task);
     useFocusStore.getState().closeView();
@@ -50,5 +56,31 @@ describe("focus store alarm", () => {
     useFocusStore.setState({ alarm: true });
     useFocusStore.getState().resume();
     expect(useFocusStore.getState().alarm).toBe(false);
+  });
+
+  it("records the focus round when it runs out, not the break", () => {
+    vi.setSystemTime(PHASE_DURATION_MS.focus + 5_000);
+    useFocusStore.getState().settle();
+    expect(recordFocusSegment).toHaveBeenCalledWith({
+      taskId: "t1",
+      startTime: 0,
+      endTime: PHASE_DURATION_MS.focus,
+    });
+
+    useFocusStore.getState().resume();
+    vi.setSystemTime(PHASE_DURATION_MS.focus + 120_000);
+    useFocusStore.getState().skip();
+    expect(recordFocusSegment).toHaveBeenCalledTimes(1);
+  });
+
+  it("splits the time when focus moves to another task", () => {
+    vi.setSystemTime(300_000);
+    useFocusStore.getState().focusOn({ ...task, taskId: "t2" });
+    vi.setSystemTime(500_000);
+    useFocusStore.getState().stop();
+    expect(recordFocusSegment.mock.calls).toEqual([
+      [{ taskId: "t1", startTime: 0, endTime: 300_000 }],
+      [{ taskId: "t2", startTime: 300_000, endTime: 500_000 }],
+    ]);
   });
 });

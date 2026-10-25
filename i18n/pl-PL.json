@@ -3586,7 +3586,8 @@
 			"startDate": "Data rozpoczęcia",
 			"title": "Właściwości",
 			"dates": "Daty",
-			"project": "Projekt"
+			"project": "Projekt",
+			"timeTracked": "Czas pracy"
 		},
 		"relations": {
 			"blocks": "Blokuje",

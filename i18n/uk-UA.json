@@ -3102,7 +3102,8 @@
 			"startDate": "Дата початку",
 			"noDate": "Немає дати",
 			"dates": "Дати",
-			"project": "Проєкт"
+			"project": "Проєкт",
+			"timeTracked": "Time tracked"
 		},
 		"move": {
 			"title": "Перемістити завдання",

@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import db from "../database";
 import { projectTable, taskTable } from "../database/schema";
 import { subscribeToEvent } from "../events";
+import { hasEarlierTimeEntry } from "../time-entry/has-earlier-time-entry";
 import {
   apiRouter,
   createRoute,
@@ -359,7 +360,11 @@ subscribeToEvent<{
   taskOwnerId?: string;
   taskTitle?: string;
 }>("time-entry.created", async (data) => {
-  if (data.taskOwnerId && data.taskOwnerId !== data.userId) {
+  if (
+    data.taskOwnerId &&
+    data.taskOwnerId !== data.userId &&
+    !(await hasEarlierTimeEntry(data))
+  ) {
     const [task] = await db
       .select({ projectId: taskTable.projectId })
       .from(taskTable)
