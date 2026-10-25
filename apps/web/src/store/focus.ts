@@ -6,6 +6,7 @@ import {
   type FocusSession,
   type FocusTask,
   focusSegment,
+  phaseEndsAt,
   migrateLegacySession,
   pause,
   resume,
@@ -22,6 +23,8 @@ type FocusStore = {
   session: FocusSession | null;
   // Set when a phase runs out; the alarm rings until the user stops it.
   alarm: boolean;
+  // When the alarm started ringing, so every tab plays the same beeps.
+  alarmAt: number | null;
   viewOpen: boolean;
   // Keeps the running timer when the session moves to another task.
   focusOn: (task: FocusTask) => void;
@@ -55,12 +58,13 @@ export const useFocusStore = create<FocusStore>()(
         if (!session) return;
         const now = Date.now();
         recordUntil(session, now);
-        set({ session: change(session, now), alarm: false });
+        set({ session: change(session, now), alarm: false, alarmAt: null });
       };
 
       return {
         session: null,
         alarm: false,
+        alarmAt: null,
         viewOpen: false,
         focusOn: (task) => {
           const { session } = get();
@@ -99,6 +103,7 @@ export const useFocusStore = create<FocusStore>()(
               runningSince: null,
             },
             alarm: false,
+            alarmAt: null,
           });
         },
         openView: () => set({ viewOpen: true }),
@@ -109,9 +114,14 @@ export const useFocusStore = create<FocusStore>()(
         stop: () => {
           const { session } = get();
           if (session) recordUntil(session, Date.now());
-          set({ session: null, alarm: false, viewOpen: false });
+          set({
+            session: null,
+            alarm: false,
+            alarmAt: null,
+            viewOpen: false,
+          });
         },
-        stopAlarm: () => set({ alarm: false }),
+        stopAlarm: () => set({ alarm: false, alarmAt: null }),
         settle: () => {
           const { session } = get();
           if (!session) return;
@@ -127,6 +137,7 @@ export const useFocusStore = create<FocusStore>()(
               // from the computer is never recorded as focus.
               session: current.autoStartNext ? resume(settled, now) : settled,
               alarm: current.sound,
+              alarmAt: current.sound ? (phaseEndsAt(session) ?? now) : null,
               viewOpen: true,
             });
           }
@@ -135,20 +146,28 @@ export const useFocusStore = create<FocusStore>()(
     },
     {
       name: FOCUS_STORAGE_KEY,
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => localStorage),
-      partialize: ({ session, alarm }) => ({ session, alarm }),
+      partialize: ({ session, alarm, alarmAt }) => ({
+        session,
+        alarm,
+        alarmAt,
+      }),
       migrate: (persisted, version) => {
-        const state = persisted as { session?: unknown; alarm?: boolean };
-        if (version === 0 && state.session) {
-          return {
-            ...state,
-            session: migrateLegacySession(
-              state.session as Parameters<typeof migrateLegacySession>[0],
-            ),
-          };
-        }
-        return state;
+        const state = persisted as {
+          session?: unknown;
+          alarm?: boolean;
+          alarmAt?: number | null;
+        };
+        const session =
+          version === 0 && state.session
+            ? migrateLegacySession(
+                state.session as Parameters<typeof migrateLegacySession>[0],
+              )
+            : state.session;
+        const alarmAt =
+          version < 2 ? (state.alarm ? Date.now() : null) : state.alarmAt;
+        return { ...state, session, alarmAt };
       },
     },
   ),

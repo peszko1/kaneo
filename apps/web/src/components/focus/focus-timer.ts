@@ -93,7 +93,7 @@ export function displayMs(session: FocusSession, now: number) {
   return Math.max(0, session.durationMs - elapsed);
 }
 
-function endsAt(session: FocusSession) {
+export function phaseEndsAt(session: FocusSession) {
   if (session.runningSince === null || session.durationMs === null) {
     return null;
   }
@@ -102,7 +102,7 @@ function endsAt(session: FocusSession) {
 
 export function pause(session: FocusSession, now: number): FocusSession {
   if (session.runningSince === null) return session;
-  const end = endsAt(session);
+  const end = phaseEndsAt(session);
   return {
     ...session,
     elapsedMs: elapsedMs(session, end === null ? now : Math.min(now, end)),
@@ -167,7 +167,7 @@ export function advance(
 }
 
 export function isDue(session: FocusSession, now: number) {
-  const end = endsAt(session);
+  const end = phaseEndsAt(session);
   return end !== null && end <= now;
 }
 
@@ -176,7 +176,7 @@ export function settle(
   settings: FocusSettings,
   now: number,
 ) {
-  const end = endsAt(session);
+  const end = phaseEndsAt(session);
   if (end === null || end > now) return session;
   return advance(session, settings, end);
 }
@@ -197,7 +197,7 @@ export function focusSegment(
   now: number,
 ): FocusSegment | null {
   if (session.phase !== "focus" || session.runningSince === null) return null;
-  const end = endsAt(session);
+  const end = phaseEndsAt(session);
   const startTime = session.runningSince;
   const endTime = end === null ? now : Math.min(now, end);
   if (endTime - startTime < MIN_RECORDED_MS) return null;

@@ -1,12 +1,34 @@
 import { useEffect } from "react";
 import { useFocusStore } from "@/store/focus";
-import { startAlarmSound } from "./alarm-sound";
+import { useFocusSettingsStore } from "@/store/focus-settings";
+import { startAlarmSound, unlockAlarmSound } from "./alarm-sound";
+import { phaseEndsAt } from "./focus-timer";
 
+// Queues the alarm for the moment the running phase ends, so it rings on
+// time even in a background tab, and keeps it ringing until it is stopped.
 export function useAlarmSound() {
-  const alarm = useFocusStore((state) => state.alarm);
+  const sound = useFocusSettingsStore((state) => state.settings.sound);
+  const hasSession = useFocusStore((state) => state.session !== null);
+  const alarmAt = useFocusStore((state) => state.alarmAt);
+  const upcoming = useFocusStore((state) =>
+    state.session ? phaseEndsAt(state.session) : null,
+  );
+  const ringFrom = sound ? (alarmAt ?? upcoming) : null;
 
   useEffect(() => {
-    if (!alarm) return;
-    return startAlarmSound();
-  }, [alarm]);
+    if (ringFrom === null) return;
+    return startAlarmSound(ringFrom);
+  }, [ringFrom]);
+
+  // After a reload the browser blocks audio until a click or key press, so
+  // any one of them unlocks it before the alarm is due.
+  useEffect(() => {
+    if (!hasSession) return;
+    document.addEventListener("pointerdown", unlockAlarmSound);
+    document.addEventListener("keydown", unlockAlarmSound);
+    return () => {
+      document.removeEventListener("pointerdown", unlockAlarmSound);
+      document.removeEventListener("keydown", unlockAlarmSound);
+    };
+  }, [hasSession]);
 }
