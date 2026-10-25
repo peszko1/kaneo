@@ -1,5 +1,6 @@
 import { ShortcutKeys } from "@/components/shortcuts/shortcut-keys";
 import { useNavigate } from "@tanstack/react-router";
+import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import TaskCrumbSelect from "@/components/common/header/task-crumb-select";
@@ -15,7 +16,9 @@ import useGetProject from "@/hooks/queries/project/use-get-project";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { useProjectWebSocket } from "@/hooks/use-project-websocket";
 import { getProjectUnavailableReason } from "@/lib/project-unavailable-reason";
+import { useShortcut } from "@/lib/shortcuts/use-shortcut";
 import ProjectUnavailable from "./project-unavailable";
+import { useTaskBack } from "./use-task-back";
 
 type TaskLayoutProps = {
   taskId: string;
@@ -44,6 +47,8 @@ export default function TaskLayout({
   const unavailableReason = getProjectUnavailableReason(projectError);
 
   useProjectWebSocket(unavailableReason ? "" : projectId);
+  const goBack = useTaskBack(workspaceId, projectId);
+  useShortcut("back", goBack);
 
   const taskLabel =
     project?.slug && task?.number != null
@@ -79,6 +84,27 @@ export default function TaskLayout({
                 </TooltipProvider>
 
                 <div className="h-4 w-px shrink-0 bg-border/80" />
+
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        aria-label={t("navigation:taskHeader.back")}
+                        onClick={goBack}
+                        className="flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground/85 hover:bg-accent hover:text-foreground [&_svg]:size-4"
+                      >
+                        <ArrowLeft />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="flex items-center gap-2 text-[10px]">
+                        {t("navigation:taskHeader.back")}
+                        <ShortcutKeys id="back" />
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
 
                 <div className="min-w-0 items-center gap-1.5 flex">
                   <button

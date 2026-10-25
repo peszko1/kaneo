@@ -2611,6 +2611,9 @@
 			"saveError": "Couldn't save the habit.",
 			"title": "Habits",
 			"today": "Today"
+		},
+		"taskHeader": {
+			"back": "Back"
 		}
 	},
 	"notifications": {

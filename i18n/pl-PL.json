@@ -643,6 +643,9 @@
 				"fallback": "Wyniki"
 			}
 		},
+		"taskHeader": {
+			"back": "Wróć"
+		},
 		"settingsLayout": {
 			"toggleSidebar": "Przełącz pasek boczny",
 			"back": "Wstecz"

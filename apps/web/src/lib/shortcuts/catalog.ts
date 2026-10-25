@@ -42,7 +42,7 @@ export const SHORTCUTS = {
     allowInInput: true,
   },
   submit: { keys: ["mod+enter"], category: "general", handledElsewhere: true },
-  back: { keys: ["escape"], category: "general", handledElsewhere: true },
+  back: { keys: ["escape"], category: "general" },
   switchWorkspace: { keys: ["o w"], category: "general" },
   logOut: { keys: ["alt+shift+q"], category: "general" },
   showDisplayOptions: { keys: ["shift+v"], category: "general", scope: "view" },
