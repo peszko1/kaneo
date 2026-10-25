@@ -1,10 +1,18 @@
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
-import { Minimize2, Pause, Play, SkipForward, Square } from "lucide-react";
+import {
+  BellOff,
+  Minimize2,
+  Pause,
+  Play,
+  SkipForward,
+  Square,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import CircularProgress from "@/components/ui/circular-progress";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { useFocusStore } from "@/store/focus";
+import { unlockAlarmSound } from "./alarm-sound";
 import { formatCountdown } from "./format-countdown";
 import {
   currentRound,
@@ -38,7 +46,8 @@ function FocusPanel({ session }: { session: PomodoroSession }) {
   const { t } = useTranslation();
   const { data: task } = useGetTask(session.taskId);
   const left = usePomodoroClock();
-  const { pause, resume, skip, stop, closeView } = useFocusStore();
+  const { alarm, pause, resume, skip, stop, stopAlarm, closeView } =
+    useFocusStore();
   const duration = PHASE_DURATION_MS[session.phase];
   const running = isRunning(session);
   const notStarted = !running && session.pausedRemainingMs === duration;
@@ -90,6 +99,19 @@ function FocusPanel({ session }: { session: PomodoroSession }) {
           {task?.title}
         </DialogPrimitive.Description>
 
+        {alarm && (
+          <Button
+            size="xl"
+            variant="destructive"
+            autoFocus
+            onClick={stopAlarm}
+            className="animate-pulse motion-reduce:animate-none"
+          >
+            <BellOff />
+            {t("tasks:focus.actions.stopAlarm")}
+          </Button>
+        )}
+
         <div className="flex items-center gap-2">
           {running ? (
             <Button size="lg" onClick={pause}>
@@ -97,7 +119,14 @@ function FocusPanel({ session }: { session: PomodoroSession }) {
               {t("tasks:focus.actions.pause")}
             </Button>
           ) : (
-            <Button size="lg" onClick={resume}>
+            <Button
+              size="lg"
+              variant={alarm ? "outline" : "default"}
+              onClick={() => {
+                unlockAlarmSound();
+                resume();
+              }}
+            >
               <Play />
               {notStarted
                 ? t("tasks:focus.actions.start")

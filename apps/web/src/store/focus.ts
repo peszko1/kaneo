@@ -14,6 +14,8 @@ export const FOCUS_STORAGE_KEY = "focus-session";
 
 type FocusStore = {
   session: PomodoroSession | null;
+  // Set when a phase runs out; the alarm rings until the user stops it.
+  alarm: boolean;
   viewOpen: boolean;
   // Keeps the running timer when the session moves to another task.
   focusOn: (task: FocusTask) => void;
@@ -23,6 +25,7 @@ type FocusStore = {
   resume: () => void;
   skip: () => void;
   stop: () => void;
+  stopAlarm: () => void;
   settle: () => void;
 };
 
@@ -33,11 +36,12 @@ export const useFocusStore = create<FocusStore>()(
         change: (session: PomodoroSession) => PomodoroSession,
       ) => {
         const { session } = get();
-        if (session) set({ session: change(session) });
+        if (session) set({ session: change(session), alarm: false });
       };
 
       return {
         session: null,
+        alarm: false,
         viewOpen: false,
         focusOn: (task) =>
           set(({ session }) => ({
@@ -51,19 +55,22 @@ export const useFocusStore = create<FocusStore>()(
         pause: () => update((session) => pause(session, Date.now())),
         resume: () => update((session) => resume(session, Date.now())),
         skip: () => update(advance),
-        stop: () => set({ session: null, viewOpen: false }),
+        stop: () => set({ session: null, alarm: false, viewOpen: false }),
+        stopAlarm: () => set({ alarm: false }),
         settle: () => {
           const { session } = get();
           if (!session) return;
           const settled = settle(session, Date.now());
-          if (settled !== session) set({ session: settled });
+          if (settled !== session) {
+            set({ session: settled, alarm: true, viewOpen: true });
+          }
         },
       };
     },
     {
       name: FOCUS_STORAGE_KEY,
       storage: createJSONStorage(() => localStorage),
-      partialize: ({ session }) => ({ session }),
+      partialize: ({ session, alarm }) => ({ session, alarm }),
     },
   ),
 );

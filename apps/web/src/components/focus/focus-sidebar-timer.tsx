@@ -1,4 +1,4 @@
-import { Pause, Timer } from "lucide-react";
+import { BellRing, Pause, Timer } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   SidebarMenu,
@@ -20,8 +20,9 @@ function FocusSidebarTimerButton({ running }: { running: boolean }) {
   const { t } = useTranslation();
   const openView = useFocusStore((state) => state.openView);
   const phase = useFocusStore((state) => state.session?.phase ?? "focus");
+  const alarm = useFocusStore((state) => state.alarm);
   const left = usePomodoroClock();
-  const Icon = running ? Timer : Pause;
+  const Icon = alarm ? BellRing : running ? Timer : Pause;
 
   return (
     <SidebarMenu>
