@@ -63,17 +63,31 @@ async function networkFirstShell(request) {
 
 // Asset names carry a content hash, but the Docker image rewrites runtime
 // settings into them in place, so refresh each one in the background.
+// Never keep an HTML page under an asset URL: an SPA fallback for a chunk
+// from another deploy would otherwise break that import until the next build.
 async function staleWhileRevalidate(event, request) {
   const cache = await caches.open(CACHE);
   const cached = await cache.match(request);
-  const refresh = fetch(request).then((response) => {
-    if (response.ok)
+  const refresh = fetchAsset(request).then((response) => {
+    if (response.ok && !isHtml(response))
       return cache.put(request, response.clone()).then(() => response);
     return response;
   });
-  if (cached) {
+  if (cached && !isHtml(cached)) {
     event.waitUntil(refresh.catch(() => undefined));
     return cached;
   }
   return refresh;
+}
+
+// The browser's HTTP cache can still hold that fallback page for hours, so
+// an HTML answer for an asset is retried once straight from the server.
+async function fetchAsset(request) {
+  const response = await fetch(request);
+  if (!isHtml(response)) return response;
+  return fetch(request, { cache: "reload" });
+}
+
+function isHtml(response) {
+  return (response.headers.get("content-type") ?? "").includes("text/html");
 }
