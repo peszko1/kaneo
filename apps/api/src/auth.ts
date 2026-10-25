@@ -716,15 +716,22 @@ export const auth = betterAuth({
     },
   },
   rateLimit: {
-    // Enable in cloud; self-hosted instances opt in by setting KANEO_CLOUD.
-    // Default better-auth rate-limit only kicks in for production; we keep the
-    // global limits conservative and tighten signup/invite via customRules.
-    enabled: isCloud(),
+    // On for every instance, so password and code guessing is slow without
+    // Redis: memory storage keys each client IP and path. Integration tests
+    // share one fallback bucket and turn it on per test.
+    enabled: process.env.NODE_ENV !== "test",
     window: 10,
     max: 100,
+    // The first matching key wins, so specific paths precede wildcards.
     customRules: {
       "/sign-up/email": { window: 60, max: 3 },
       "/sign-in/anonymous": { window: 60, max: 3 },
+      "/sign-in/email": { window: 60, max: 10 },
+      "/sign-in/email-otp": { window: 60, max: 10 },
+      "/request-password-reset": { window: 60, max: 3 },
+      "/email-otp/send-verification-otp": { window: 60, max: 3 },
+      "/email-otp/request-password-reset": { window: 60, max: 3 },
+      "/email-otp/*": { window: 60, max: 10 },
       "/organization/invite-member": { window: 60, max: 5 },
     },
   },
