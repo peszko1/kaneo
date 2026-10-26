@@ -109,6 +109,21 @@ afterAll(() => {
 });
 
 describe("VerifyOtp", () => {
+  it("moves to the code step when the account has two-factor", async () => {
+    emailOtp.mockResolvedValue({
+      data: { twoFactorRedirect: true },
+      error: null,
+    });
+
+    submitCode();
+
+    await waitFor(() =>
+      expect(push).toHaveBeenCalledWith(
+        "/auth/two-factor?redirect=%2Fdashboard",
+      ),
+    );
+  });
+
   it("forwards the invitation so a first OTP sign-in can create the account", async () => {
     search = { email: "invitee@kaneo.test", invitationId: "invitation-1" };
 

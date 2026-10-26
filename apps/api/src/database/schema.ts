@@ -55,7 +55,34 @@ export const userTable = pgTable("user", {
   banned: boolean("banned").default(false),
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires", { mode: "date" }),
+  twoFactorEnabled: boolean("two_factor_enabled").default(false),
 });
+
+// better-auth two-factor: the TOTP secret and backup codes, encrypted with
+// the auth secret.
+export const twoFactorTable = pgTable(
+  "two_factor",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    secret: text("secret").notNull(),
+    backupCodes: text("backup_codes").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    verified: boolean("verified").default(true),
+    failedVerificationCount: integer("failed_verification_count").default(0),
+    lockedUntil: timestamp("locked_until", { mode: "date" }),
+  },
+  (table) => [
+    index("two_factor_secret_idx").on(table.secret),
+    index("two_factor_user_id_idx").on(table.userId),
+  ],
+);
 
 export const sessionTable = pgTable(
   "session",

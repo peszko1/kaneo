@@ -567,6 +567,23 @@
 				"description": "Bạn sẽ quay lại đây ngay để xem xét.",
 				"submit": "Đăng nhập"
 			}
+		},
+		"twoFactor": {
+			"backToSignIn": "Back to sign in",
+			"backupCodeLabel": "Backup code",
+			"codeLabel": "Authentication code",
+			"codeLength": "The code has 6 digits.",
+			"description": "Open your authenticator app and enter the 6-digit code for Kaneo.",
+			"expired": "This sign-in expired. Sign in again.",
+			"failed": "Could not check the code. Try again.",
+			"heading": "Enter your code",
+			"invalidCode": "That code is not right. Try again.",
+			"locked": "Too many wrong codes. Wait a few minutes and try again.",
+			"pageTitle": "Two-factor authentication",
+			"submit": "Verify",
+			"trustDevice": "Remember this device for 30 days",
+			"useAuthenticator": "Use your authenticator app",
+			"useBackupCode": "Use a backup code"
 		}
 	},
 	"settings": {
@@ -1699,7 +1716,37 @@
 			"dialogDescription": "Ít nhất 8 ký tự, khác với mật khẩu hiện tại.",
 			"dialogTitle": "Đổi mật khẩu",
 			"passwordHint": "Dùng ít nhất 8 ký tự mà bạn không dùng ở nơi khác.",
-			"passwordTitle": "Mật khẩu"
+			"passwordTitle": "Mật khẩu",
+			"twoFactor": {
+				"codesCopied": "Backup codes copied.",
+				"codesHint": "Each code works once.",
+				"codesStep": "Save these backup codes somewhere safe. Each one signs you in once if you lose your phone.",
+				"confirm": "Turn on",
+				"continue": "Continue",
+				"copyCodes": "Copy codes",
+				"copyFailed": "Could not copy. Select the codes and copy them by hand.",
+				"disable": "Turn off",
+				"disabled": "Two-factor authentication is off.",
+				"disableDescription": "Sign-in will ask only for your password. Remembered devices are forgotten.",
+				"disableTitle": "Turn off two-factor authentication",
+				"done": "Done",
+				"enable": "Turn on",
+				"enabled": "Two-factor authentication is on.",
+				"enableTitle": "Turn on two-factor authentication",
+				"failed": "Something went wrong. Try again.",
+				"manualKey": "Can't scan? Enter this key:",
+				"newCodes": "New backup codes",
+				"newCodesDescription": "Enter your password. Your old backup codes stop working.",
+				"newCodesTitle": "New backup codes",
+				"offHint": "Ask for a code from an authenticator app after your password.",
+				"onHint": "On. Sign-in asks for a code unless you chose to remember the device.",
+				"passwordStep": "Enter your password to continue.",
+				"qrLabel": "QR code for your authenticator app",
+				"scanStep": "Scan the QR code with an authenticator app, such as Apple Passwords, Google Authenticator or 1Password. Then enter the code it shows.",
+				"sectionTitle": "Two-factor authentication",
+				"title": "Authenticator app",
+				"wrongPassword": "Wrong password."
+			}
 		},
 		"gitlabIntegration": {
 			"baseUrlLabel": "GitLab URL",
