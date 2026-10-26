@@ -9,19 +9,24 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { useSortableOrder } from "@/components/project/sortable/use-sortable-order";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   useCreateHabit,
   useDeleteHabit,
   useRenameHabit,
 } from "@/hooks/mutations/habit/use-save-habit";
+import useReorderHabits from "@/hooks/mutations/habit/use-reorder-habits";
 import useSetHabitCheck from "@/hooks/mutations/habit/use-set-habit-check";
+import type { Habit } from "@/fetchers/habit/get-habits";
 import useGetHabits from "@/hooks/queries/habit/use-get-habits";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "@/lib/toast";
 import { COMPACT_SPAN, FULL_SPAN, habitDays, toDateKey } from "./habit-days";
 import { HabitNameInput } from "./habit-name-input";
 import { HabitsGrid } from "./habits-grid";
+
+const NO_HABITS: Habit[] = [];
 
 export function HabitsView() {
   const { t } = useTranslation();
@@ -41,7 +46,11 @@ export function HabitsView() {
   const renameHabit = useRenameHabit();
   const deleteHabit = useDeleteHabit();
   const setCheck = useSetHabitCheck();
+  const reorderHabits = useReorderHabits();
   const onError = () => toast.error(t("navigation:habits.saveError"));
+  const { ordered, move } = useSortableOrder(habits ?? NO_HABITS, (next) =>
+    reorderHabits.mutateAsync(next.map((habit) => habit.id)).catch(onError),
+  );
 
   return (
     <div className="flex flex-col gap-4 p-4 md:px-6">
@@ -68,8 +77,9 @@ export function HabitsView() {
         </Empty>
       ) : (
         <HabitsGrid
-          habits={habits}
+          habits={ordered}
           days={days}
+          onMove={move}
           onToggle={(habit, date, done) =>
             setCheck.mutate({ id: habit.id, date, done }, { onError })
           }

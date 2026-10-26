@@ -84,4 +84,37 @@ describe("API integration: habits", () => {
       (await app.request("/api/habit?from=2026-10-31&to=2026-10-01")).status,
     ).toBe(400);
   });
+
+  it("keeps the order the caller sets", async () => {
+    const me = await createWorkspaceMember();
+    const other = await createWorkspaceMember();
+    const api = client(me.user);
+    const create = async (name: string) =>
+      (await (await api.send("", "POST", { name })).json()) as Habit;
+    const a = await create("A");
+    const b = await create("B");
+    const c = await create("C");
+    const names = async () => (await api.list()).map((habit) => habit.name);
+    expect(await names()).toEqual(["A", "B", "C"]);
+
+    expect(
+      (await api.send("/order", "PUT", { ids: [c.id, a.id, b.id] })).status,
+    ).toBe(200);
+    expect(await names()).toEqual(["C", "A", "B"]);
+    await create("D");
+    expect(await names()).toEqual(["C", "A", "B", "D"]);
+
+    // The order must name each of the caller's habits exactly once.
+    const theirs = (await (
+      await client(other.user).send("", "POST", { name: "X" })
+    ).json()) as Habit;
+    const mine = client(me.user);
+    for (const ids of [
+      [a.id, b.id],
+      [a.id, a.id, b.id, c.id],
+      [a.id, b.id, c.id, theirs.id],
+    ])
+      expect((await mine.send("/order", "PUT", { ids })).status).toBe(400);
+    expect(await names()).toEqual(["C", "A", "B", "D"]);
+  });
 });

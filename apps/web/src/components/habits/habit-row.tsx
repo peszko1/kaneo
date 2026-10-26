@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Habit } from "@/fetchers/habit/get-habits";
+import { DragHandle } from "@/components/project/sortable/drag-handle";
+import { useSortableRow } from "@/components/project/sortable/use-sortable-row";
 import { cn } from "@/lib/cn";
 import { HabitCheckCell } from "./habit-check-cell";
 import type { HabitDay } from "./habit-days";
@@ -26,15 +28,31 @@ export function HabitRow({
 }: HabitRowProps) {
   const { t } = useTranslation();
   const [renaming, setRenaming] = useState(false);
+  const { rowRef, rowStyle, isDragging, handleProps } = useSortableRow(
+    habit.id,
+    renaming,
+  );
   const done = new Set(habit.checks);
 
   return (
-    <tr className="group/habit border-border/60 border-t">
+    <tr
+      ref={rowRef}
+      style={rowStyle}
+      className={cn(
+        "group/habit border-border/60 border-t bg-background",
+        isDragging && "relative z-20 shadow-sm",
+      )}
+    >
       <th
         scope="row"
         className="sticky left-0 z-10 bg-background py-1.5 pr-1.5 text-left font-normal md:px-2"
       >
         <div className="flex w-40 items-center gap-1 md:w-56 md:gap-1.5">
+          <DragHandle
+            label={t("navigation:habits.drag", { habit: habit.name })}
+            handleProps={handleProps}
+            disabled={renaming}
+          />
           {renaming ? (
             <HabitNameInput
               initial={habit.name}

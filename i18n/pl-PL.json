@@ -815,6 +815,7 @@
 			"saveError": "Nie udało się zapisać nawyku.",
 			"checkLabel": "{{habit}}, {{date}}",
 			"options": "Opcje nawyku {{habit}}",
+			"drag": "Przenieś nawyk {{habit}}",
 			"rename": "Zmień nazwę",
 			"delete": "Usuń",
 			"deleteTitle": "Usunąć „{{habit}}”?",

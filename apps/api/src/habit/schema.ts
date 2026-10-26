@@ -31,6 +31,12 @@ export const habitRangeQuery = z
     { message: "The range may span at most a year" },
   );
 
+export const habitOrderBody = z.object({
+  ids: z.array(z.string()).max(500).openapi({
+    description: "Every one of the caller's habit ids, in the new order.",
+  }),
+});
+
 export const habitBody = z.object({
   name: z.string().trim().min(1).max(100),
 });
