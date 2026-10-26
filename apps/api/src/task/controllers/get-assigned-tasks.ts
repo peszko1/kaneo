@@ -18,6 +18,8 @@ import {
   timeEntryTable,
 } from "../../database/schema";
 import { projectAccessCondition } from "../../project-access/project-access-condition";
+import type { PermissionMap } from "../../utils/role-permissions";
+import { getAssignedBoardRank } from "../global-board/assigned-board-rank";
 import { taskIsCompleted } from "../task-is-completed";
 
 // Home and My tasks render this list whole, so it stays one bounded page.
@@ -34,7 +36,15 @@ END`;
 async function getAssignedTasks(
   workspaceId: string,
   userId: string,
-  countOnly = false,
+  {
+    countOnly = false,
+    order = "due",
+    apiKeyScope = null,
+  }: {
+    countOnly?: boolean;
+    order?: "due" | "board";
+    apiKeyScope?: PermissionMap | null;
+  } = {},
 ) {
   const openAndMine = and(
     eq(projectTable.workspaceId, workspaceId),
@@ -142,6 +152,18 @@ async function getAssignedTasks(
     const taskLabels = labelsByTask.get(taskId) ?? [];
     taskLabels.push(label);
     labelsByTask.set(taskId, taskLabels);
+  }
+
+  // The page stays the first tasks by due date; board order only rearranges it.
+  if (order === "board") {
+    const rank = await getAssignedBoardRank(
+      workspaceId,
+      userId,
+      apiKeyScope,
+      ASSIGNED_TASKS_LIMIT,
+    );
+    const at = (id: string) => rank.get(id) ?? Number.MAX_SAFE_INTEGER;
+    tasks.sort((a, b) => at(a.id) - at(b.id));
   }
 
   return {

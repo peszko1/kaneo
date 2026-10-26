@@ -33,7 +33,7 @@ function RouteComponent() {
     data: assigned,
     isLoading,
     isError,
-  } = useGetAssignedTasks(workspaceId);
+  } = useGetAssignedTasks(workspaceId, false, "board");
   const [groupBy, setGroupBy] = useState<MyTasksGroupBy>("dueDate");
   const trackedSeconds = (assigned?.tasks ?? []).reduce(
     (sum, task) => sum + task.trackedSeconds,

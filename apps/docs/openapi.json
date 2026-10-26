@@ -11447,7 +11447,7 @@
           "Tasks"
         ],
         "summary": "List my assigned tasks",
-        "description": "Get the open tasks assigned to the caller across a workspace's active projects. Completed and archived tasks are excluded. Ordered by due date (undated last), then priority. At most 100 tasks are returned; total counts all of them. Set countOnly=true to return just that total without loading task rows or labels.",
+        "description": "Get the open tasks assigned to the caller across a workspace's active projects. Completed and archived tasks are excluded. Ordered by due date (undated last), then priority, or by the caller's global board with order=board. At most 100 tasks are returned; total counts all of them. Set countOnly=true to return just that total without loading task rows or labels.",
         "parameters": [
           {
             "schema": {
@@ -11470,6 +11470,20 @@
             "required": false,
             "description": "Return only the total, with an empty tasks array, without loading task rows or labels.",
             "name": "countOnly",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "due",
+                "board"
+              ],
+              "description": "due (default): by due date, undated last, then priority. board: the caller's global board order, in-progress cards first, then to-do, then tasks off the board in due order. Either way the page holds the first 100 tasks by due date."
+            },
+            "required": false,
+            "description": "due (default): by due date, undated last, then priority. board: the caller's global board order, in-progress cards first, then to-do, then tasks off the board in due order. Either way the page holds the first 100 tasks by due date.",
+            "name": "order",
             "in": "query"
           }
         ],
