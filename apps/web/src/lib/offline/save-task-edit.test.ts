@@ -15,10 +15,7 @@ const { sendTaskEdit, client } = vi.hoisted(() => ({
   client: { current: null as unknown },
 }));
 vi.mock("./saved-session", () => ({ savedSessionUserId: () => "user-1" }));
-vi.mock("./task-edit", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("./task-edit")>()),
-  sendTaskEdit,
-}));
+vi.mock("./send-task-edit", () => ({ sendTaskEdit }));
 vi.mock("@/query-client", () => ({
   get default() {
     return client.current;
@@ -46,6 +43,12 @@ afterEach(() => {
 });
 
 describe("saveTaskEdit", () => {
+  it("uses the caller's own request while online", async () => {
+    const send = vi.fn().mockResolvedValue({ title: "New" });
+    await expect(saveTaskEdit(edit, send)).resolves.toEqual({ title: "New" });
+    expect(sendTaskEdit).not.toHaveBeenCalled();
+  });
+
   it("sends the edit while online", async () => {
     sendTaskEdit.mockResolvedValue({ id: "t1" });
     await expect(saveTaskEdit(edit)).resolves.toEqual({ id: "t1" });

@@ -38,6 +38,7 @@ vi.mock("@tanstack/react-query", () => ({
   },
 }));
 vi.mock("@kaneo/libs", () => ({ client: {} }));
+vi.mock("@/lib/offline/save-task-edit", () => ({ saveTaskEdit: vi.fn() }));
 vi.mock("@tanstack/react-router", () => ({
   useNavigate: () => vi.fn(),
   useRouter: () => ({ preloadRoute: () => Promise.resolve() }),

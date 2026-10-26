@@ -1,39 +1,47 @@
-import type { QueryClient } from "@tanstack/react-query";
-import updateTaskStatus from "@/fetchers/task/update-task-status";
-import { patchBoardTask } from "@/lib/patch-board-task";
-import type { ProjectWithTasks } from "@/types/project";
-import type Task from "@/types/task";
+import type { TaskReorder } from "@/fetchers/task/reorder-tasks";
 
-// A change to one field of one task that can wait for the server. Each one
-// sets a value, so sending it twice does no harm.
-export type TaskEdit = {
-  kind: "status";
+type FieldEdit<Kind extends string, Value> = {
+  kind: Kind;
   taskId: string;
   projectId: string;
-  status: string;
-};
+} & Value;
 
-// A newer edit with the same key replaces the older one in the queue.
-export const taskEditKey = (edit: TaskEdit) => `${edit.kind}:${edit.taskId}`;
+// A change to an existing task that can wait for the server. Each one sets a
+// value, so sending it twice does no harm, except a move: the server answers
+// a repeated move with 409, and the move is dropped although it went through.
+export type TaskEdit =
+  | FieldEdit<"status", { status: string }>
+  | FieldEdit<"title", { title: string }>
+  | FieldEdit<"priority", { priority: string }>
+  | FieldEdit<"dueDate", { dueDate: string | null }>
+  | FieldEdit<"startDate", { startDate: string | null }>
+  | FieldEdit<"assignee", { userId: string | null }>
+  // A task label is the server's copy of a workspace label, so it is found
+  // by name. `taskLabelId` is that copy's id, known only for one the server
+  // made.
+  | FieldEdit<
+      "label",
+      {
+        name: string;
+        color: string;
+        workspaceLabelId: string;
+        attached: boolean;
+        taskLabelId?: string;
+      }
+    >
+  // The server checks `expectedTasks` and answers 409 if the board changed.
+  | ({ kind: "reorder" } & Required<TaskReorder>);
 
-export function sendTaskEdit(edit: TaskEdit) {
-  return updateTaskStatus(edit.taskId, { status: edit.status });
+// Edits with the same key set the same field. Moves build on each other, so
+// none of them shares a key.
+export function taskEditKey(edit: TaskEdit) {
+  if (edit.kind === "reorder") return null;
+  if (edit.kind === "label") return `label:${edit.taskId}:${edit.name}`;
+  return `${edit.kind}:${edit.taskId}`;
 }
 
-// Shows a queued edit in the cached task and board, as the server will.
-export function showTaskEdit(queryClient: QueryClient, edit: TaskEdit) {
-  const change = { status: edit.status };
-  queryClient.setQueryData<Task>(["task", edit.taskId], (task) =>
-    task ? { ...task, ...change } : task,
-  );
-  queryClient.setQueryData<ProjectWithTasks>(
-    ["tasks", edit.projectId],
-    (board) =>
-      board
-        ? (patchBoardTask(board, edit.taskId, {
-            projectId: edit.projectId,
-            ...change,
-          }) ?? board)
-        : board,
-  );
+export function editedTaskIds(edit: TaskEdit) {
+  return edit.kind === "reorder"
+    ? edit.tasks.map((task) => task.id)
+    : [edit.taskId];
 }

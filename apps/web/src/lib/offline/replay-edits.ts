@@ -3,7 +3,8 @@ import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
 import queryClient from "@/query-client";
 import { queuedEdits, removeEdits } from "./edit-outbox";
-import { sendTaskEdit } from "./task-edit";
+import { sendTaskEdit } from "./send-task-edit";
+import { editedTaskIds } from "./task-edit";
 
 // Only the tab that holds this lock sends the queue, so no edit goes twice.
 const REPLAY_LOCK = "kaneo-offline-edits";
@@ -34,7 +35,7 @@ async function sendQueue() {
         if (isWorthRetrying(error)) break;
         dropped.push(edit.id);
       }
-      touched.add(edit.taskId);
+      for (const id of editedTaskIds(edit)) touched.add(id);
       touched.add(edit.projectId);
     }
   } finally {
@@ -49,6 +50,7 @@ async function sendQueue() {
   for (const id of touched) {
     void queryClient.invalidateQueries({ queryKey: ["task", id] });
     void queryClient.invalidateQueries({ queryKey: ["tasks", id] });
+    void queryClient.invalidateQueries({ queryKey: ["labels", id] });
   }
 }
 
