@@ -53,7 +53,23 @@ describe("focus store alarm", () => {
     useFocusStore.getState().settle();
     expect(useFocusStore.getState().alarm).toBe(true);
     expect(useFocusStore.getState().viewOpen).toBe(true);
-    expect(useFocusStore.getState().session?.phase).toBe("shortBreak");
+    expect(useFocusStore.getState().session).toMatchObject({
+      phase: "focus",
+      durationMs: null,
+      runningSince: 0,
+    });
+  });
+
+  it("rings once when focus runs into overtime", () => {
+    vi.setSystemTime(FOCUS_MS);
+    useFocusStore.getState().settle();
+    useFocusStore.getState().stopAlarm();
+    queueFocusChange.mockClear();
+
+    vi.setSystemTime(FOCUS_MS * 3);
+    useFocusStore.getState().settle();
+    expect(useFocusStore.getState().alarm).toBe(false);
+    expect(queueFocusChange).not.toHaveBeenCalled();
   });
 
   it("rings from the phase end even when the check runs late", () => {
@@ -88,8 +104,8 @@ describe("focus store alarm", () => {
       {
         at: FOCUS_MS + 5_000,
         taskId: "t1",
-        phase: "shortBreak",
-        runningSince: null,
+        phase: "focus",
+        runningSince: 0,
       },
     ]);
     expect(queueFocusChange.mock.calls[0]?.[0].next.alarmAt).toBe(FOCUS_MS);
@@ -158,6 +174,7 @@ describe("focus store alarm", () => {
   it("applies a new length to the phase that waits to start", () => {
     vi.setSystemTime(FOCUS_MS);
     useFocusStore.getState().settle();
+    useFocusStore.getState().skip();
     useFocusSettingsStore.getState().changeSettings({ shortBreakMinutes: 1 });
     expect(useFocusStore.getState().session?.durationMs).toBe(60_000);
   });

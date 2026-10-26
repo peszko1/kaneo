@@ -3455,6 +3455,8 @@
 				"longBreak": "Long break"
 			},
 			"round": "Round {{current}} of {{total}}",
+			"overtime": "Overtime",
+			"overtimeHint": "Focus time is up, and your work still counts. Take a break when you are ready.",
 			"actions": {
 				"start": "Start",
 				"pause": "Pause",

@@ -19,8 +19,13 @@ import { unlockAlarmSound } from "./alarm-sound";
 import { FocusDoneButton } from "./focus-done-button";
 import { FocusModeSwitch } from "./focus-mode-switch";
 import { FocusSettingsPopover } from "./focus-settings-popover";
-import { currentRound, type FocusSession, isRunning } from "./focus-timer";
-import { formatCountdown } from "./format-countdown";
+import {
+  clockText,
+  currentRound,
+  type FocusSession,
+  isOvertime,
+  isRunning,
+} from "./focus-timer";
 import { useFocusClock } from "./use-focus-clock";
 
 export function FocusView() {
@@ -56,12 +61,13 @@ function FocusPanel({ session }: { session: FocusSession }) {
     stopAlarm,
     closeView,
   } = useFocusStore();
-  const rounds = useFocusSettingsStore(
-    (state) => state.settings.roundsPerLongBreak,
-  );
+  const settings = useFocusSettingsStore((state) => state.settings);
+  const rounds = settings.roundsPerLongBreak;
   const running = isRunning(session);
   const notStarted = !running && session.elapsedMs === 0;
-  const takesBreak = session.mode === "flowtime" && session.phase === "focus";
+  const overtime = isOvertime(session);
+  const takesBreak =
+    (session.mode === "flowtime" || overtime) && session.phase === "focus";
 
   return (
     <>
@@ -84,9 +90,16 @@ function FocusPanel({ session }: { session: FocusSession }) {
       <div className="flex flex-1 flex-col items-center justify-center gap-8 px-4 pb-16">
         <div className="flex flex-col items-center gap-2 text-center">
           <DialogPrimitive.Title className="font-medium text-muted-foreground text-sm">
-            {t(`tasks:focus.phase.${session.phase}`)}
+            {overtime
+              ? t("tasks:focus.overtime")
+              : t(`tasks:focus.phase.${session.phase}`)}
             <span className="sr-only"> · {t("tasks:focus.title")}</span>
           </DialogPrimitive.Title>
+          {overtime && (
+            <p className="max-w-xs text-balance text-muted-foreground/80 text-xs">
+              {t("tasks:focus.overtimeHint")}
+            </p>
+          )}
           {session.mode === "pomodoro" && (
             <p className="text-muted-foreground/80 text-xs">
               {t("tasks:focus.round", {
@@ -100,9 +113,13 @@ function FocusPanel({ session }: { session: FocusSession }) {
         <div className="relative grid place-items-center">
           <CircularProgress
             completed={
-              session.durationMs === null ? 0 : session.durationMs - shown
+              overtime
+                ? 1
+                : session.durationMs === null
+                  ? 0
+                  : session.durationMs - shown
             }
-            total={session.durationMs ?? 0}
+            total={overtime ? 1 : (session.durationMs ?? 0)}
             size={280}
             strokeWidth={6}
           />
@@ -110,7 +127,7 @@ function FocusPanel({ session }: { session: FocusSession }) {
             role="timer"
             className="absolute font-semibold text-6xl tabular-nums tracking-tight"
           >
-            {formatCountdown(shown)}
+            {clockText(session, shown, settings)}
           </span>
         </div>
 
