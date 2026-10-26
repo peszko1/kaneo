@@ -35,3 +35,17 @@ export const timeSummarySchema = z
     entryCount: z.number(),
   })
   .openapi("TimeSummary");
+
+export const projectTimeTotalsSchema = z
+  .object({
+    projects: z.array(
+      z.object({
+        projectId: z.string(),
+        totalSeconds: z.number().openapi({
+          description:
+            "Seconds of finished time entries on the project's tasks, from every member.",
+        }),
+      }),
+    ),
+  })
+  .openapi("ProjectTimeTotals");

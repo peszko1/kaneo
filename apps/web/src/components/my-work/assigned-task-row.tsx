@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
+import { formatTrackedTime } from "@/components/task/properties/format-tracked-time";
 import type { AssignedTask } from "@/fetchers/task/get-assigned-tasks";
 import { getColumnIcon } from "@/lib/column";
 import { getStatusDisplayLabel } from "@/lib/i18n/domain";
@@ -10,13 +12,17 @@ type AssignedTaskRowProps = {
   task: AssignedTask;
   workspaceId: string;
   showLabels?: boolean;
+  showTrackedTime?: boolean;
 };
 
 export function AssignedTaskRow({
   task,
   workspaceId,
   showLabels = false,
+  showTrackedTime = false,
 }: AssignedTaskRowProps) {
+  const { t } = useTranslation();
+
   return (
     <Link
       to="/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId"
@@ -60,6 +66,18 @@ export function AssignedTaskRow({
       <span className="hidden w-28 shrink-0 truncate text-muted-foreground text-xs sm:block">
         {task.projectName}
       </span>
+      {showTrackedTime && (
+        <span className="w-14 shrink-0 text-right text-muted-foreground text-xs tabular-nums">
+          {task.trackedSeconds >= 60 && (
+            <>
+              <span className="sr-only">
+                {t("tasks:properties.timeTracked")}:{" "}
+              </span>
+              {formatTrackedTime(task.trackedSeconds)}
+            </>
+          )}
+        </span>
+      )}
       <DueDateText
         dueDate={task.dueDate}
         className="shrink-0 text-right sm:w-20"

@@ -12,6 +12,8 @@ function useCreateTimeEntry() {
       queryClient.invalidateQueries({
         queryKey: ["time-entries", variables.taskId],
       });
+      queryClient.invalidateQueries({ queryKey: ["project-time-totals"] });
+      queryClient.invalidateQueries({ queryKey: ["assigned-tasks"] });
     },
   });
 }

@@ -1429,6 +1429,10 @@
             "items": {
               "$ref": "#/components/schemas/TaskLabel"
             }
+          },
+          "trackedSeconds": {
+            "type": "number",
+            "description": "Seconds of finished time entries on the task, from every member."
           }
         },
         "required": [
@@ -1444,7 +1448,8 @@
           "projectName",
           "projectSlug",
           "projectIcon",
-          "labels"
+          "labels",
+          "trackedSeconds"
         ]
       },
       "BoardResponse": {
@@ -2263,6 +2268,33 @@
         "required": [
           "totalSeconds",
           "entryCount"
+        ]
+      },
+      "ProjectTimeTotals": {
+        "type": "object",
+        "properties": {
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "string"
+                },
+                "totalSeconds": {
+                  "type": "number",
+                  "description": "Seconds of finished time entries on the project's tasks, from every member."
+                }
+              },
+              "required": [
+                "projectId",
+                "totalSeconds"
+              ]
+            }
+          }
+        },
+        "required": [
+          "projects"
         ]
       },
       "PinnedLabel": {
@@ -15402,6 +15434,82 @@
           },
           "400": {
             "description": "Invalid workspace ID or timestamps",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing task:read permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiKeyRateLimited"
+          }
+        }
+      }
+    },
+    "/time-entry/project-totals": {
+      "get": {
+        "operationId": "getProjectTimeTotals",
+        "tags": [
+          "Time Entries"
+        ],
+        "summary": "Get project time totals",
+        "description": "Total every member's finished time entries per project, across the workspace's projects the caller can access. Projects without tracked time are left out. Running entries are not counted.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "required": true,
+            "name": "workspaceId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tracked time per project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTimeTotals"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid workspace ID",
             "content": {
               "application/json": {
                 "schema": {

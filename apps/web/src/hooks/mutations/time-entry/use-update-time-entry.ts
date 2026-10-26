@@ -12,6 +12,8 @@ function useUpdateTimeEntry(taskId: string) {
       queryClient.invalidateQueries({
         queryKey: ["time-entries", taskId],
       });
+      queryClient.invalidateQueries({ queryKey: ["project-time-totals"] });
+      queryClient.invalidateQueries({ queryKey: ["assigned-tasks"] });
     },
   });
 }

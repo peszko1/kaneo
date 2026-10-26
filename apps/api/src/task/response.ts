@@ -319,6 +319,10 @@ export const assignedTasksSchema = z
           projectSlug: z.string(),
           projectIcon: z.string().nullable(),
           labels: z.array(taskLabelSchema),
+          trackedSeconds: z.number().openapi({
+            description:
+              "Seconds of finished time entries on the task, from every member.",
+          }),
         })
         .openapi("AssignedTask"),
     ),

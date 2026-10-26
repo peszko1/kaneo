@@ -3452,7 +3452,8 @@
 				"noAccessTitle": "You don't have access to this project",
 				"notFoundDescription": "This project doesn't exist or has been deleted.",
 				"notFoundTitle": "Project not found"
-			}
+			},
+			"timeSpent": "Time spent"
 		},
 		"search": {
 			"pageTitle": "搜尋",
@@ -3538,7 +3539,8 @@
 				"dueDate": "截止日",
 				"project": "專案"
 			},
-			"truncated": "顯示 {{total}} 個任務中的前 {{shown}} 個。"
+			"truncated": "顯示 {{total}} 個任務中的前 {{shown}} 個。",
+			"timeSpent": "Time spent: {{time}}"
 		}
 	},
 	"team": {

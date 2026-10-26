@@ -8,16 +8,19 @@ import { requireWorkspacePermission } from "../utils/require-workspace-permissio
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import createTimeEntry from "./controllers/create-time-entry";
 import getTimeEntriesByTaskId from "./controllers/get-time-entries";
+import getProjectTimeTotals from "./controllers/get-project-time-totals";
 import getTimeEntry from "./controllers/get-time-entry";
 import getTimeSummary from "./controllers/get-time-summary";
 import updateTimeEntry from "./controllers/update-time-entry";
 import {
+  projectTimeTotalsSchema,
   timeEntryListSchema,
   timeEntrySchema,
   timeSummarySchema,
 } from "./response";
 import {
   createTimeEntryBody,
+  projectTimeTotalsQuery,
   taskIdParam,
   timeEntryParam,
   timeSummaryQuery,
@@ -59,6 +62,27 @@ const getTimeSummaryRoute = createRoute({
       timeSummarySchema,
     ),
     400: errorResponse("Invalid workspace ID or timestamps"),
+    403: errorResponse("Missing task:read permission"),
+    404: errorResponse("Workspace not found"),
+  },
+});
+
+const getProjectTimeTotalsRoute = createRoute({
+  method: "get",
+  operationId: "getProjectTimeTotals",
+  path: "/project-totals",
+  tags: ["Time Entries"],
+  summary: "Get project time totals",
+  description:
+    "Total every member's finished time entries per project, across the workspace's projects the caller can access. Projects without tracked time are left out. Running entries are not counted.",
+  middleware: [
+    workspaceAccess.fromQuery(),
+    requireWorkspacePermission({ task: ["read"] }),
+  ] as const,
+  request: { query: projectTimeTotalsQuery },
+  responses: {
+    200: jsonResponse("Tracked time per project", projectTimeTotalsSchema),
+    400: errorResponse("Invalid workspace ID"),
     403: errorResponse("Missing task:read permission"),
     404: errorResponse("Workspace not found"),
   },
@@ -153,6 +177,15 @@ const timeEntry = apiRouter()
       200,
     );
   })
+  .openapi(getProjectTimeTotalsRoute, async (c) =>
+    c.json(
+      await getProjectTimeTotals({
+        workspaceId: c.req.valid("query").workspaceId,
+        userId: c.get("userId"),
+      }),
+      200,
+    ),
+  )
   .openapi(getTimeEntryRoute, async (c) =>
     c.json(await getTimeEntry(c.req.valid("param").id), 200),
   )

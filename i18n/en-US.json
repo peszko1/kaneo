@@ -3491,6 +3491,7 @@
 			"createProject": "Create project",
 			"title": "Title",
 			"progress": "Progress",
+			"timeSpent": "Time spent",
 			"targetDate": "Target date",
 			"dueDate": "Due date",
 			"status": "Status",
@@ -3602,7 +3603,8 @@
 				"dueDate": "Due date",
 				"project": "Project"
 			},
-			"truncated": "Showing the first {{shown}} of {{total}} tasks."
+			"truncated": "Showing the first {{shown}} of {{total}} tasks.",
+			"timeSpent": "Time spent: {{time}}"
 		}
 	},
 	"team": {

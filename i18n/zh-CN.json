@@ -3452,7 +3452,8 @@
 				"noAccessTitle": "你没有访问此项目的权限",
 				"notFoundDescription": "此项目不存在或已被删除。",
 				"notFoundTitle": "没有找到项目"
-			}
+			},
+			"timeSpent": "Time spent"
 		},
 		"search": {
 			"pageTitle": "搜索",
@@ -3526,7 +3527,8 @@
 				"project": "项目"
 			},
 			"pageTitle": "我的任务",
-			"truncated": "共 {{total}} 个任务，只显示前 {{shown}} 个。"
+			"truncated": "共 {{total}} 个任务，只显示前 {{shown}} 个。",
+			"timeSpent": "Time spent: {{time}}"
 		},
 		"myWork": {
 			"due": {

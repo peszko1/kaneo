@@ -3570,7 +3570,8 @@
 				"noAccessTitle": "You don't have access to this project",
 				"notFoundDescription": "This project doesn't exist or has been deleted.",
 				"notFoundTitle": "Project not found"
-			}
+			},
+			"timeSpent": "Time spent"
 		},
 		"search": {
 			"pageTitle": "Rechercher",
@@ -3654,7 +3655,8 @@
 				"project": "Project"
 			},
 			"pageTitle": "My tasks",
-			"truncated": "Showing the first {{shown}} of {{total}} tasks."
+			"truncated": "Showing the first {{shown}} of {{total}} tasks.",
+			"timeSpent": "Time spent: {{time}}"
 		},
 		"myWork": {
 			"due": {
