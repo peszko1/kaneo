@@ -15,6 +15,10 @@ import { authLinkClassName } from "@/components/auth/auth-link-class";
 import { getSafeRedirectPath } from "@/components/auth/auth-methods";
 import { AuthPage } from "@/components/auth/auth-page";
 import { useAuthCaptcha } from "@/components/auth/use-auth-captcha";
+import {
+  buildTwoFactorPath,
+  needsTwoFactor,
+} from "@/components/auth/two-factor-path";
 import { readSignUpName } from "@/components/auth/verify-otp-path";
 import PageTitle from "@/components/page-title";
 import { Button } from "@/components/ui/button";
@@ -89,11 +93,13 @@ function VerifyOtp() {
           setIsVerifying(false);
           return;
         }
-        history.push(
+        const destination =
           safeRedirect ??
-            (invitationId
-              ? `/invitation/accept/${invitationId}`
-              : "/dashboard"),
+          (invitationId ? `/invitation/accept/${invitationId}` : "/dashboard");
+        history.push(
+          needsTwoFactor(result.data)
+            ? buildTwoFactorPath(destination)
+            : destination,
         );
       } catch (caught) {
         toast.error(

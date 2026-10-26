@@ -23,6 +23,7 @@ import {
   authMessageClassName,
 } from "./auth-form-styles";
 import { PasswordInput } from "./password-input";
+import { needsTwoFactor } from "./two-factor-path";
 import type { AuthCaptcha as AuthCaptchaState } from "./use-auth-captcha";
 
 type PasswordSignInValues = { email: string; password: string };
@@ -33,6 +34,7 @@ type PasswordSignInFormProps = {
   captcha: AuthCaptchaState;
   disabled?: boolean;
   onSuccess: () => void;
+  onTwoFactor: () => void;
 };
 
 export function PasswordSignInForm({
@@ -41,6 +43,7 @@ export function PasswordSignInForm({
   captcha,
   disabled = false,
   onSuccess,
+  onTwoFactor,
 }: PasswordSignInFormProps) {
   const { t } = useTranslation();
   const [isPending, setIsPending] = useState(false);
@@ -69,6 +72,10 @@ export function PasswordSignInForm({
         toast.error(result.error.message || t("auth:signInForm.failedSignIn"));
         setIsPending(false);
         captcha.reset();
+        return;
+      }
+      if (needsTwoFactor(result.data)) {
+        onTwoFactor();
         return;
       }
       onSuccess();

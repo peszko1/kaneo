@@ -572,6 +572,23 @@
 				"description": "You'll come right back here to review it.",
 				"submit": "Sign in"
 			}
+		},
+		"twoFactor": {
+			"pageTitle": "Two-factor authentication",
+			"heading": "Enter your code",
+			"description": "Open your authenticator app and enter the 6-digit code for Kaneo.",
+			"codeLabel": "Authentication code",
+			"backupCodeLabel": "Backup code",
+			"codeLength": "The code has 6 digits.",
+			"invalidCode": "That code is not right. Try again.",
+			"expired": "This sign-in expired. Sign in again.",
+			"locked": "Too many wrong codes. Wait a few minutes and try again.",
+			"failed": "Could not check the code. Try again.",
+			"trustDevice": "Remember this device for 30 days",
+			"submit": "Verify",
+			"useBackupCode": "Use a backup code",
+			"useAuthenticator": "Use your authenticator app",
+			"backToSignIn": "Back to sign in"
 		}
 	},
 	"settings": {
@@ -2162,7 +2179,37 @@
 			"passwordHint": "Use at least 8 characters you don't use anywhere else.",
 			"changePassword": "Change password",
 			"dialogTitle": "Change password",
-			"dialogDescription": "At least 8 characters, different from the current one."
+			"dialogDescription": "At least 8 characters, different from the current one.",
+			"twoFactor": {
+				"sectionTitle": "Two-factor authentication",
+				"title": "Authenticator app",
+				"offHint": "Ask for a code from an authenticator app after your password.",
+				"onHint": "On. Sign-in asks for a code unless you chose to remember the device.",
+				"enable": "Turn on",
+				"disable": "Turn off",
+				"newCodes": "New backup codes",
+				"enableTitle": "Turn on two-factor authentication",
+				"passwordStep": "Enter your password to continue.",
+				"scanStep": "Scan the QR code with an authenticator app, such as Apple Passwords, Google Authenticator or 1Password. Then enter the code it shows.",
+				"codesStep": "Save these backup codes somewhere safe. Each one signs you in once if you lose your phone.",
+				"qrLabel": "QR code for your authenticator app",
+				"manualKey": "Can't scan? Enter this key:",
+				"continue": "Continue",
+				"confirm": "Turn on",
+				"done": "Done",
+				"enabled": "Two-factor authentication is on.",
+				"disabled": "Two-factor authentication is off.",
+				"disableTitle": "Turn off two-factor authentication",
+				"disableDescription": "Sign-in will ask only for your password. Remembered devices are forgotten.",
+				"newCodesTitle": "New backup codes",
+				"newCodesDescription": "Enter your password. Your old backup codes stop working.",
+				"codesHint": "Each code works once.",
+				"copyCodes": "Copy codes",
+				"codesCopied": "Backup codes copied.",
+				"copyFailed": "Could not copy. Select the codes and copy them by hand.",
+				"wrongPassword": "Wrong password.",
+				"failed": "Something went wrong. Try again."
+			}
 		},
 		"calendarFeeds": {
 			"title": "Calendar feeds",

@@ -21,6 +21,7 @@ import {
 } from "@/components/auth/auth-methods";
 import { AuthPage } from "@/components/auth/auth-page";
 import { AutoLoginRedirect } from "@/components/auth/auto-login-redirect";
+import { buildTwoFactorPath } from "@/components/auth/two-factor-path";
 import { EmailCodeForm } from "@/components/auth/email-code-form";
 import { InvitationNotice } from "@/components/auth/invitation-notice";
 import { PasswordSignInForm } from "@/components/auth/password-sign-in-form";
@@ -200,6 +201,7 @@ function SignIn() {
             captcha={captcha}
             disabled={busy}
             onSuccess={() => navigate({ to: destination })}
+            onTwoFactor={() => history.push(buildTwoFactorPath(destination))}
           />
         ) : null}
         {emailMethod && providers.length > 0 ? <AuthDivider /> : null}

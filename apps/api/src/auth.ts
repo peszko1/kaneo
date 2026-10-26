@@ -32,6 +32,7 @@ import {
   magicLink,
   openAPI,
   organization,
+  twoFactor,
 } from "better-auth/plugins";
 import type { AccessControl } from "better-auth/plugins/access";
 import type { UserWithAnonymous } from "better-auth/plugins/anonymous";
@@ -93,6 +94,10 @@ import {
   normalizeInvitationId,
 } from "./utils/registration-policy";
 import { queueSignInEmail } from "./utils/sign-in-email-tasks";
+import {
+  challengeEmailCodeSignIn,
+  hasTwoFactor,
+} from "./utils/two-factor-sign-in";
 import { authCaptchaPaths, verifyTurnstile } from "./utils/verify-turnstile";
 
 config();
@@ -262,6 +267,7 @@ export const auth = betterAuth({
       teamMember: schema.teamMemberTable,
       apikey: schema.apikeyTable,
       deviceCode: schema.deviceCodeTable,
+      twoFactor: schema.twoFactorTable,
     },
   }),
   user: {
@@ -355,6 +361,8 @@ export const auth = betterAuth({
         ]
       : []),
     lastLoginMethod(),
+    // A trusted device skips the code for 30 days, renewed on each sign-in.
+    challengeEmailCodeSignIn(twoFactor({ issuer: "Kaneo" })),
     magicLink({
       disableSignUp: isPasswordRegistrationDisabled,
       sendMagicLink: async ({ email, url }, ctx) => {
@@ -362,7 +370,10 @@ export const auth = betterAuth({
           ctx?.request?.headers ?? ctx?.headers,
         );
         queueSignInEmail(async () => {
-          if (!(await shouldDeliverSignInEmail(email))) {
+          if (
+            !(await shouldDeliverSignInEmail(email)) ||
+            (await hasTwoFactor(email))
+          ) {
             return;
           }
           const locale = await getUserLocale(email);
