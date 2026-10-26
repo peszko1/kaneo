@@ -477,6 +477,13 @@
       "when": 1792830143293,
       "tag": "0067_habits",
       "breakpoints": true
+    },
+    {
+      "idx": 68,
+      "version": "7",
+      "when": 1793000057059,
+      "tag": "0068_habit_position",
+      "breakpoints": true
     }
   ]
 }

@@ -2608,6 +2608,7 @@
 			"saveError": "Couldn't save the habit.",
 			"checkLabel": "{{habit}} on {{date}}",
 			"options": "Options for {{habit}}",
+			"drag": "Move {{habit}}",
 			"rename": "Rename",
 			"delete": "Delete",
 			"deleteTitle": "Delete \"{{habit}}\"?",

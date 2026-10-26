@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { Habit } from "@/fetchers/habit/get-habits";
+import { SortableList } from "@/components/project/sortable/sortable-list";
 import { cn } from "@/lib/cn";
 import { type HabitDay, monthSpans } from "./habit-days";
 import { HabitRow } from "./habit-row";
@@ -8,6 +9,7 @@ import { HabitRow } from "./habit-row";
 type HabitsGridProps = {
   habits: readonly Habit[];
   days: readonly HabitDay[];
+  onMove: (from: number, to: number) => void;
   onToggle: (habit: Habit, date: string, done: boolean) => void;
   onRename: (habit: Habit, name: string) => void;
   onDelete: (habit: Habit) => void;
@@ -16,6 +18,7 @@ type HabitsGridProps = {
 export function HabitsGrid({
   habits,
   days,
+  onMove,
   onToggle,
   onRename,
   onDelete,
@@ -77,17 +80,19 @@ export function HabitsGrid({
           </tr>
         </thead>
         <tbody>
-          {habits.map((habit) => (
-            <HabitRow
-              key={habit.id}
-              habit={habit}
-              days={days}
-              formatDay={(date) => formats.full.format(date)}
-              onToggle={(date, done) => onToggle(habit, date, done)}
-              onRename={(name) => onRename(habit, name)}
-              onDelete={() => onDelete(habit)}
-            />
-          ))}
+          <SortableList ids={habits.map((habit) => habit.id)} onMove={onMove}>
+            {habits.map((habit) => (
+              <HabitRow
+                key={habit.id}
+                habit={habit}
+                days={days}
+                formatDay={(date) => formats.full.format(date)}
+                onToggle={(date, done) => onToggle(habit, date, done)}
+                onRename={(name) => onRename(habit, name)}
+                onDelete={() => onDelete(habit)}
+              />
+            ))}
+          </SortableList>
         </tbody>
       </table>
     </div>

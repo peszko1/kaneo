@@ -2706,7 +2706,8 @@
 			"rename": "Rename",
 			"saveError": "Couldn't save the habit.",
 			"title": "Habits",
-			"today": "Today"
+			"today": "Today",
+			"drag": "Move {{habit}}"
 		},
 		"taskHeader": {
 			"back": "Back"

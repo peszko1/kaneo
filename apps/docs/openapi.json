@@ -16907,7 +16907,7 @@
           "Habits"
         ],
         "summary": "Get habits",
-        "description": "The caller's habits, oldest first, with the days in the range they were done and how many days they were done in total.",
+        "description": "The caller's habits, in the order they set, with the days in the range they were done and how many days they were done in total.",
         "parameters": [
           {
             "schema": {
@@ -17011,6 +17011,85 @@
           },
           "400": {
             "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiKeyRateLimited"
+          }
+        }
+      }
+    },
+    "/habit/order": {
+      "put": {
+        "operationId": "reorderHabits",
+        "tags": [
+          "Habits"
+        ],
+        "summary": "Reorder habits",
+        "description": "Set the order of the caller's habits.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 500,
+                    "description": "Every one of the caller's habit ids, in the new order."
+                  }
+                },
+                "required": [
+                  "ids"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The new order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "ids"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The order does not list each habit once",
             "content": {
               "application/json": {
                 "schema": {

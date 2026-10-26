@@ -10,6 +10,7 @@ import {
   createHabit,
   deleteHabit,
   renameHabit,
+  reorderHabits,
 } from "./controllers/save-habit";
 import setHabitCheck from "./controllers/set-habit-check";
 import { habitCheckSchema, habitSchema } from "./response";
@@ -17,6 +18,7 @@ import {
   habitBody,
   habitCheckParam,
   habitIdParam,
+  habitOrderBody,
   habitRangeQuery,
 } from "./schema";
 
@@ -27,7 +29,7 @@ const getHabitsRoute = createRoute({
   tags: ["Habits"],
   summary: "Get habits",
   description:
-    "The caller's habits, oldest first, with the days in the range they were done and how many days they were done in total.",
+    "The caller's habits, in the order they set, with the days in the range they were done and how many days they were done in total.",
   request: { query: habitRangeQuery },
   responses: {
     200: jsonResponse("Habits", z.array(habitSchema)),
@@ -51,6 +53,25 @@ const createHabitRoute = createRoute({
   responses: {
     200: jsonResponse("The new habit", habitSchema),
     400: errorResponse("Invalid request"),
+  },
+});
+
+const reorderHabitsRoute = createRoute({
+  method: "put",
+  operationId: "reorderHabits",
+  path: "/order",
+  tags: ["Habits"],
+  summary: "Reorder habits",
+  description: "Set the order of the caller's habits.",
+  request: {
+    body: {
+      required: true,
+      content: { "application/json": { schema: habitOrderBody } },
+    },
+  },
+  responses: {
+    200: jsonResponse("The new order", z.object({ ids: z.array(z.string()) })),
+    400: errorResponse("The order does not list each habit once"),
   },
 });
 
@@ -126,6 +147,10 @@ const habit = apiRouter()
   })
   .openapi(createHabitRoute, async (c) =>
     c.json(await createHabit(c.get("userId"), c.req.valid("json").name), 200),
+  )
+  // Registered before /{id}, which would otherwise match "order".
+  .openapi(reorderHabitsRoute, async (c) =>
+    c.json(await reorderHabits(c.get("userId"), c.req.valid("json").ids), 200),
   )
   .openapi(renameHabitRoute, async (c) =>
     c.json(

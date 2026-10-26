@@ -669,6 +669,7 @@ export const habitTable = pgTable(
         onUpdate: "cascade",
       }),
     name: text("name").notNull(),
+    position: integer("position").notNull().default(0),
     createdAt: timestamp("created_at", { mode: "date" })
       .default(utcNow)
       .notNull(),

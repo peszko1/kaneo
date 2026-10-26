@@ -14,7 +14,11 @@ async function getHabits(userId: string, from: string, to: string) {
     .leftJoin(habitCheckTable, eq(habitCheckTable.habitId, habitTable.id))
     .where(eq(habitTable.userId, userId))
     .groupBy(habitTable.id)
-    .orderBy(asc(habitTable.createdAt), asc(habitTable.id));
+    .orderBy(
+      asc(habitTable.position),
+      asc(habitTable.createdAt),
+      asc(habitTable.id),
+    );
   if (habits.length === 0) return [];
 
   const checks = await db
