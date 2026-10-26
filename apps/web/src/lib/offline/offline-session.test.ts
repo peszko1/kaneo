@@ -33,8 +33,8 @@ const fetched = {
   session: { id: "s1", token: "secret", activeOrganizationId: "ws-1" },
 };
 const idle = {
-  data: null,
-  error: null,
+  data: null as unknown,
+  error: null as unknown,
   isPending: false,
   isRefetching: false,
   refetch: vi.fn(),

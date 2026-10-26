@@ -3493,7 +3493,9 @@
 			"notification": {
 				"breakEnded": "Break is over. Back to focus.",
 				"focusEnded": "Focus time is over. Take a break."
-			}
+			},
+			"overtime": "Overtime",
+			"overtimeHint": "Focus time is up, and your work still counts. Take a break when you are ready."
 		}
 	},
 	"invitations": {

@@ -3,11 +3,13 @@ import {
   advance,
   applySettings,
   BREAK_EXTENSION_MS,
+  clockText,
   currentRound,
   DEFAULT_FOCUS_SETTINGS,
   displayMs,
   extendBreak,
   type FocusSettings,
+  isOvertime,
   migrateLegacySession,
   pause,
   resume,
@@ -36,11 +38,34 @@ describe("pomodoro", () => {
     expect(displayMs(resume(paused, min(50)), min(50))).toBe(min(24));
   });
 
-  it("moves to a paused short break when focus runs out", () => {
+  it("keeps counting focus as overtime when focus runs out", () => {
     const session = startSession(task, pomodoro, 0);
     expect(settle(session, pomodoro, min(25) - 1)).toBe(session);
 
-    const onBreak = settle(session, pomodoro, min(25));
+    const overtime = settle(session, pomodoro, min(25));
+    expect(isOvertime(overtime)).toBe(true);
+    expect(overtime.runningSince).toBe(0);
+    expect(settle(overtime, pomodoro, min(90))).toBe(overtime);
+    expect(clockText(overtime, displayMs(overtime, min(85)), pomodoro)).toBe(
+      "+60:00",
+    );
+  });
+
+  it("keeps overtime while paused and moves to a break after it", () => {
+    const overtime = settle(startSession(task, pomodoro, 0), pomodoro, min(25));
+    const paused = pause(overtime, min(40));
+    expect(displayMs(paused, min(99))).toBe(min(40));
+
+    const onBreak = advance(paused, pomodoro, min(40));
+    expect(onBreak.phase).toBe("shortBreak");
+    expect(onBreak.completedFocusRounds).toBe(1);
+    expect(displayMs(onBreak, min(40))).toBe(min(5));
+  });
+
+  it("moves to a paused short break with auto-start on", () => {
+    const auto = { ...pomodoro, autoStartNext: true };
+    const session = startSession(task, auto, 0);
+    const onBreak = settle(session, auto, min(25));
     expect(onBreak.phase).toBe("shortBreak");
     expect(onBreak.completedFocusRounds).toBe(1);
     expect(onBreak.runningSince).toBeNull();

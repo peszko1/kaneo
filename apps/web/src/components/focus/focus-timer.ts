@@ -1,3 +1,5 @@
+import { formatCountdown } from "./format-countdown";
+
 export type FocusMode = "pomodoro" | "flowtime" | "countdown";
 export const FOCUS_MODES: FocusMode[] = ["pomodoro", "flowtime", "countdown"];
 
@@ -195,6 +197,27 @@ export function applySettings(
     : { ...session, durationMs };
 }
 
+// A Pomodoro focus phase that runs out keeps counting until the user takes
+// a break, so work after a missed alarm is still recorded. It counts up like
+// Flowtime focus: the phase has no end.
+export function isOvertime(session: FocusSession) {
+  return (
+    session.mode === "pomodoro" &&
+    session.phase === "focus" &&
+    session.durationMs === null
+  );
+}
+
+// The clock text: the time left, the time spent, or "+" and the overtime.
+export function clockText(
+  session: FocusSession,
+  shownMs: number,
+  settings: FocusSettings,
+) {
+  if (!isOvertime(session)) return formatCountdown(shownMs);
+  return `+${formatCountdown(Math.max(0, shownMs - minutes(settings.focusMinutes)))}`;
+}
+
 export function isDue(session: FocusSession, now: number) {
   const end = phaseEndsAt(session);
   return end !== null && end <= now;
@@ -207,6 +230,13 @@ export function settle(
 ) {
   const end = phaseEndsAt(session);
   if (end === null || end > now) return session;
+  if (
+    session.mode === "pomodoro" &&
+    session.phase === "focus" &&
+    !settings.autoStartNext
+  ) {
+    return { ...session, durationMs: null };
+  }
   return advance(session, settings, end);
 }
 

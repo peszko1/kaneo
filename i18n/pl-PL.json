@@ -3861,6 +3861,8 @@
 				"longBreak": "Długa przerwa"
 			},
 			"round": "Runda {{current}} z {{total}}",
+			"overtime": "Po czasie",
+			"overtimeHint": "Czas skupienia minął, a praca dalej się liczy. Zrób przerwę, gdy będziesz gotowy.",
 			"actions": {
 				"start": "Start",
 				"pause": "Pauza",
