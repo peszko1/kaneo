@@ -1,3 +1,4 @@
+import "./lib/zod-config";
 import "./instrument";
 
 import { QueryClientProvider } from "@tanstack/react-query";

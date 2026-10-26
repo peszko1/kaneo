@@ -19,11 +19,11 @@ function inlineScriptHashes() {
 for (const config of ["nginx.conf", "nginx.kaneo.conf"]) {
   const source = read(`apps/web/${config}`);
   const csp = source.match(
-    /add_header Content-Security-Policy-Report-Only "([^"]+)" always;/,
+    /add_header Content-Security-Policy "([^"]+)" always;/,
   )?.[1];
 
-  test(`${config} reports CSP violations for every inline script`, () => {
-    assert.ok(csp, "missing Content-Security-Policy-Report-Only");
+  test(`${config} enforces a CSP that allows every inline script`, () => {
+    assert.ok(csp, "missing Content-Security-Policy");
     const scriptSrc = csp
       .split(";")
       .find((part) => part.trim().startsWith("script-src"));
@@ -36,6 +36,8 @@ for (const config of ["nginx.conf", "nginx.kaneo.conf"]) {
       );
     assert.match(csp, /object-src 'none'/);
     assert.match(csp, /frame-ancestors 'self'/);
+    // A separately hosted API may be plain HTTP.
+    assert.match(csp, /connect-src [^;]*\bhttp: ws:/);
   });
 
   test(`${config} sends HSTS only for HTTPS visits`, () => {
