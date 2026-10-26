@@ -172,7 +172,10 @@
 		},
 		"offline": {
 			"banner": "Offline · hanya baca",
-			"changesDisabled": "Anda sedang offline. Perubahan dinonaktifkan hingga Anda terhubung kembali."
+			"changesDisabled": "Anda sedang offline. Perubahan dinonaktifkan hingga Anda terhubung kembali.",
+			"editsDropped_other": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
+			"sending_other": "Sending {{count}} offline changes",
+			"waiting_other": "Offline · {{count}} changes waiting"
 		}
 	},
 	"auth": {

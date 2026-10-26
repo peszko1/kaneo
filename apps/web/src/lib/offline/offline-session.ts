@@ -1,6 +1,8 @@
 import queryClient from "@/query-client";
 import { authClient } from "../auth-client";
+import { clearEdits } from "./edit-outbox";
 import { goOffline, goOnline } from "./offline-state";
+import { removeSavedWorkspaces } from "./offline-workspaces";
 import { removeSnapshot } from "./query-persister";
 import {
   readSavedSession,
@@ -32,7 +34,9 @@ export function startOfflineSession() {
       // Signed out: forget this user's data in memory and on the device.
       seeded = null;
       queryClient.clear();
+      clearEdits();
       removeSavedSession();
+      removeSavedWorkspaces();
       void removeSnapshot();
       return;
     }

@@ -172,7 +172,19 @@
 		},
 		"offline": {
 			"banner": "Офлайн · лише читання",
-			"changesDisabled": "Немає з'єднання. Зміни недоступні, доки з'єднання не відновиться."
+			"changesDisabled": "Немає з'єднання. Зміни недоступні, доки з'єднання не відновиться.",
+			"editsDropped_few": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
+			"editsDropped_many": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
+			"editsDropped_one": "{{count}} offline change could not be saved. The task was deleted, or you no longer have access.",
+			"editsDropped_other": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
+			"sending_few": "Sending {{count}} offline changes",
+			"sending_many": "Sending {{count}} offline changes",
+			"sending_one": "Sending {{count}} offline change",
+			"sending_other": "Sending {{count}} offline changes",
+			"waiting_few": "Offline · {{count}} changes waiting",
+			"waiting_many": "Offline · {{count}} changes waiting",
+			"waiting_one": "Offline · {{count}} change waiting",
+			"waiting_other": "Offline · {{count}} changes waiting"
 		}
 	},
 	"auth": {

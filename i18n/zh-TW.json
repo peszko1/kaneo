@@ -172,7 +172,10 @@
 		},
 		"offline": {
 			"banner": "離線 · 唯讀",
-			"changesDisabled": "你已離線。重新連線前無法進行變更。"
+			"changesDisabled": "你已離線。重新連線前無法進行變更。",
+			"editsDropped_other": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
+			"sending_other": "Sending {{count}} offline changes",
+			"waiting_other": "Offline · {{count}} changes waiting"
 		}
 	},
 	"auth": {

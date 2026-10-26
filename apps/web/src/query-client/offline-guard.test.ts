@@ -16,6 +16,8 @@ afterEach(() => {
 const run = (options: {
   mutationFn: () => Promise<unknown>;
   onMutate?: () => void;
+  meta?: Record<string, unknown>;
+  networkMode?: "always";
 }) =>
   queryClient.getMutationCache().build(queryClient, options).execute(undefined);
 
@@ -31,6 +33,17 @@ describe("offline mutation guard", () => {
     expect(onMutate).not.toHaveBeenCalled();
     expect(mutationFn).not.toHaveBeenCalled();
     expect(toastError).toHaveBeenCalledOnce();
+  });
+
+  it("lets a change that queues itself run offline", async () => {
+    onlineManager.setOnline(false);
+    const mutationFn = vi.fn(async () => null);
+
+    await expect(
+      run({ mutationFn, meta: { queuesOffline: true }, networkMode: "always" }),
+    ).resolves.toBeNull();
+    expect(mutationFn).toHaveBeenCalledOnce();
+    expect(toastError).not.toHaveBeenCalled();
   });
 
   it("lets a change through online", async () => {
