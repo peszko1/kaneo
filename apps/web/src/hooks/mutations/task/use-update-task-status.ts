@@ -1,13 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { invalidateMyWork } from "@/lib/invalidate-my-work";
-import updateTaskStatus from "@/fetchers/task/update-task-status";
+import { saveTaskEdit } from "@/lib/offline/save-task-edit";
 import type Task from "@/types/task";
 
 export function useUpdateTaskStatus() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (task: Task) => updateTaskStatus(task.id, task),
+    meta: { queuesOffline: true },
+    // Runs offline too, where saveTaskEdit queues the change.
+    networkMode: "always",
+    mutationFn: (task: Task) =>
+      saveTaskEdit({
+        kind: "status",
+        taskId: task.id,
+        projectId: task.projectId,
+        status: task.status || "",
+      }),
     onSuccess: (_, variables) => {
       invalidateMyWork(queryClient);
       queryClient.invalidateQueries({

@@ -75,8 +75,10 @@ const queryClient = new QueryClient({
   }),
   mutationCache: new MutationCache({
     // Runs before each mutation's own onMutate, so an offline change fails
-    // before any optimistic update touches the cache.
-    onMutate: () => {
+    // before any optimistic update touches the cache. A mutation with
+    // `meta.queuesOffline` saves itself through `saveTaskEdit` instead.
+    onMutate: (_variables, mutation) => {
+      if (mutation.meta?.queuesOffline) return;
       if (!onlineManager.isOnline()) throw new OfflineError();
     },
     onError: (error) => {

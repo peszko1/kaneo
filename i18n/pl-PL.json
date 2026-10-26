@@ -171,8 +171,20 @@
 			}
 		},
 		"offline": {
-			"banner": "Offline · tylko odczyt",
-			"changesDisabled": "Jesteś offline. Zmiany są wyłączone do czasu ponownego połączenia."
+			"banner": "Offline · zmiany statusu zostaną wysłane po połączeniu",
+			"changesDisabled": "Jesteś offline. Ta zmiana wymaga połączenia.",
+			"waiting_one": "Offline · {{count}} zmiana czeka",
+			"waiting_few": "Offline · {{count}} zmiany czekają",
+			"waiting_many": "Offline · {{count}} zmian czeka",
+			"waiting_other": "Offline · {{count}} zmiany czeka",
+			"sending_one": "Wysyłanie {{count}} zmiany offline",
+			"sending_few": "Wysyłanie {{count}} zmian offline",
+			"sending_many": "Wysyłanie {{count}} zmian offline",
+			"sending_other": "Wysyłanie {{count}} zmiany offline",
+			"editsDropped_one": "Nie udało się zapisać {{count}} zmiany offline. Zadanie zostało usunięte albo nie masz już do niego dostępu.",
+			"editsDropped_few": "Nie udało się zapisać {{count}} zmian offline. Zadania zostały usunięte albo nie masz już do nich dostępu.",
+			"editsDropped_many": "Nie udało się zapisać {{count}} zmian offline. Zadania zostały usunięte albo nie masz już do nich dostępu.",
+			"editsDropped_other": "Nie udało się zapisać {{count}} zmiany offline. Zadania zostały usunięte albo nie masz już do nich dostępu."
 		}
 	},
 	"auth": {

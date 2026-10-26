@@ -172,7 +172,10 @@
 		},
 		"offline": {
 			"banner": "オフライン · 閲覧のみ",
-			"changesDisabled": "オフラインです。再接続するまで変更できません。"
+			"changesDisabled": "オフラインです。再接続するまで変更できません。",
+			"editsDropped_other": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
+			"sending_other": "Sending {{count}} offline changes",
+			"waiting_other": "Offline · {{count}} changes waiting"
 		}
 	},
 	"auth": {
