@@ -3495,6 +3495,15 @@
 			"notification": {
 				"focusEnded": "Focus time is over. Take a break.",
 				"breakEnded": "Break is over. Back to focus."
+			},
+			"noise": {
+				"title": "Background noise",
+				"off": "Off",
+				"brown": "Brown",
+				"pink": "Pink",
+				"white": "White",
+				"volume": "Volume",
+				"hint": "Plays while focus time runs, and stops during breaks. Brown noise is the deepest, white noise the brightest."
 			}
 		}
 	},
