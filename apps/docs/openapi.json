@@ -13344,6 +13344,10 @@
                 "properties": {
                   "status": {
                     "type": "string"
+                  },
+                  "expected": {
+                    "type": "string",
+                    "description": "The value the client last saw. If the task's value differs from it and from the new value, the API answers 409 and changes nothing. Leave it out to always apply the change."
                   }
                 },
                 "required": [
@@ -13404,6 +13408,16 @@
               }
             }
           },
+          "409": {
+            "description": "Someone else changed the field after `expected`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
           "429": {
             "$ref": "#/components/responses/ApiKeyRateLimited"
           }
@@ -13444,6 +13458,10 @@
                       "high",
                       "urgent"
                     ]
+                  },
+                  "expected": {
+                    "type": "string",
+                    "description": "The value the client last saw. If the task's value differs from it and from the new value, the API answers 409 and changes nothing. Leave it out to always apply the change."
                   }
                 },
                 "required": [
@@ -13504,6 +13522,16 @@
               }
             }
           },
+          "409": {
+            "description": "Someone else changed the field after `expected`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
           "429": {
             "$ref": "#/components/responses/ApiKeyRateLimited"
           }
@@ -13541,6 +13569,13 @@
                       "null"
                     ],
                     "description": "Null unassigns."
+                  },
+                  "expected": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The value the client last saw. If the task's value differs from it and from the new value, the API answers 409 and changes nothing. Leave it out to always apply the change."
                   }
                 },
                 "required": [
@@ -13601,6 +13636,16 @@
               }
             }
           },
+          "409": {
+            "description": "Someone else changed the field after `expected`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
           "429": {
             "$ref": "#/components/responses/ApiKeyRateLimited"
           }
@@ -13634,6 +13679,13 @@
                 "properties": {
                   "dueDate": {
                     "type": "string"
+                  },
+                  "expected": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The value the client last saw. If the task's value differs from it and from the new value, the API answers 409 and changes nothing. Leave it out to always apply the change."
                   }
                 }
               }
@@ -13691,6 +13743,16 @@
               }
             }
           },
+          "409": {
+            "description": "Someone else changed the field after `expected`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
           "429": {
             "$ref": "#/components/responses/ApiKeyRateLimited"
           }
@@ -13724,6 +13786,10 @@
                 "properties": {
                   "title": {
                     "type": "string"
+                  },
+                  "expected": {
+                    "type": "string",
+                    "description": "The value the client last saw. If the task's value differs from it and from the new value, the API answers 409 and changes nothing. Leave it out to always apply the change."
                   }
                 },
                 "required": [
@@ -13776,6 +13842,16 @@
           },
           "404": {
             "description": "Task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Someone else changed the field after `expected`",
             "content": {
               "application/json": {
                 "schema": {

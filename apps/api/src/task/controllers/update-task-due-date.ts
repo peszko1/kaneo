@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
+import { assertFieldUnchanged, dateKey } from "./assert-field-unchanged";
 import { taskTable } from "../../database/schema";
 import {
   publishTaskMutation,
@@ -10,10 +11,12 @@ import {
 async function updateTaskDueDate({
   id,
   dueDate,
+  expected,
   currentUserId,
 }: {
   id: string;
   dueDate: Date | null;
+  expected?: string | null;
   currentUserId: string;
 }) {
   let existingTask = await db.query.taskTable.findFirst({
@@ -34,6 +37,11 @@ async function updateTaskDueDate({
       .for("update");
     if (!locked) throw new HTTPException(404, { message: "Task not found" });
     existingTask = locked;
+    assertFieldUnchanged(
+      dateKey(locked.dueDate),
+      expected === undefined ? undefined : dateKey(expected),
+      dateKey(dueDate),
+    );
 
     const [task] = await tx
       .update(taskTable)

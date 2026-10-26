@@ -175,7 +175,8 @@
 			"changesDisabled": "你已离线。重新连接前无法进行更改。",
 			"editsDropped_other": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
 			"sending_other": "Sending {{count}} offline changes",
-			"waiting_other": "Offline · {{count}} changes waiting"
+			"waiting_other": "Offline · {{count}} changes waiting",
+			"editsConflicted_other": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay."
 		}
 	},
 	"auth": {

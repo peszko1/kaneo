@@ -617,6 +617,7 @@ const updateTaskStatusRoute = createRoute({
       "No access to the project, or missing task:update permission",
     ),
     404: errorResponse("Task not found"),
+    409: errorResponse("Someone else changed the field after `expected`"),
   },
 });
 
@@ -646,6 +647,7 @@ const updateTaskPriorityRoute = createRoute({
       "No access to the project, or missing task:update permission",
     ),
     404: errorResponse("Task not found"),
+    409: errorResponse("Someone else changed the field after `expected`"),
   },
 });
 
@@ -678,6 +680,7 @@ const updateTaskAssigneeRoute = createRoute({
     404: errorResponse(
       "Task not found, or assignee is not a member of the workspace",
     ),
+    409: errorResponse("Someone else changed the field after `expected`"),
   },
 });
 
@@ -707,6 +710,7 @@ const updateTaskDueDateRoute = createRoute({
       "No access to the project, or missing task:update permission",
     ),
     404: errorResponse("Task not found"),
+    409: errorResponse("Someone else changed the field after `expected`"),
   },
 });
 
@@ -736,6 +740,7 @@ const updateTaskTitleRoute = createRoute({
       "No access to the project, or missing task:update permission",
     ),
     404: errorResponse("Task not found"),
+    409: errorResponse("Someone else changed the field after `expected`"),
   },
 });
 
@@ -1164,12 +1169,13 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
   })
   .openapi(updateTaskStatusRoute, async (c) => {
     const { id } = c.req.valid("param");
-    const { status } = c.req.valid("json");
+    const { status, expected } = c.req.valid("json");
     const currentUserId = c.get("userId");
 
     const task = await updateTaskStatus({
       id,
       status,
+      expected,
       currentUserId,
       autoAssigneeId: await resolveAutoAssignee(c),
     });
@@ -1178,30 +1184,41 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
   })
   .openapi(updateTaskPriorityRoute, async (c) => {
     const { id } = c.req.valid("param");
-    const { priority } = c.req.valid("json");
+    const { priority, expected } = c.req.valid("json");
     const currentUserId = c.get("userId");
 
-    const task = await updateTaskPriority({ id, priority, currentUserId });
+    const task = await updateTaskPriority({
+      id,
+      priority,
+      expected,
+      currentUserId,
+    });
 
     return c.json(task, 200);
   })
   .openapi(updateTaskAssigneeRoute, async (c) => {
     const { id } = c.req.valid("param");
-    const { userId } = c.req.valid("json");
+    const { userId, expected } = c.req.valid("json");
     const currentUserId = c.get("userId");
 
-    const task = await updateTaskAssignee({ id, userId, currentUserId });
+    const task = await updateTaskAssignee({
+      id,
+      userId,
+      expected,
+      currentUserId,
+    });
 
     return c.json(task, 200);
   })
   .openapi(updateTaskDueDateRoute, async (c) => {
     const { id } = c.req.valid("param");
-    const { dueDate = null } = c.req.valid("json");
+    const { dueDate = null, expected } = c.req.valid("json");
     const currentUserId = c.get("userId");
 
     const task = await updateTaskDueDate({
       id,
       dueDate: dueDate ? validateAndParseDate(dueDate, "dueDate") : null,
+      expected,
       currentUserId,
     });
 
@@ -1209,10 +1226,10 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
   })
   .openapi(updateTaskTitleRoute, async (c) => {
     const { id } = c.req.valid("param");
-    const { title } = c.req.valid("json");
+    const { title, expected } = c.req.valid("json");
     const currentUserId = c.get("userId");
 
-    const task = await updateTaskTitle({ id, title, currentUserId });
+    const task = await updateTaskTitle({ id, title, expected, currentUserId });
 
     return c.json(task, 200);
   })

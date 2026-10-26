@@ -67,6 +67,23 @@ describe("sendTaskEdit", () => {
     expect(fetchers.detachLabelFromTask).not.toHaveBeenCalled();
   });
 
+  it("refuses a start date someone else changed first", async () => {
+    fetchers.getTask.mockResolvedValue({
+      id: "t1",
+      startDate: "2026-11-05T00:00:00.000Z",
+    });
+    await expect(
+      sendTaskEdit({
+        kind: "startDate",
+        taskId: "t1",
+        projectId: "p1",
+        startDate: "2026-11-01T00:00:00.000Z",
+        expected: null,
+      }),
+    ).rejects.toMatchObject({ status: 409 });
+    expect(fetchers.updateTask).not.toHaveBeenCalled();
+  });
+
   it("puts the start date onto the task as the server has it", async () => {
     fetchers.getTask.mockResolvedValue({ id: "t1", title: "Newer title" });
     await sendTaskEdit({

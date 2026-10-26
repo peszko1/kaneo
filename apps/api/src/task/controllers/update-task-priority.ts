@@ -1,21 +1,25 @@
 import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { withLockedTask } from "./with-locked-task";
+import { assertFieldUnchanged } from "./assert-field-unchanged";
 import { taskTable } from "../../database/schema";
 import { publishTaskMutation } from "./task-mutation-effects";
 
 async function updateTaskPriority({
   id,
   priority,
+  expected,
   currentUserId,
 }: {
   id: string;
   priority: string;
+  expected?: string;
   currentUserId: string;
 }) {
   const { before: existingTask, after: updatedTask } = await withLockedTask(
     id,
-    async (tx) => {
+    async (tx, existingTask) => {
+      assertFieldUnchanged(existingTask.priority, expected, priority);
       const [updatedTask] = await tx
         .update(taskTable)
         .set({ priority })

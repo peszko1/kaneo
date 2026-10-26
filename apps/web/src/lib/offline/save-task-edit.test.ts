@@ -74,7 +74,9 @@ describe("saveTaskEdit", () => {
     await expect(saveTaskEdit(edit)).resolves.toBeNull();
 
     expect(sendTaskEdit).not.toHaveBeenCalled();
-    expect(queuedEdits()).toHaveLength(1);
+    expect(queuedEdits()).toMatchObject([
+      { status: "done", expected: "to-do" },
+    ]);
     expect(queryClient.getQueryData(["task", "t1"])).toMatchObject({
       status: "done",
     });

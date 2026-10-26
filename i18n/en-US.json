@@ -177,8 +177,10 @@
 			"waiting_other": "Offline · {{count}} changes waiting",
 			"sending_one": "Sending {{count}} offline change",
 			"sending_other": "Sending {{count}} offline changes",
-			"editsDropped_one": "{{count}} offline change could not be saved. Someone else changed the board, the task was deleted, or you no longer have access.",
-			"editsDropped_other": "{{count}} offline changes could not be saved. Someone else changed the board, the tasks were deleted, or you no longer have access."
+			"editsDropped_one": "{{count}} offline change could not be saved. The task was deleted, or you no longer have access.",
+			"editsDropped_other": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
+			"editsConflicted_one": "{{count}} offline change was not saved. Someone else changed the same thing first, and their change stays.",
+			"editsConflicted_other": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay."
 		}
 	},
 	"auth": {

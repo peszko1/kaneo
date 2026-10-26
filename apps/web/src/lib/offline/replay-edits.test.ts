@@ -10,6 +10,7 @@ const { sendTaskEdit, toastError } = vi.hoisted(() => ({
 vi.mock("./saved-session", () => ({ savedSessionUserId: () => "user-1" }));
 vi.mock("./send-task-edit", () => ({ sendTaskEdit }));
 vi.mock("@/lib/toast", () => ({ toast: { error: toastError } }));
+vi.mock("i18next", () => ({ default: { t: (key: string) => key } }));
 vi.mock("@/query-client", () => ({
   default: { invalidateQueries: vi.fn() },
 }));
@@ -80,6 +81,19 @@ describe("replayEdits", () => {
 
     expect(queuedIds()).toEqual([]);
     expect(toastError).toHaveBeenCalledOnce();
+  });
+
+  it("says when someone else changed the same thing first", async () => {
+    sendTaskEdit
+      .mockRejectedValueOnce(new HttpError(409, "Changed"))
+      .mockResolvedValueOnce({});
+    queueEdit(status("t1"));
+    queueEdit(status("t2"));
+
+    await replayEdits();
+
+    expect(queuedIds()).toEqual([]);
+    expect(toastError).toHaveBeenCalledWith("common:offline.editsConflicted");
   });
 
   it("leaves the queue to the tab that holds the lock", async () => {

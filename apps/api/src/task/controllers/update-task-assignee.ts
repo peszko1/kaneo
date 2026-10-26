@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { withLockedTask } from "./with-locked-task";
+import { assertFieldUnchanged } from "./assert-field-unchanged";
 import { taskTable } from "../../database/schema";
 import { publishTaskMutation } from "./task-mutation-effects";
 import {
@@ -11,16 +12,23 @@ import {
 async function updateTaskAssignee({
   id,
   userId,
+  expected,
   currentUserId,
 }: {
   id: string;
   userId: string | null;
+  expected?: string | null;
   currentUserId: string;
 }) {
   const { before: existingTask, after: updatedTask } = await withLockedTask(
     id,
     async (tx, existingTask) => {
       const nextAssigneeId = userId?.trim() || null;
+      assertFieldUnchanged(
+        existingTask.userId,
+        expected === undefined ? undefined : expected || null,
+        nextAssigneeId,
+      );
       if (existingTask.userId === nextAssigneeId) {
         return existingTask;
       }
