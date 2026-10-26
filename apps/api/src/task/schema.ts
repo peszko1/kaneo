@@ -35,6 +35,10 @@ export const assignedTasksQuery = z.object({
     description:
       "Return only the total, with an empty tasks array, without loading task rows or labels.",
   }),
+  order: z.enum(["due", "board"]).optional().openapi({
+    description:
+      "due (default): by due date, undated last, then priority. board: the caller's global board order, in-progress cards first, then to-do, then tasks off the board in due order. Either way the page holds the first 100 tasks by due date.",
+  }),
 });
 
 const priority = z.enum(VALID_PRIORITIES);
