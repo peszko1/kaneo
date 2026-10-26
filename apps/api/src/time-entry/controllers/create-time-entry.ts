@@ -40,22 +40,30 @@ async function createTimeEntry({
     });
   }
 
+  await announceTimeEntry(createdTimeEntry);
+
+  return createdTimeEntry;
+}
+
+export async function announceTimeEntry(entry: {
+  id: string;
+  taskId: string;
+  userId: string | null;
+}) {
   const [task] = await db
     .select({ userId: taskTable.userId, title: taskTable.title })
     .from(taskTable)
-    .where(eq(taskTable.id, taskId));
+    .where(eq(taskTable.id, entry.taskId));
 
   await publishEvent("time-entry.created", {
-    timeEntryId: createdTimeEntry.id,
-    taskId: createdTimeEntry.taskId,
-    userId,
+    timeEntryId: entry.id,
+    taskId: entry.taskId,
+    userId: entry.userId,
     type: "create",
     content: "started time tracking",
     taskOwnerId: task?.userId,
     taskTitle: task?.title,
   });
-
-  return createdTimeEntry;
 }
 
 export default createTimeEntry;

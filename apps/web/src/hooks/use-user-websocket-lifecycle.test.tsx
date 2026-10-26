@@ -9,7 +9,8 @@ import {
 } from "vite-plus/test";
 import { useUserWebSocket } from "./use-user-websocket";
 
-const { client, auth, navigate, evictProject } = vi.hoisted(() => ({
+const { client, auth, navigate, evictProject, syncFocus } = vi.hoisted(() => ({
+  syncFocus: vi.fn(),
   client: {
     invalidateQueries: vi.fn(),
     cancelQueries: vi.fn(),
@@ -51,6 +52,9 @@ vi.mock("@/lib/auth-client", () => ({
   },
 }));
 vi.mock("@kaneo/libs", () => ({ windowId: "local-test" }));
+vi.mock("@/components/focus/focus-sync", () => ({
+  syncFocusSession: syncFocus,
+}));
 vi.mock("@/lib/evict-project-cache", () => ({
   evictProjectCache: evictProject,
 }));
@@ -121,6 +125,18 @@ describe("user WebSocket lifecycle", () => {
       }),
     );
     expect(navigate).toHaveBeenCalledWith({ to: "/dashboard" });
+  });
+  it("syncs the focus timer when another device changes it", () => {
+    renderHook(useUserWebSocket);
+    act(() =>
+      TestSocket.instances[0].onmessage?.({
+        data: JSON.stringify({ type: "FOCUS_SESSION_CHANGED" }),
+      }),
+    );
+    expect(syncFocus).toHaveBeenCalledOnce();
+    expect(client.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["time-summary"],
+    });
   });
   it("clears revoked workspace data from the global user connection", () => {
     renderHook(() => useUserWebSocket());

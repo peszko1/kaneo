@@ -2,6 +2,7 @@ import { windowId } from "@kaneo/libs";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
+import { syncFocusSession } from "@/components/focus/focus-sync";
 import { getApiUrl } from "@/fetchers/get-api-url";
 import {
   evictInaccessibleWorkspaceCache,
@@ -154,6 +155,16 @@ export function useUserWebSocket() {
           }
           if (message.type === "NOTIFICATION_CREATED") {
             queryClient.invalidateQueries({ queryKey: ["notifications"] });
+          }
+          if (message.type === "FOCUS_SESSION_CHANGED") {
+            void syncFocusSession();
+            // Another device may have recorded focus time.
+            for (const queryKey of [
+              ["time-entries"],
+              ["time-summary"],
+              ["project-time-totals"],
+            ])
+              void queryClient.invalidateQueries({ queryKey });
           }
         } catch {
           // Ignore malformed messages

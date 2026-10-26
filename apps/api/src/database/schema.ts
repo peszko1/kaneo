@@ -1,6 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { relations, sql } from "drizzle-orm";
 import {
+  bigint,
   boolean,
   customType,
   date,
@@ -691,6 +692,35 @@ export const habitCheckTable = pgTable(
   },
   (table) => [primaryKey({ columns: [table.habitId, table.date] })],
 );
+
+// The user's focus timer, so every device shows and controls the same one.
+// Times are the client's epoch milliseconds, kept exact because the browser
+// computes the timer from them.
+export const focusSessionTable = pgTable("focus_session", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => userTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+  taskId: text("task_id")
+    .notNull()
+    .references(() => taskTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+  mode: text("mode").$type<"pomodoro" | "flowtime" | "countdown">().notNull(),
+  phase: text("phase").$type<"focus" | "shortBreak" | "longBreak">().notNull(),
+  completedFocusRounds: integer("completed_focus_rounds").notNull(),
+  durationMs: bigint("duration_ms", { mode: "number" }),
+  elapsedMs: bigint("elapsed_ms", { mode: "number" }).notNull(),
+  runningSince: bigint("running_since", { mode: "number" }),
+  alarmAt: bigint("alarm_at", { mode: "number" }),
+  version: integer("version").notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .default(utcNow)
+    .notNull(),
+});
 
 export const billingReminderSentTable = pgTable(
   "billing_reminder_sent",

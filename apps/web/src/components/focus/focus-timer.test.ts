@@ -8,8 +8,6 @@ import {
   displayMs,
   extendBreak,
   type FocusSettings,
-  focusSegment,
-  MIN_RECORDED_MS,
   migrateLegacySession,
   pause,
   resume,
@@ -125,38 +123,6 @@ describe("applySettings", () => {
     expect(applySettings(running, { ...countdown, countdownMinutes: 1 })).toBe(
       running,
     );
-  });
-});
-
-describe("focusSegment", () => {
-  it("covers the focus time since the timer last started", () => {
-    const resumed = resume(
-      pause(startSession(task, pomodoro, 0), min(2)),
-      min(8),
-    );
-    expect(focusSegment(resumed, min(13))).toEqual({
-      taskId: "t1",
-      startTime: min(8),
-      endTime: min(13),
-    });
-  });
-
-  it("ends at the phase end when settled late", () => {
-    const session = startSession(task, pomodoro, 0);
-    expect(focusSegment(session, min(99))?.endTime).toBe(min(25));
-  });
-
-  it("runs to now while Flowtime counts up", () => {
-    const session = startSession(task, flowtime, 0);
-    expect(focusSegment(session, min(99))?.endTime).toBe(min(99));
-  });
-
-  it("skips breaks, paused timers, and stretches under a minute", () => {
-    const session = startSession(task, pomodoro, 0);
-    expect(focusSegment(session, MIN_RECORDED_MS - 1)).toBeNull();
-    expect(focusSegment(pause(session, min(2)), min(3))).toBeNull();
-    const onBreak = resume(advance(session, pomodoro, 0), 0);
-    expect(focusSegment(onBreak, min(2))).toBeNull();
   });
 });
 
