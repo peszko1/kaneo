@@ -140,13 +140,34 @@ export const importTasksBody = z.object({
   ),
 });
 
-export const updateStatusBody = z.object({ status: z.string() });
-export const updatePriorityBody = z.object({ priority });
+// Offline edits send the value they last saw, so a newer change by someone
+// else is not overwritten.
+const expected = <Value extends z.ZodTypeAny>(value: Value) =>
+  value.optional().openapi({
+    description:
+      "The value the client last saw. If the task's value differs from it and from the new value, the API answers 409 and changes nothing. Leave it out to always apply the change.",
+  });
+
+export const updateStatusBody = z.object({
+  status: z.string(),
+  expected: expected(z.string()),
+});
+export const updatePriorityBody = z.object({
+  priority,
+  expected: expected(z.string()),
+});
 export const updateAssigneeBody = z.object({
   userId: z.string().nullable().openapi({ description: "Null unassigns." }),
+  expected: expected(z.string().nullable()),
 });
-export const updateDueDateBody = z.object({ dueDate: z.string().optional() });
-export const updateTitleBody = z.object({ title: z.string() });
+export const updateDueDateBody = z.object({
+  dueDate: z.string().optional(),
+  expected: expected(z.string().nullable()),
+});
+export const updateTitleBody = z.object({
+  title: z.string(),
+  expected: expected(z.string()),
+});
 export const updateDescriptionBody = z.object({ description: z.string() });
 
 const surface = z.enum(["description", "comment"]).openapi({

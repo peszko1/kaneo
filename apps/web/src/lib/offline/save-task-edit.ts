@@ -1,6 +1,7 @@
 import { onlineManager } from "@tanstack/react-query";
 import queryClient from "@/query-client";
 import { queueEdit } from "./edit-outbox";
+import { expectedValue } from "./expected-value";
 import { sendTaskEdit } from "./send-task-edit";
 import { showTaskEdit } from "./show-task-edit";
 import type { TaskEdit } from "./task-edit";
@@ -13,7 +14,11 @@ export async function saveTaskEdit<Result = unknown>(
   send: () => Promise<Result> = () => sendTaskEdit(edit) as Promise<Result>,
 ): Promise<Result | null> {
   if (onlineManager.isOnline()) return send();
-  queueEdit(edit);
+  const expected = expectedValue(queryClient, edit);
+  // expectedValue gives a value only for edits that carry one.
+  queueEdit(
+    expected === undefined ? edit : ({ ...edit, expected } as TaskEdit),
+  );
   showTaskEdit(queryClient, edit);
   return null;
 }

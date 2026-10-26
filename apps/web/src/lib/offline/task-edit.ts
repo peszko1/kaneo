@@ -6,16 +6,23 @@ type FieldEdit<Kind extends string, Value> = {
   projectId: string;
 } & Value;
 
+// `expected` is the value the edit saw. The server answers 409 instead of
+// overwriting a newer change by someone else.
+type CheckedEdit<Kind extends string, Value> = FieldEdit<
+  Kind,
+  Value & { expected?: string | null }
+>;
+
 // A change to an existing task that can wait for the server. Each one sets a
 // value, so sending it twice does no harm, except a move: the server answers
 // a repeated move with 409, and the move is dropped although it went through.
 export type TaskEdit =
-  | FieldEdit<"status", { status: string }>
-  | FieldEdit<"title", { title: string }>
-  | FieldEdit<"priority", { priority: string }>
-  | FieldEdit<"dueDate", { dueDate: string | null }>
-  | FieldEdit<"startDate", { startDate: string | null }>
-  | FieldEdit<"assignee", { userId: string | null }>
+  | CheckedEdit<"status", { status: string }>
+  | CheckedEdit<"title", { title: string }>
+  | CheckedEdit<"priority", { priority: string }>
+  | CheckedEdit<"dueDate", { dueDate: string | null }>
+  | CheckedEdit<"startDate", { startDate: string | null }>
+  | CheckedEdit<"assignee", { userId: string | null }>
   // A task label is the server's copy of a workspace label, so it is found
   // by name. `taskLabelId` is that copy's id, known only for one the server
   // made.

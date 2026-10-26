@@ -49,10 +49,13 @@ export function queueEdit(edit: TaskEdit) {
   const editKey = taskEditKey(edit);
   const replacesLast =
     editKey !== null && last && taskEditKey(last) === editKey;
+  // The server never saw the replaced edit, so the value it expects stays.
+  const kept =
+    replacesLast && "expected" in last ? { expected: last.expected } : {};
   write([
     ...(replacesLast ? edits.slice(0, -1) : edits),
-    { ...edit, id: crypto.randomUUID(), at: Date.now() },
-  ]);
+    { ...edit, ...kept, id: crypto.randomUUID(), at: Date.now() },
+  ] as QueuedEdit[]);
 }
 
 export function removeEdits(ids: string[]) {

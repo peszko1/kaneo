@@ -4,11 +4,17 @@ import type Task from "@/types/task";
 
 type UpdateTaskStatusPayload = Pick<Task, "status">;
 
-async function updateTaskStatus(taskId: string, task: UpdateTaskStatusPayload) {
+// `expected` is the status an offline edit saw; see the API route.
+async function updateTaskStatus(
+  taskId: string,
+  task: UpdateTaskStatusPayload,
+  expected?: string,
+) {
   const response = await client.task.status[":id"].$put({
     param: { id: taskId },
     json: {
       status: task.status || "",
+      expected,
     },
   });
 

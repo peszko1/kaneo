@@ -175,7 +175,8 @@
 			"changesDisabled": "Bạn đang ngoại tuyến. Không thể thay đổi cho đến khi kết nối lại.",
 			"editsDropped_other": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
 			"sending_other": "Sending {{count}} offline changes",
-			"waiting_other": "Offline · {{count}} changes waiting"
+			"waiting_other": "Offline · {{count}} changes waiting",
+			"editsConflicted_other": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay."
 		}
 	},
 	"auth": {

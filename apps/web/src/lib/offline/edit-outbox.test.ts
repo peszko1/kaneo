@@ -34,6 +34,15 @@ describe("edit outbox", () => {
     expect(queuedStatuses()).toEqual([["t1", "in-progress"]]);
   });
 
+  it("keeps the value the replaced edit expected", () => {
+    queueEdit({ ...status("t1", "in-progress"), expected: "to-do" });
+    queueEdit({ ...status("t1", "done"), expected: "in-progress" });
+
+    expect(queuedEdits()).toMatchObject([
+      { status: "done", expected: "to-do" },
+    ]);
+  });
+
   it("keeps older edits in order once another edit came between", () => {
     queueEdit(status("t1", "to-do"));
     queueEdit(status("t2", "done"));

@@ -23,6 +23,7 @@ function isWorthRetrying(error: unknown) {
 async function sendQueue() {
   const sent: string[] = [];
   const dropped: string[] = [];
+  const conflicted: string[] = [];
   const touched = new Set<string>();
   try {
     for (const edit of queuedEdits()) {
@@ -33,15 +34,24 @@ async function sendQueue() {
         // Stop at the first edit the server could take later, so edits
         // still go in the order they were made.
         if (isWorthRetrying(error)) break;
-        dropped.push(edit.id);
+        // 409: someone else changed the field or the board first, and their
+        // change stays.
+        if (error instanceof HttpError && error.status === 409)
+          conflicted.push(edit.id);
+        else dropped.push(edit.id);
       }
       for (const id of editedTaskIds(edit)) touched.add(id);
       touched.add(edit.projectId);
     }
   } finally {
-    removeEdits([...sent, ...dropped]);
+    removeEdits([...sent, ...dropped, ...conflicted]);
   }
 
+  if (conflicted.length > 0) {
+    toast.error(
+      i18n.t("common:offline.editsConflicted", { count: conflicted.length }),
+    );
+  }
   if (dropped.length > 0) {
     toast.error(
       i18n.t("common:offline.editsDropped", { count: dropped.length }),

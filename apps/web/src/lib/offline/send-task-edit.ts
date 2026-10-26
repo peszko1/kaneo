@@ -9,6 +9,7 @@ import updateTaskDueDate from "@/fetchers/task/update-task-due-date";
 import updateTaskPriority from "@/fetchers/task/update-task-priority";
 import updateTaskStatus from "@/fetchers/task/update-task-status";
 import updateTaskTitle from "@/fetchers/task/update-task-title";
+import { HttpError } from "@/lib/http-error";
 import type Task from "@/types/task";
 import type { TaskEdit } from "./task-edit";
 
@@ -28,26 +29,59 @@ async function sendLabelEdit(edit: Extract<TaskEdit, { kind: "label" }>) {
   return detachLabelFromTask({ labelId });
 }
 
+const dateKey = (value: string | null | undefined) =>
+  value ? new Date(value).getTime() : null;
+
+// The start date has no endpoint of its own, so the edit goes onto the task
+// as the server has it now, and the check happens here.
+async function sendStartDate(edit: Extract<TaskEdit, { kind: "startDate" }>) {
+  const task = (await getTask(edit.taskId)) as unknown as Task;
+  const current = dateKey(task.startDate);
+  if (
+    edit.expected !== undefined &&
+    current !== dateKey(edit.expected) &&
+    current !== dateKey(edit.startDate)
+  )
+    throw new HttpError(409, "Someone else changed the start date");
+  return updateTask(edit.taskId, { ...task, startDate: edit.startDate });
+}
+
 export async function sendTaskEdit(edit: TaskEdit) {
   switch (edit.kind) {
+    // These fields are never empty on the server, so an empty value seen
+    // offline checks nothing.
     case "status":
-      return updateTaskStatus(edit.taskId, { status: edit.status });
+      return updateTaskStatus(
+        edit.taskId,
+        { status: edit.status },
+        edit.expected ?? undefined,
+      );
     case "title":
-      return updateTaskTitle(edit.taskId, { title: edit.title } as Task);
+      return updateTaskTitle(
+        edit.taskId,
+        { title: edit.title } as Task,
+        edit.expected ?? undefined,
+      );
     case "priority":
-      return updateTaskPriority(edit.taskId, {
-        priority: edit.priority,
-      } as Task);
+      return updateTaskPriority(
+        edit.taskId,
+        { priority: edit.priority } as Task,
+        edit.expected ?? undefined,
+      );
     case "dueDate":
-      return updateTaskDueDate(edit.taskId, { dueDate: edit.dueDate } as Task);
-    case "startDate": {
-      // The start date has no endpoint of its own, so the edit goes onto
-      // the task as the server has it now.
-      const task = (await getTask(edit.taskId)) as unknown as Task;
-      return updateTask(edit.taskId, { ...task, startDate: edit.startDate });
-    }
+      return updateTaskDueDate(
+        edit.taskId,
+        { dueDate: edit.dueDate } as Task,
+        edit.expected,
+      );
+    case "startDate":
+      return sendStartDate(edit);
     case "assignee":
-      return updateTaskAssignee(edit.taskId, { userId: edit.userId });
+      return updateTaskAssignee(
+        edit.taskId,
+        { userId: edit.userId },
+        edit.expected,
+      );
     case "label":
       return sendLabelEdit(edit);
     case "reorder":

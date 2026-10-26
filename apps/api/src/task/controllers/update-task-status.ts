@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { withLockedTask } from "./with-locked-task";
+import { assertFieldUnchanged } from "./assert-field-unchanged";
 import { columnTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
 import { publishTaskMutation } from "./task-mutation-effects";
@@ -15,11 +16,13 @@ const isVirtualStatus = (status: string) =>
 async function updateTaskStatus({
   id,
   status,
+  expected,
   currentUserId,
   autoAssigneeId = null,
 }: {
   id: string;
   status: string;
+  expected?: string;
   currentUserId: string;
   // Fills an empty assignee when the task moves to another board column;
   // sending it to the backlog or archive leaves it unassigned.
@@ -28,6 +31,7 @@ async function updateTaskStatus({
   const { before: existingTask, after: updatedTask } = await withLockedTask(
     id,
     async (tx, existingTask) => {
+      assertFieldUnchanged(existingTask.status, expected, status);
       await assertValidTaskStatus(status, existingTask.projectId, tx);
 
       const column = await tx.query.columnTable.findFirst({

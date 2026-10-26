@@ -181,7 +181,10 @@
 			"sending_other": "Sending {{count}} offline changes",
 			"waiting_many": "Offline · {{count}} changes waiting",
 			"waiting_one": "Offline · {{count}} change waiting",
-			"waiting_other": "Offline · {{count}} changes waiting"
+			"waiting_other": "Offline · {{count}} changes waiting",
+			"editsConflicted_many": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay.",
+			"editsConflicted_one": "{{count}} offline change was not saved. Someone else changed the same thing first, and their change stays.",
+			"editsConflicted_other": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay."
 		}
 	},
 	"auth": {

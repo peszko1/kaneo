@@ -181,10 +181,14 @@
 			"sending_few": "Wysyłanie {{count}} zmian offline",
 			"sending_many": "Wysyłanie {{count}} zmian offline",
 			"sending_other": "Wysyłanie {{count}} zmiany offline",
-			"editsDropped_one": "Nie udało się zapisać {{count}} zmiany offline. Ktoś inny zmienił tablicę, zadanie zostało usunięte albo nie masz już do niego dostępu.",
-			"editsDropped_few": "Nie udało się zapisać {{count}} zmian offline. Ktoś inny zmienił tablicę, zadania zostały usunięte albo nie masz już do nich dostępu.",
-			"editsDropped_many": "Nie udało się zapisać {{count}} zmian offline. Ktoś inny zmienił tablicę, zadania zostały usunięte albo nie masz już do nich dostępu.",
-			"editsDropped_other": "Nie udało się zapisać {{count}} zmiany offline. Ktoś inny zmienił tablicę, zadania zostały usunięte albo nie masz już do nich dostępu."
+			"editsDropped_one": "Nie udało się zapisać {{count}} zmiany offline. Zadanie zostało usunięte albo nie masz już do niego dostępu.",
+			"editsDropped_few": "Nie udało się zapisać {{count}} zmian offline. Zadania zostały usunięte albo nie masz już do nich dostępu.",
+			"editsDropped_many": "Nie udało się zapisać {{count}} zmian offline. Zadania zostały usunięte albo nie masz już do nich dostępu.",
+			"editsDropped_other": "Nie udało się zapisać {{count}} zmiany offline. Zadania zostały usunięte albo nie masz już do nich dostępu.",
+			"editsConflicted_one": "Nie zapisano {{count}} zmiany offline. Ktoś inny zmienił to samo wcześniej i jego zmiana zostaje.",
+			"editsConflicted_few": "Nie zapisano {{count}} zmian offline. Ktoś inny zmienił to samo wcześniej i jego zmiany zostają.",
+			"editsConflicted_many": "Nie zapisano {{count}} zmian offline. Ktoś inny zmienił to samo wcześniej i jego zmiany zostają.",
+			"editsConflicted_other": "Nie zapisano {{count}} zmiany offline. Ktoś inny zmienił to samo wcześniej i jego zmiany zostają."
 		}
 	},
 	"auth": {
