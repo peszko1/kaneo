@@ -31,6 +31,7 @@ import { useTranslation } from "react-i18next";
 import { TrialExpiredCallout } from "@/components/billing/trial-expired-callout";
 import WorkspaceLayout from "@/components/common/workspace-layout";
 import PageTitle from "@/components/page-title";
+import { formatTrackedTime } from "@/components/task/properties/format-tracked-time";
 import CreateProjectModal from "@/components/shared/modals/create-project-modal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -55,6 +56,7 @@ import {
 import icons from "@/constants/project-icons";
 import useReorderProjects from "@/hooks/mutations/project/use-reorder-projects";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
+import useGetProjectTimeTotals from "@/hooks/queries/time-entry/use-get-project-time-totals";
 import { useCanImport } from "@/hooks/use-can-import";
 import { useShortcut } from "@/lib/shortcuts/use-shortcut";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -131,6 +133,7 @@ function RouteComponent() {
   const { data: projects, isLoading } = useGetProjects({
     workspaceId,
   });
+  const { data: timeTotals } = useGetProjectTimeTotals(workspaceId);
   const reorderProjects = useReorderProjects();
 
   // React state, not the query cache: dnd-kit clears its transforms with a
@@ -252,6 +255,9 @@ function RouteComponent() {
                   {t("workspace:projects.progress")}
                 </TableHead>
                 <TableHead className="text-foreground font-medium">
+                  {t("workspace:projects.timeSpent")}
+                </TableHead>
+                <TableHead className="text-foreground font-medium">
                   {t("workspace:projects.targetDate")}
                 </TableHead>
                 <TableHead className="text-foreground font-medium">
@@ -270,6 +276,9 @@ function RouteComponent() {
                   </TableCell>
                   <TableCell className="py-3">
                     <Skeleton className="h-2 w-20" />
+                  </TableCell>
+                  <TableCell className="py-3">
+                    <Skeleton className="h-4 w-12" />
                   </TableCell>
                   <TableCell className="py-3">
                     <Skeleton className="h-4 w-20" />
@@ -385,6 +394,9 @@ function RouteComponent() {
                   {t("workspace:projects.progress")}
                 </TableHead>
                 <TableHead className="text-foreground font-medium">
+                  {t("workspace:projects.timeSpent")}
+                </TableHead>
+                <TableHead className="text-foreground font-medium">
                   {t("workspace:projects.dueDate")}
                 </TableHead>
                 <TableHead className="text-foreground font-medium">
@@ -441,6 +453,15 @@ function RouteComponent() {
                             {project.statistics.completionPercentage}%
                           </span>
                         </div>
+                      </TableCell>
+                      <TableCell className="py-3">
+                        <span className="text-sm text-muted-foreground tabular-nums">
+                          {(timeTotals?.get(project.id) ?? 0) >= 60
+                            ? formatTrackedTime(
+                                timeTotals?.get(project.id) ?? 0,
+                              )
+                            : "—"}
+                        </span>
                       </TableCell>
                       <TableCell className="py-3">
                         <span className="text-sm text-muted-foreground">

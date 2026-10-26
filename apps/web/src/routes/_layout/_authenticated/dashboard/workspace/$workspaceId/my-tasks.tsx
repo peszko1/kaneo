@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CircleCheck } from "lucide-react";
+import { CircleCheck, Timer } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import WorkspaceLayout from "@/components/common/workspace-layout";
@@ -9,6 +9,7 @@ import {
 } from "@/components/my-tasks/my-tasks-group-by";
 import { MyTasksList } from "@/components/my-tasks/my-tasks-list";
 import PageTitle from "@/components/page-title";
+import { formatTrackedTime } from "@/components/task/properties/format-tracked-time";
 import {
   Empty,
   EmptyDescription,
@@ -34,6 +35,10 @@ function RouteComponent() {
     isError,
   } = useGetAssignedTasks(workspaceId);
   const [groupBy, setGroupBy] = useState<MyTasksGroupBy>("dueDate");
+  const trackedSeconds = (assigned?.tasks ?? []).reduce(
+    (sum, task) => sum + task.trackedSeconds,
+    0,
+  );
 
   return (
     <>
@@ -42,7 +47,17 @@ function RouteComponent() {
         title={t("workspace:myTasks.pageTitle")}
         headerActions={
           assigned?.tasks.length ? (
-            <MyTasksGroupByToggle value={groupBy} onChange={setGroupBy} />
+            <div className="flex items-center gap-3">
+              {trackedSeconds >= 60 && (
+                <span className="flex items-center gap-1.5 text-muted-foreground text-xs tabular-nums">
+                  <Timer aria-hidden="true" className="size-3.5" />
+                  {t("workspace:myTasks.timeSpent", {
+                    time: formatTrackedTime(trackedSeconds),
+                  })}
+                </span>
+              )}
+              <MyTasksGroupByToggle value={groupBy} onChange={setGroupBy} />
+            </div>
           ) : null
         }
       >

@@ -55,3 +55,7 @@ export const timeSummaryQuery = z.object({
   }),
   to: timestamp.openapi({ description: "End of the range, exclusive." }),
 });
+
+export const projectTimeTotalsQuery = z.object({
+  workspaceId: z.string().min(1),
+});

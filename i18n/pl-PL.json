@@ -915,6 +915,7 @@
 			"createProject": "Utwórz projekt",
 			"title": "Tytuł",
 			"progress": "Postęp",
+			"timeSpent": "Czas pracy",
 			"targetDate": "Data docelowa",
 			"dueDate": "Termin",
 			"status": "Status",
@@ -1024,7 +1025,8 @@
 				"project": "Project"
 			},
 			"pageTitle": "My tasks",
-			"truncated": "Showing the first {{shown}} of {{total}} tasks."
+			"truncated": "Showing the first {{shown}} of {{total}} tasks.",
+			"timeSpent": "Czas pracy: {{time}}"
 		},
 		"myWork": {
 			"due": {

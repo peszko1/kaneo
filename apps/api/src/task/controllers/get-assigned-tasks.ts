@@ -15,6 +15,7 @@ import {
   labelTable,
   projectTable,
   taskTable,
+  timeEntryTable,
 } from "../../database/schema";
 import { projectAccessCondition } from "../../project-access/project-access-condition";
 import { taskIsCompleted } from "../task-is-completed";
@@ -94,6 +95,11 @@ async function getAssignedTasks(
         projectName: projectTable.name,
         projectSlug: projectTable.slug,
         projectIcon: projectTable.icon,
+        trackedSeconds: sql<number>`coalesce((
+          select sum(${timeEntryTable.duration}) from ${timeEntryTable}
+          where ${timeEntryTable.taskId} = ${taskTable.id}
+            and ${timeEntryTable.endTime} is not null
+        ), 0)`.mapWith(Number),
       })
       .from(taskTable)
       .innerJoin(projectTable, eq(taskTable.projectId, projectTable.id))

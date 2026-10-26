@@ -68,6 +68,7 @@ export function MyTasksList({
                 task={task}
                 workspaceId={workspaceId}
                 showLabels
+                showTrackedTime
               />
             ))}
           </div>
