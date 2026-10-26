@@ -18,6 +18,7 @@ import { useFocusSettingsStore } from "@/store/focus-settings";
 import { unlockAlarmSound } from "./alarm-sound";
 import { FocusDoneButton } from "./focus-done-button";
 import { FocusModeSwitch } from "./focus-mode-switch";
+import { FocusNoisePopover } from "./focus-noise-popover";
 import { FocusSettingsPopover } from "./focus-settings-popover";
 import {
   clockText,
@@ -74,6 +75,7 @@ function FocusPanel({ session }: { session: FocusSession }) {
       <div className="flex items-center justify-between gap-2 p-3">
         <FocusModeSwitch mode={session.mode} />
         <div className="flex items-center gap-1">
+          <FocusNoisePopover />
           <FocusSettingsPopover />
           <Button
             variant="ghost"

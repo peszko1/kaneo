@@ -3901,6 +3901,15 @@
 			"notification": {
 				"focusEnded": "Czas skupienia minął. Zrób przerwę.",
 				"breakEnded": "Przerwa minęła. Wracaj do pracy."
+			},
+			"noise": {
+				"title": "Szum w tle",
+				"off": "Wył.",
+				"brown": "Brązowy",
+				"pink": "Różowy",
+				"white": "Biały",
+				"volume": "Głośność",
+				"hint": "Gra, gdy trwa czas skupienia, i milknie w przerwach. Szum brązowy jest najgłębszy, biały najjaśniejszy."
 			}
 		}
 	},

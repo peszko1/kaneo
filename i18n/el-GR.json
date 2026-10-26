@@ -3495,7 +3495,16 @@
 				"focusEnded": "Focus time is over. Take a break."
 			},
 			"overtime": "Overtime",
-			"overtimeHint": "Focus time is up, and your work still counts. Take a break when you are ready."
+			"overtimeHint": "Focus time is up, and your work still counts. Take a break when you are ready.",
+			"noise": {
+				"brown": "Brown",
+				"hint": "Plays while focus time runs, and stops during breaks. Brown noise is the deepest, white noise the brightest.",
+				"off": "Off",
+				"pink": "Pink",
+				"title": "Background noise",
+				"volume": "Volume",
+				"white": "White"
+			}
 		}
 	},
 	"invitations": {

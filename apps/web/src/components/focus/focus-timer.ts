@@ -1,4 +1,5 @@
 import { formatCountdown } from "./format-countdown";
+import type { NoiseColor } from "./noise";
 
 export type FocusMode = "pomodoro" | "flowtime" | "countdown";
 export const FOCUS_MODES: FocusMode[] = ["pomodoro", "flowtime", "countdown"];
@@ -15,6 +16,8 @@ export type FocusSettings = {
   sound: boolean;
   desktopNotifications: boolean;
   autoStartNext: boolean;
+  noise: NoiseColor | "off";
+  noiseVolume: number;
 };
 
 export const DEFAULT_FOCUS_SETTINGS: FocusSettings = {
@@ -27,6 +30,8 @@ export const DEFAULT_FOCUS_SETTINGS: FocusSettings = {
   sound: true,
   desktopNotifications: false,
   autoStartNext: false,
+  noise: "off",
+  noiseVolume: 0.5,
 };
 
 // Flowtime breaks last a fifth of the focus time, but at least a minute.

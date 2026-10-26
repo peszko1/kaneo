@@ -1,3 +1,5 @@
+import { audioContext } from "./audio-context";
+
 const BEEP_HZ = 880;
 const BEEP_SECONDS = 0.18;
 const BEEP_GAP_SECONDS = 0.12;
@@ -6,15 +8,6 @@ const REPEAT_MS = 1200;
 // in background tabs to about one a minute, but not audio already queued.
 const LOOKAHEAD_MS = 90_000;
 const TOP_UP_MS = 15_000;
-
-let context: AudioContext | null = null;
-
-function audioContext() {
-  if (!context && typeof AudioContext !== "undefined") {
-    context = new AudioContext();
-  }
-  return context;
-}
 
 // Browsers keep audio suspended until the page gets a user gesture. Calling
 // this from a click lets a later alarm play without one. Safari also needs a
