@@ -30,6 +30,9 @@ function shownValue(task: Task, edit: TaskEdit) {
       return task.dueDate;
     case "startDate":
       return task.startDate;
+    case "description":
+      // A long description is left out of the board, so it is unknown.
+      return task.descriptionDeferred ? undefined : (task.description ?? "");
     case "assignee":
       // Board tasks carry the assignee as `assigneeId` only.
       return task.userId !== undefined ? task.userId : task.assigneeId;
@@ -50,6 +53,8 @@ function newValue(edit: TaskEdit) {
       return edit.dueDate;
     case "startDate":
       return edit.startDate;
+    case "description":
+      return edit.description;
     case "assignee":
       return edit.userId;
     default:

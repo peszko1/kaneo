@@ -188,7 +188,11 @@
 			"editsConflicted_one": "Nie zapisano {{count}} zmiany offline. Ktoś inny zmienił to samo wcześniej i jego zmiana zostaje.",
 			"editsConflicted_few": "Nie zapisano {{count}} zmian offline. Ktoś inny zmienił to samo wcześniej i jego zmiany zostają.",
 			"editsConflicted_many": "Nie zapisano {{count}} zmian offline. Ktoś inny zmienił to samo wcześniej i jego zmiany zostają.",
-			"editsConflicted_other": "Nie zapisano {{count}} zmiany offline. Ktoś inny zmienił to samo wcześniej i jego zmiany zostają."
+			"editsConflicted_other": "Nie zapisano {{count}} zmiany offline. Ktoś inny zmienił to samo wcześniej i jego zmiany zostają.",
+			"descriptionConflict_one": "Ktoś inny zmienił opis, który był edytowany offline. Otwórz zadanie i wybierz wersję.",
+			"descriptionConflict_few": "Ktoś inny zmienił {{count}} opisy, które były edytowane offline. Otwórz każde zadanie i wybierz wersję.",
+			"descriptionConflict_many": "Ktoś inny zmienił {{count}} opisów, które były edytowane offline. Otwórz każde zadanie i wybierz wersję.",
+			"descriptionConflict_other": "Ktoś inny zmienił {{count}} opisu, które były edytowane offline. Otwórz każde zadanie i wybierz wersję."
 		}
 	},
 	"auth": {
@@ -3500,7 +3504,15 @@
 			"noActivity": "Nie znaleziono aktywności",
 			"openInFullPage": "Otwórz na pełnej stronie",
 			"subtaskOf": "Podzadanie zadania",
-			"titlePlaceholder": "Kliknij, aby dodać tytuł"
+			"titlePlaceholder": "Kliknij, aby dodać tytuł",
+			"conflict": {
+				"title": "Ktoś inny zmienił ten opis",
+				"body": "Twoja zmiana z trybu offline dotarła na serwer po zmianie innej osoby. Edytor pokazuje wersję tej osoby.",
+				"showMine": "Pokaż moją wersję",
+				"hideMine": "Ukryj moją wersję",
+				"keepMine": "Zostaw moją",
+				"useTheirs": "Użyj ich wersji"
+			}
 		},
 		"dueDate": {
 			"clear": "Wyczyść datę",

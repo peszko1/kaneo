@@ -1,5 +1,6 @@
 import queryClient from "@/query-client";
 import { authClient } from "../auth-client";
+import { clearDescriptionConflicts } from "./description-conflicts";
 import { clearEdits } from "./edit-outbox";
 import { goOffline, goOnline } from "./offline-state";
 import { removeSavedWorkspaces } from "./offline-workspaces";
@@ -35,6 +36,7 @@ export function startOfflineSession() {
       seeded = null;
       queryClient.clear();
       clearEdits();
+      clearDescriptionConflicts();
       removeSavedSession();
       removeSavedWorkspaces();
       void removeSnapshot();

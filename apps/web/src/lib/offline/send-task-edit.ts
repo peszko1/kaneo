@@ -5,6 +5,7 @@ import getTask from "@/fetchers/task/get-task";
 import reorderTasks from "@/fetchers/task/reorder-tasks";
 import updateTask from "@/fetchers/task/update-task";
 import updateTaskAssignee from "@/fetchers/task/update-task-assignee";
+import updateTaskDescription from "@/fetchers/task/update-task-description";
 import updateTaskDueDate from "@/fetchers/task/update-task-due-date";
 import updateTaskPriority from "@/fetchers/task/update-task-priority";
 import updateTaskStatus from "@/fetchers/task/update-task-status";
@@ -80,6 +81,12 @@ export async function sendTaskEdit(edit: TaskEdit) {
       return updateTaskAssignee(
         edit.taskId,
         { userId: edit.userId },
+        edit.expected,
+      );
+    case "description":
+      return updateTaskDescription(
+        edit.taskId,
+        { description: edit.description } as Task,
         edit.expected,
       );
     case "label":

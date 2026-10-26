@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { HttpError } from "@/lib/http-error";
+import {
+  clearDescriptionConflicts,
+  descriptionConflict,
+} from "./description-conflicts";
 import { clearEdits, queuedEdits, queueEdit } from "./edit-outbox";
 import { replayEdits } from "./replay-edits";
 
@@ -94,6 +98,26 @@ describe("replayEdits", () => {
 
     expect(queuedIds()).toEqual([]);
     expect(toastError).toHaveBeenCalledWith("common:offline.editsConflicted");
+  });
+
+  it("keeps a refused description for the user to choose", async () => {
+    clearDescriptionConflicts();
+    sendTaskEdit.mockRejectedValueOnce(new HttpError(409, "Changed"));
+    queueEdit({
+      kind: "description",
+      taskId: "t1",
+      projectId: "p1",
+      description: "Mine",
+      expected: "",
+    });
+
+    await replayEdits();
+
+    expect(queuedIds()).toEqual([]);
+    expect(descriptionConflict("t1")).toMatchObject({ mine: "Mine" });
+    expect(toastError).toHaveBeenCalledWith(
+      "common:offline.descriptionConflict",
+    );
   });
 
   it("leaves the queue to the tab that holds the lock", async () => {

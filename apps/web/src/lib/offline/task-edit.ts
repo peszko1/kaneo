@@ -23,6 +23,7 @@ export type TaskEdit =
   | CheckedEdit<"dueDate", { dueDate: string | null }>
   | CheckedEdit<"startDate", { startDate: string | null }>
   | CheckedEdit<"assignee", { userId: string | null }>
+  | CheckedEdit<"description", { description: string }>
   // A task label is the server's copy of a workspace label, so it is found
   // by name. `taskLabelId` is that copy's id, known only for one the server
   // made.
