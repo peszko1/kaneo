@@ -782,6 +782,10 @@ subscribeToEvent<{
   );
 });
 
+subscribeToEvent<{ userId: string }>("focus-session.changed", async (data) => {
+  broadcastToUser(data.userId, { type: "FOCUS_SESSION_CHANGED" });
+});
+
 subscribeToEvent<{ notificationId: string; userId: string }>(
   "notification.created",
   async (data) => {

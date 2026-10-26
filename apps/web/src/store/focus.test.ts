@@ -10,10 +10,8 @@ import { DEFAULT_FOCUS_SETTINGS } from "@/components/focus/focus-timer";
 import { useFocusStore } from "./focus";
 import { useFocusSettingsStore } from "./focus-settings";
 
-const recordFocusSegment = vi.hoisted(() => vi.fn());
-vi.mock("@/components/focus/record-focus-time", () => ({
-  recordFocusSegment,
-}));
+const queueFocusChange = vi.hoisted(() => vi.fn());
+vi.mock("@/components/focus/focus-outbox", () => ({ queueFocusChange }));
 const showPhaseEndedNotification = vi.hoisted(() => vi.fn());
 vi.mock("@/components/focus/focus-notification", () => ({
   showPhaseEndedNotification,
@@ -26,13 +24,21 @@ describe("focus store alarm", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(0);
-    recordFocusSegment.mockClear();
     showPhaseEndedNotification.mockClear();
     useFocusSettingsStore.getState().resetSettings();
     useFocusStore.setState(useFocusStore.getInitialState());
     useFocusStore.getState().focusOn(task);
     useFocusStore.getState().closeView();
+    queueFocusChange.mockClear();
   });
+
+  const queued = () =>
+    queueFocusChange.mock.calls.map(([change]) => ({
+      at: change.at,
+      taskId: change.next?.taskId ?? null,
+      phase: change.next?.phase ?? null,
+      runningSince: change.next?.runningSince ?? null,
+    }));
 
   afterEach(() => {
     vi.useRealTimers();
@@ -75,33 +81,59 @@ describe("focus store alarm", () => {
     expect(useFocusStore.getState().alarm).toBe(false);
   });
 
-  it("records the focus round when it runs out, not the break", () => {
+  it("shares the phase end with the time it happened", () => {
     vi.setSystemTime(FOCUS_MS + 5_000);
     useFocusStore.getState().settle();
-    expect(recordFocusSegment).toHaveBeenCalledWith({
-      taskId: "t1",
-      startTime: 0,
-      endTime: FOCUS_MS,
-    });
-
-    useFocusStore.getState().resume();
-    vi.setSystemTime(FOCUS_MS + 120_000);
-    useFocusStore.getState().skip();
-    expect(recordFocusSegment).toHaveBeenCalledTimes(1);
+    expect(queued()).toEqual([
+      {
+        at: FOCUS_MS + 5_000,
+        taskId: "t1",
+        phase: "shortBreak",
+        runningSince: null,
+      },
+    ]);
+    expect(queueFocusChange.mock.calls[0]?.[0].next.alarmAt).toBe(FOCUS_MS);
   });
 
-  it("splits the time when focus moves to another task", () => {
+  it("restarts the clock on the new task and shares the stop", () => {
     vi.setSystemTime(300_000);
     useFocusStore.getState().focusOn({ ...task, taskId: "t2" });
     vi.setSystemTime(500_000);
     useFocusStore.getState().stop();
-    expect(recordFocusSegment.mock.calls).toEqual([
-      [{ taskId: "t1", startTime: 0, endTime: 300_000 }],
-      [{ taskId: "t2", startTime: 300_000, endTime: 500_000 }],
+    expect(queued()).toEqual([
+      { at: 300_000, taskId: "t2", phase: "focus", runningSince: 300_000 },
+      { at: 500_000, taskId: null, phase: null, runningSince: null },
     ]);
   });
 
-  it("restarts paused in the new mode and records the time so far", () => {
+  it("shares nothing when focus opens on the same task", () => {
+    useFocusStore.getState().focusOn(task);
+    expect(queueFocusChange).not.toHaveBeenCalled();
+  });
+
+  it("shows the timer another device saved, and rings there too", () => {
+    useFocusStore.getState().showServerSession({
+      ...task,
+      mode: "pomodoro",
+      phase: "shortBreak",
+      completedFocusRounds: 1,
+      durationMs: 300_000,
+      elapsedMs: 0,
+      runningSince: null,
+      alarmAt: FOCUS_MS,
+      version: 3,
+    });
+    const state = useFocusStore.getState();
+    expect(state.session?.phase).toBe("shortBreak");
+    expect(state.alarm).toBe(true);
+    expect(state.viewOpen).toBe(true);
+    expect(queueFocusChange).not.toHaveBeenCalled();
+
+    useFocusStore.getState().showServerSession(null);
+    expect(useFocusStore.getState().session).toBeNull();
+  });
+
+  it("restarts paused in the new mode and shares the change", () => {
     vi.setSystemTime(300_000);
     useFocusStore.getState().switchMode("flowtime");
     const { session } = useFocusStore.getState();
@@ -109,11 +141,9 @@ describe("focus store alarm", () => {
     expect(session?.runningSince).toBeNull();
     expect(session?.durationMs).toBeNull();
     expect(useFocusSettingsStore.getState().settings.mode).toBe("flowtime");
-    expect(recordFocusSegment).toHaveBeenCalledWith({
-      taskId: "t1",
-      startTime: 0,
-      endTime: 300_000,
-    });
+    expect(queued()).toEqual([
+      { at: 300_000, taskId: "t1", phase: "focus", runningSince: null },
+    ]);
   });
 
   it("starts the next phase from now when auto-start is on", () => {

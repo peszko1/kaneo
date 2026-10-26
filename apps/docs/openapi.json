@@ -2489,6 +2489,112 @@
           "done"
         ]
       },
+      "FocusSessionResult": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "$ref": "#/components/schemas/FocusSession"
+          },
+          "recordedTaskId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The task that this change recorded focus time on, if any."
+          }
+        },
+        "required": [
+          "session",
+          "recordedTaskId"
+        ]
+      },
+      "FocusSession": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "pomodoro",
+              "flowtime",
+              "countdown"
+            ]
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "focus",
+              "shortBreak",
+              "longBreak"
+            ]
+          },
+          "completedFocusRounds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "durationMs": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "exclusiveMinimum": 0,
+            "maximum": 2592000000,
+            "description": "The phase length, or null while Flowtime focus counts up."
+          },
+          "elapsedMs": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2592000000,
+            "description": "Time spent in the phase before `runningSince`."
+          },
+          "runningSince": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 8640000000000000,
+            "description": "When the timer last started, or null while paused."
+          },
+          "alarmAt": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 8640000000000000,
+            "description": "When the phase-end alarm started ringing, or null."
+          },
+          "taskId": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "mode",
+          "phase",
+          "completedFocusRounds",
+          "durationMs",
+          "elapsedMs",
+          "runningSince",
+          "alarmAt",
+          "taskId",
+          "projectId",
+          "workspaceId",
+          "version"
+        ]
+      },
       "Notification": {
         "type": "object",
         "properties": {
@@ -17382,6 +17488,298 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiKeyRateLimited"
+          }
+        }
+      }
+    },
+    "/focus/session": {
+      "get": {
+        "operationId": "getFocusSession",
+        "tags": [
+          "Focus"
+        ],
+        "summary": "Get my focus timer",
+        "description": "The caller's focus timer, shared by all their devices, or null when none is running.",
+        "responses": {
+          "200": {
+            "description": "The focus timer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FocusSessionResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiKeyRateLimited"
+          }
+        }
+      },
+      "put": {
+        "operationId": "saveFocusSession",
+        "tags": [
+          "Focus"
+        ],
+        "summary": "Change my focus timer",
+        "description": "Start or change the caller's focus timer. When the change ends running focus time, that time is recorded as a time entry on the task, once, even when several devices send the same change.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "taskId": {
+                    "type": "string"
+                  },
+                  "baseVersion": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "minimum": 1,
+                    "description": "The session version this change was made on, or null when the caller saw no session. A different stored version returns 409."
+                  },
+                  "at": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 8640000000000000,
+                    "description": "When the change happened. Focus time that the change ends is recorded up to here, so a change made offline records the right time."
+                  },
+                  "state": {
+                    "type": "object",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "pomodoro",
+                          "flowtime",
+                          "countdown"
+                        ]
+                      },
+                      "phase": {
+                        "type": "string",
+                        "enum": [
+                          "focus",
+                          "shortBreak",
+                          "longBreak"
+                        ]
+                      },
+                      "completedFocusRounds": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100000
+                      },
+                      "durationMs": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ],
+                        "exclusiveMinimum": 0,
+                        "maximum": 2592000000,
+                        "description": "The phase length, or null while Flowtime focus counts up."
+                      },
+                      "elapsedMs": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 2592000000,
+                        "description": "Time spent in the phase before `runningSince`."
+                      },
+                      "runningSince": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ],
+                        "minimum": 0,
+                        "maximum": 8640000000000000,
+                        "description": "When the timer last started, or null while paused."
+                      },
+                      "alarmAt": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ],
+                        "minimum": 0,
+                        "maximum": 8640000000000000,
+                        "description": "When the phase-end alarm started ringing, or null."
+                      }
+                    },
+                    "required": [
+                      "mode",
+                      "phase",
+                      "completedFocusRounds",
+                      "durationMs",
+                      "elapsedMs",
+                      "runningSince",
+                      "alarmAt"
+                    ]
+                  }
+                },
+                "required": [
+                  "taskId",
+                  "baseVersion",
+                  "at",
+                  "state"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The changed timer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FocusSessionResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid timer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "No access to the task, or missing task:update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The timer changed on another device; this is the stored one",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FocusSessionResult"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiKeyRateLimited"
+          }
+        }
+      }
+    },
+    "/focus/session/stop": {
+      "post": {
+        "operationId": "stopFocusSession",
+        "tags": [
+          "Focus"
+        ],
+        "summary": "Stop my focus timer",
+        "description": "Stop the caller's focus timer and record the running focus time it ends.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "baseVersion": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "at": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 8640000000000000,
+                    "description": "When the change happened. Focus time that the change ends is recorded up to here, so a change made offline records the right time."
+                  }
+                },
+                "required": [
+                  "baseVersion",
+                  "at"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The timer is stopped",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FocusSessionResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The timer changed on another device; this is the stored one",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FocusSessionResult"
                 }
               }
             }

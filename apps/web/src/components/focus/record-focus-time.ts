@@ -1,11 +1,16 @@
 import createTimeEntry from "@/fetchers/time-entry/create-time-entry";
 import { HttpError } from "@/lib/http-error";
 import queryClient from "@/query-client";
-import type { FocusSegment } from "./focus-timer";
 
-const RECORDED_KEY = "focus-recorded";
+// Focus time that versions before the server kept the timer could not send.
+// The server records focus time now; this only sends what is still queued.
+type FocusSegment = {
+  taskId: string;
+  startTime: number;
+  endTime: number;
+};
+
 const PENDING_KEY = "focus-pending";
-const RECORDED_LIMIT = 50;
 const LOCK_NAME = "kaneo-focus-record";
 
 function readList<T>(key: string): T[] {
@@ -25,8 +30,7 @@ function writeList(key: string, list: unknown[]) {
   }
 }
 
-// Every open tab settles the same finished phase, so the record runs under a
-// cross-tab lock and each segment is sent once.
+// Every open tab flushes on load, so the flush runs under a cross-tab lock.
 function withLock(task: () => Promise<void>) {
   if (typeof navigator !== "undefined" && navigator.locks) {
     return navigator.locks.request(LOCK_NAME, task);
@@ -51,19 +55,6 @@ async function send(segment: FocusSegment) {
     if (error instanceof HttpError && error.status < 500) return "dropped";
     return "retry";
   }
-}
-
-export function recordFocusSegment(segment: FocusSegment) {
-  void withLock(async () => {
-    const key = `${segment.taskId}:${segment.startTime}`;
-    const recorded = readList<string>(RECORDED_KEY);
-    if (recorded.includes(key)) return;
-    writeList(RECORDED_KEY, [...recorded, key].slice(-RECORDED_LIMIT));
-
-    if ((await send(segment)) === "retry") {
-      writeList(PENDING_KEY, [...readList(PENDING_KEY), segment]);
-    }
-  });
 }
 
 export function flushPendingFocusTime() {

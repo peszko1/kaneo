@@ -210,29 +210,6 @@ export function settle(
   return advance(session, settings, end);
 }
 
-// Shorter focus stretches, like a quick start and pause, are not recorded.
-export const MIN_RECORDED_MS = 60_000;
-
-export type FocusSegment = {
-  taskId: string;
-  startTime: number;
-  endTime: number;
-};
-
-// The focus time since the timer last started, ending now or when the phase
-// ran out, whichever came first. Breaks are never recorded.
-export function focusSegment(
-  session: FocusSession,
-  now: number,
-): FocusSegment | null {
-  if (session.phase !== "focus" || session.runningSince === null) return null;
-  const end = phaseEndsAt(session);
-  const startTime = session.runningSince;
-  const endTime = end === null ? now : Math.min(now, end);
-  if (endTime - startTime < MIN_RECORDED_MS) return null;
-  return { taskId: session.taskId, startTime, endTime };
-}
-
 // Position within the current set of Pomodoro rounds, from 1 to rounds.
 export function currentRound(session: FocusSession, rounds: number) {
   const done = session.completedFocusRounds % rounds;

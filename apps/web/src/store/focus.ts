@@ -7,7 +7,6 @@ import {
   type FocusMode,
   type FocusSession,
   type FocusTask,
-  focusSegment,
   phaseEndsAt,
   migrateLegacySession,
   pause,
@@ -16,7 +15,8 @@ import {
   startSession,
 } from "@/components/focus/focus-timer";
 import { showPhaseEndedNotification } from "@/components/focus/focus-notification";
-import { recordFocusSegment } from "@/components/focus/record-focus-time";
+import { queueFocusChange } from "@/components/focus/focus-outbox";
+import type { ServerFocusSession } from "@/fetchers/focus/get-focus-session";
 import { useFocusSettingsStore } from "./focus-settings";
 
 export const FOCUS_STORAGE_KEY = "focus-session";
@@ -41,27 +41,39 @@ type FocusStore = {
   stop: () => void;
   stopAlarm: () => void;
   settle: () => void;
+  // Shows the timer another device saved, or none when it was stopped there.
+  showServerSession: (server: ServerFocusSession | null) => void;
 };
 
 const settings = () => useFocusSettingsStore.getState().settings;
 
-// Records the focus time that ends with this change, if any.
-function recordUntil(session: FocusSession, now: number) {
-  const segment = focusSegment(session, now);
-  if (segment) recordFocusSegment(segment);
+type SharedState = Pick<FocusStore, "session" | "alarmAt">;
+
+// Every change goes to the server, which records the focus time it ends.
+function share({ session, alarmAt }: SharedState, at: number) {
+  queueFocusChange({ at, next: session ? { ...session, alarmAt } : null });
 }
 
 export const useFocusStore = create<FocusStore>()(
   persist(
     (set, get) => {
+      const commit = (
+        state: SharedState & Partial<FocusStore>,
+        at = Date.now(),
+      ) => {
+        set(state);
+        share(state, at);
+      };
       const update = (
         change: (session: FocusSession, now: number) => FocusSession,
       ) => {
         const { session } = get();
         if (!session) return;
         const now = Date.now();
-        recordUntil(session, now);
-        set({ session: change(session, now), alarm: false, alarmAt: null });
+        commit(
+          { session: change(session, now), alarm: false, alarmAt: null },
+          now,
+        );
       };
 
       return {
@@ -73,41 +85,51 @@ export const useFocusStore = create<FocusStore>()(
           const { session } = get();
           const now = Date.now();
           if (!session) {
-            set({
-              session: startSession(task, settings(), now),
-              viewOpen: true,
-            });
+            commit(
+              {
+                session: startSession(task, settings(), now),
+                alarmAt: null,
+                alarm: false,
+                viewOpen: true,
+              },
+              now,
+            );
             return;
           }
           if (session.taskId === task.taskId) {
             set({ viewOpen: true });
             return;
           }
-          // Close the old task's time and start counting for the new one.
-          recordUntil(session, now);
+          // Restarting the clock closes the old task's time on the server.
           const moved = { ...session, ...task };
-          set({
-            session:
-              session.runningSince === null
-                ? moved
-                : resume(pause(moved, now), now),
-            viewOpen: true,
-          });
+          commit(
+            {
+              session:
+                session.runningSince === null
+                  ? moved
+                  : resume(pause(moved, now), now),
+              alarmAt: get().alarmAt,
+              viewOpen: true,
+            },
+            now,
+          );
         },
         switchMode: (mode) => {
           useFocusSettingsStore.getState().changeSettings({ mode });
           const { session } = get();
           if (!session || session.mode === mode) return;
           const now = Date.now();
-          recordUntil(session, now);
-          set({
-            session: {
-              ...startSession(session, settings(), now),
-              runningSince: null,
+          commit(
+            {
+              session: {
+                ...startSession(session, settings(), now),
+                runningSince: null,
+              },
+              alarm: false,
+              alarmAt: null,
             },
-            alarm: false,
-            alarmAt: null,
-          });
+            now,
+          );
         },
         openView: () => set({ viewOpen: true }),
         closeView: () => set({ viewOpen: false }),
@@ -116,35 +138,62 @@ export const useFocusStore = create<FocusStore>()(
         skip: () => update((session, now) => advance(session, settings(), now)),
         extendBreak: () => update(extendBreak),
         stop: () => {
-          const { session } = get();
-          if (session) recordUntil(session, Date.now());
-          set({
+          if (!get().session) return;
+          commit({
             session: null,
             alarm: false,
             alarmAt: null,
             viewOpen: false,
           });
         },
-        stopAlarm: () => set({ alarm: false, alarmAt: null }),
+        stopAlarm: () => {
+          if (get().alarmAt === null) {
+            set({ alarm: false });
+            return;
+          }
+          commit({ session: get().session, alarm: false, alarmAt: null });
+        },
         settle: () => {
           const { session } = get();
           if (!session) return;
           const now = Date.now();
           const settled = settle(session, settings(), now);
           if (settled !== session) {
-            recordUntil(session, now);
             const current = settings();
             if (current.desktopNotifications)
               showPhaseEndedNotification(session);
-            set({
-              // Auto-start counts from now, not the phase end, so time away
-              // from the computer is never recorded as focus.
-              session: current.autoStartNext ? resume(settled, now) : settled,
-              alarm: current.sound,
-              alarmAt: current.sound ? (phaseEndsAt(session) ?? now) : null,
-              viewOpen: true,
-            });
+            commit(
+              {
+                // Auto-start counts from now, not the phase end, so time away
+                // from the computer is never recorded as focus.
+                session: current.autoStartNext ? resume(settled, now) : settled,
+                // Shared with every device; each rings only with sound on.
+                alarm: current.sound,
+                alarmAt: phaseEndsAt(session) ?? now,
+                viewOpen: true,
+              },
+              now,
+            );
           }
+        },
+        showServerSession: (server) => {
+          if (!server) {
+            set({
+              session: null,
+              alarm: false,
+              alarmAt: null,
+              viewOpen: false,
+            });
+            return;
+          }
+          const { version: _, alarmAt, ...timer } = server;
+          const ringing = alarmAt !== null && get().alarmAt === null;
+          set({
+            session: timer,
+            alarmAt,
+            alarm: alarmAt !== null && settings().sound,
+            viewOpen: get().viewOpen || ringing,
+          });
         },
       };
     },
@@ -181,5 +230,7 @@ useFocusSettingsStore.subscribe(({ settings }) => {
   const { session } = useFocusStore.getState();
   if (!session) return;
   const applied = applySettings(session, settings);
-  if (applied !== session) useFocusStore.setState({ session: applied });
+  if (applied === session) return;
+  useFocusStore.setState({ session: applied });
+  share(useFocusStore.getState(), Date.now());
 });
