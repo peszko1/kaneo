@@ -8,10 +8,7 @@ const { sendTaskEdit, toastError } = vi.hoisted(() => ({
   toastError: vi.fn(),
 }));
 vi.mock("./saved-session", () => ({ savedSessionUserId: () => "user-1" }));
-vi.mock("./task-edit", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("./task-edit")>()),
-  sendTaskEdit,
-}));
+vi.mock("./send-task-edit", () => ({ sendTaskEdit }));
 vi.mock("@/lib/toast", () => ({ toast: { error: toastError } }));
 vi.mock("@/query-client", () => ({
   default: { invalidateQueries: vi.fn() },
@@ -23,7 +20,8 @@ const status = (taskId: string, value = "done") => ({
   projectId: "p1",
   status: value,
 });
-const queuedIds = () => queuedEdits().map((edit) => edit.taskId);
+const queuedIds = () =>
+  queuedEdits().map((edit) => ("taskId" in edit ? edit.taskId : null));
 
 beforeEach(() => {
   vi.clearAllMocks();

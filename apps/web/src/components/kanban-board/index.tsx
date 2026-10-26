@@ -17,6 +17,7 @@ import {
 } from "@dnd-kit/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
+import { saveTaskEdit } from "@/lib/offline/save-task-edit";
 import reorderTasks, { type TaskReorder } from "@/fetchers/task/reorder-tasks";
 import { toast } from "@/lib/toast";
 import { useTranslation } from "react-i18next";
@@ -67,11 +68,16 @@ function KanbanBoard({
   const dragPreview = useDragPreview(project);
   const { t } = useTranslation();
   const { mutate: reorder, isPending: isReordering } = useMutation({
+    meta: { queuesOffline: true },
+    // Runs offline too, where saveTaskEdit queues the move.
+    networkMode: "always",
     mutationFn: ({
       previousBoard: _previousBoard,
       ...request
-    }: TaskReorder & { previousBoard: ProjectWithTasks }) =>
-      reorderTasks(request),
+    }: Required<TaskReorder> & { previousBoard: ProjectWithTasks }) =>
+      saveTaskEdit({ kind: "reorder", ...request }, () =>
+        reorderTasks(request),
+      ),
     onMutate: (variables) => ({ previousBoard: variables.previousBoard }),
     onSuccess: (_result, variables) => {
       if (variables.tasks.some((task) => task.status !== undefined)) {

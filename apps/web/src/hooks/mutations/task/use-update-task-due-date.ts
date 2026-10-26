@@ -5,6 +5,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { invalidateMyWork } from "@/lib/invalidate-my-work";
 import updateTaskDueDate from "@/fetchers/task/update-task-due-date";
+import { saveTaskEdit } from "@/lib/offline/save-task-edit";
 import type Task from "@/types/task";
 import { updateBoardTaskCache } from "@/lib/update-board-task-cache";
 
@@ -12,7 +13,19 @@ export function useUpdateTaskDueDate() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (task: Task) => updateTaskDueDate(task.id, task),
+    meta: { queuesOffline: true },
+    // Runs offline too, where saveTaskEdit queues the change.
+    networkMode: "always",
+    mutationFn: (task: Task) =>
+      saveTaskEdit(
+        {
+          kind: "dueDate",
+          taskId: task.id,
+          projectId: task.projectId,
+          dueDate: task.dueDate || null,
+        },
+        () => updateTaskDueDate(task.id, task),
+      ),
     onMutate: (task: Task) => {
       markBoardCacheChanged(queryClient, task.projectId, task.id);
       return {
@@ -24,15 +37,16 @@ export function useUpdateTaskDueDate() {
       queryClient.invalidateQueries({
         queryKey: ["task", variables.id],
       });
-      updateBoardTaskCache(
-        queryClient,
-        variables.projectId,
-        variables.id,
-        {
-          dueDate: updated.dueDate,
-        },
-        context?.version,
-      );
+      if (updated)
+        updateBoardTaskCache(
+          queryClient,
+          variables.projectId,
+          variables.id,
+          {
+            dueDate: updated.dueDate,
+          },
+          context?.version,
+        );
       queryClient.invalidateQueries({
         queryKey: ["notifications"],
       });

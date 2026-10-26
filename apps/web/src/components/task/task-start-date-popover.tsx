@@ -6,7 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useUpdateTask } from "@/hooks/mutations/task/use-update-task";
+import { useUpdateTaskStartDate } from "@/hooks/mutations/task/use-update-task-start-date";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { toast } from "@/lib/toast";
 import type Task from "@/types/task";
@@ -22,7 +22,7 @@ export default function TaskStartDatePopover({
 }: TaskStartDatePopoverProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const { mutateAsync: updateTask } = useUpdateTask();
+  const { mutateAsync: updateTask } = useUpdateTaskStartDate();
   const { canUpdateTasks } = useWorkspacePermission();
   const canEdit = canUpdateTasks();
 

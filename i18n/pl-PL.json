@@ -171,7 +171,7 @@
 			}
 		},
 		"offline": {
-			"banner": "Offline · zmiany statusu zostaną wysłane po połączeniu",
+			"banner": "Offline · zmiany zadań zostaną wysłane po połączeniu",
 			"changesDisabled": "Jesteś offline. Ta zmiana wymaga połączenia.",
 			"waiting_one": "Offline · {{count}} zmiana czeka",
 			"waiting_few": "Offline · {{count}} zmiany czekają",
@@ -181,10 +181,10 @@
 			"sending_few": "Wysyłanie {{count}} zmian offline",
 			"sending_many": "Wysyłanie {{count}} zmian offline",
 			"sending_other": "Wysyłanie {{count}} zmiany offline",
-			"editsDropped_one": "Nie udało się zapisać {{count}} zmiany offline. Zadanie zostało usunięte albo nie masz już do niego dostępu.",
-			"editsDropped_few": "Nie udało się zapisać {{count}} zmian offline. Zadania zostały usunięte albo nie masz już do nich dostępu.",
-			"editsDropped_many": "Nie udało się zapisać {{count}} zmian offline. Zadania zostały usunięte albo nie masz już do nich dostępu.",
-			"editsDropped_other": "Nie udało się zapisać {{count}} zmiany offline. Zadania zostały usunięte albo nie masz już do nich dostępu."
+			"editsDropped_one": "Nie udało się zapisać {{count}} zmiany offline. Ktoś inny zmienił tablicę, zadanie zostało usunięte albo nie masz już do niego dostępu.",
+			"editsDropped_few": "Nie udało się zapisać {{count}} zmian offline. Ktoś inny zmienił tablicę, zadania zostały usunięte albo nie masz już do nich dostępu.",
+			"editsDropped_many": "Nie udało się zapisać {{count}} zmian offline. Ktoś inny zmienił tablicę, zadania zostały usunięte albo nie masz już do nich dostępu.",
+			"editsDropped_other": "Nie udało się zapisać {{count}} zmiany offline. Ktoś inny zmienił tablicę, zadania zostały usunięte albo nie masz już do nich dostępu."
 		}
 	},
 	"auth": {

@@ -3,7 +3,7 @@ import queryClient from "@/query-client";
 import { queuedEdits } from "./edit-outbox";
 import { restoreSnapshot } from "./query-persister";
 import { replayEdits } from "./replay-edits";
-import { showTaskEdit } from "./task-edit";
+import { showTaskEdit } from "./show-task-edit";
 
 const RETRY_MS = 30_000;
 

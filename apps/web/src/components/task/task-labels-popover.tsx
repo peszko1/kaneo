@@ -93,6 +93,14 @@ function TaskLabelsMenu({ task, workspaceId, onClose }: TaskLabelsMenuProps) {
         label.name.toLowerCase() === name.toLowerCase(),
     );
 
+  const labelChange = (label: { id: string; name: string; color: string }) => ({
+    labelId: label.id,
+    taskId: task.id,
+    projectId: task.projectId,
+    name: label.name,
+    color: label.color,
+  });
+
   const refreshTasks = () =>
     queryClient.invalidateQueries({ queryKey: ["tasks", task.projectId] });
 
@@ -106,10 +114,15 @@ function TaskLabelsMenu({ task, workspaceId, onClose }: TaskLabelsMenuProps) {
         const taskLabel = taskLabels.find(
           (label) => label.name === workspaceLabel.name,
         );
-        if (taskLabel?.id) await detachLabel({ labelId: taskLabel.id });
+        if (taskLabel?.id)
+          await detachLabel({
+            ...labelChange(workspaceLabel),
+            labelId: taskLabel.id,
+            workspaceLabelId: workspaceLabel.id,
+          });
       } else {
         if (workspaceLabel.taskId !== null) return;
-        await attachLabel({ labelId: workspaceLabel.id, taskId: task.id });
+        await attachLabel(labelChange(workspaceLabel));
       }
       await refreshTasks();
     } catch (error) {
@@ -130,7 +143,7 @@ function TaskLabelsMenu({ task, workspaceId, onClose }: TaskLabelsMenuProps) {
         color,
         workspaceId,
       });
-      await attachLabel({ labelId: created.id, taskId: task.id });
+      await attachLabel(labelChange(created));
       await refreshTasks();
       toast.success(t("tasks:popover.labels.createSuccess"), { icon: TagIcon });
     } catch (error) {

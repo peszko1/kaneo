@@ -40,10 +40,17 @@ function write(edits: QueuedEdit[]) {
   for (const listener of listeners) listener();
 }
 
+// Edits go out in the order they were made. A newer edit replaces only the
+// last one, if both set the same field: a move queued in between expects the
+// board as it was, so earlier edits stay as they are.
 export function queueEdit(edit: TaskEdit) {
+  const edits = queuedEdits();
+  const last = edits.at(-1);
   const editKey = taskEditKey(edit);
+  const replacesLast =
+    editKey !== null && last && taskEditKey(last) === editKey;
   write([
-    ...queuedEdits().filter((queued) => taskEditKey(queued) !== editKey),
+    ...(replacesLast ? edits.slice(0, -1) : edits),
     { ...edit, id: crypto.randomUUID(), at: Date.now() },
   ]);
 }

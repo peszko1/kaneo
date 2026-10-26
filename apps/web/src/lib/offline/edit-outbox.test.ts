@@ -21,16 +21,42 @@ beforeEach(() => {
   clearEdits();
 });
 
+const queuedStatuses = () =>
+  queuedEdits().map((edit) =>
+    edit.kind === "status" ? [edit.taskId, edit.status] : [],
+  );
+
 describe("edit outbox", () => {
-  it("keeps the newest edit of a field and moves it to the end", () => {
+  it("replaces the last edit when the new one sets the same field", () => {
+    queueEdit(status("t1", "to-do"));
+    queueEdit(status("t1", "in-progress"));
+
+    expect(queuedStatuses()).toEqual([["t1", "in-progress"]]);
+  });
+
+  it("keeps older edits in order once another edit came between", () => {
     queueEdit(status("t1", "to-do"));
     queueEdit(status("t2", "done"));
     queueEdit(status("t1", "in-progress"));
 
-    expect(queuedEdits().map((edit) => [edit.taskId, edit.status])).toEqual([
+    expect(queuedStatuses()).toEqual([
+      ["t1", "to-do"],
       ["t2", "done"],
       ["t1", "in-progress"],
     ]);
+  });
+
+  it("never replaces a move", () => {
+    const move = {
+      kind: "reorder" as const,
+      projectId: "p1",
+      tasks: [{ id: "t1", position: 0 }],
+      expectedTasks: [],
+    };
+    queueEdit(move);
+    queueEdit(move);
+
+    expect(queuedEdits()).toHaveLength(2);
   });
 
   it("stores the queue per user, where every tab reads it", () => {
