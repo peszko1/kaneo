@@ -20,6 +20,7 @@ import { FocusDoneButton } from "./focus-done-button";
 import { FocusModeSwitch } from "./focus-mode-switch";
 import { FocusNoisePopover } from "./focus-noise-popover";
 import { FocusSettingsPopover } from "./focus-settings-popover";
+import { FocusUrgeCounter } from "./focus-urge-counter";
 import {
   clockText,
   currentRound,
@@ -89,7 +90,7 @@ function FocusPanel({ session }: { session: FocusSession }) {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-8 px-4 pb-16">
+      <div className="relative flex flex-1 flex-col items-center justify-center gap-8 px-4 pb-16">
         <div className="flex flex-col items-center gap-2 text-center">
           <DialogPrimitive.Title className="font-medium text-muted-foreground text-sm">
             {overtime
@@ -200,6 +201,12 @@ function FocusPanel({ session }: { session: FocusSession }) {
           </Button>
           <FocusDoneButton taskId={session.taskId} />
         </div>
+
+        {session.phase === "focus" && (
+          <div className="lg:-translate-y-1/2 lg:absolute lg:top-1/2 lg:right-8">
+            <FocusUrgeCounter />
+          </div>
+        )}
       </div>
     </>
   );

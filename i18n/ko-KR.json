@@ -3463,6 +3463,10 @@
 				"title": "Background noise",
 				"volume": "Volume",
 				"white": "White"
+			},
+			"urge": {
+				"prompt": "Want to stop? Click here and take a breath.",
+				"resisted_other": "Well done! You won {{count}} times!"
 			}
 		},
 		"ideas": {
