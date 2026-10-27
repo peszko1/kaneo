@@ -85,6 +85,9 @@ beforeEach(() => {
   ];
   useLocation.mockReturnValue({ pathname: "/dashboard/workspace/workspace-1" });
 });
+const createLabel = vi.fn();
+let workspaceLabels: Array<{ id: string; name: string; color: string }> = [];
+
 const createTask = vi.fn(async (input: Record<string, unknown>) => ({
   id: "task-1",
   title: input.title,
@@ -129,7 +132,7 @@ vi.mock("@/components/task/task-description-editor", () => ({
 }));
 
 vi.mock("@/hooks/mutations/label/use-create-label", () => ({
-  default: () => ({ mutateAsync: vi.fn() }),
+  default: () => ({ mutateAsync: createLabel }),
 }));
 
 vi.mock("@/hooks/mutations/task/use-create-task", () => ({
@@ -145,7 +148,7 @@ vi.mock("@/hooks/mutations/task/use-update-task", () => ({
 }));
 
 vi.mock("@/hooks/queries/label/use-get-labels-by-workspace", () => ({
-  default: () => ({ data: [] }),
+  default: () => ({ data: workspaceLabels }),
 }));
 
 vi.mock("@/hooks/queries/workspace/use-active-workspace", () => ({
@@ -209,6 +212,42 @@ vi.mock("react-i18next", () => ({
 }));
 
 describe("CreateTaskModal", () => {
+  it("files a global board task in the inbox with the board's label", async () => {
+    workspaceLabels = [{ id: "label-1", name: "Home", color: "blue" }];
+
+    render(
+      <CreateTaskModal
+        open
+        status="planned"
+        onClose={vi.fn()}
+        inboxProject={{ id: "inbox-1", slug: "INBOX" }}
+        presetLabelName="home"
+      />,
+      { wrapper: createWrapper() },
+    );
+    fireEvent.change(
+      screen.getByPlaceholderText(
+        "common:modals.createTask.taskTitlePlaceholder",
+      ),
+      { target: { value: "Labelled idea" } },
+    );
+    fireEvent.submit(document.querySelector("form") as HTMLFormElement);
+
+    await vi.waitFor(() => {
+      expect(createTask).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: "Labelled idea",
+          projectId: "inbox-1",
+          status: "planned",
+        }),
+      );
+      expect(createLabel).toHaveBeenCalledWith(
+        expect.objectContaining({ name: "Home", color: "blue" }),
+      );
+    });
+    workspaceLabels = [];
+  });
+
   it("keeps unsaved input while discard confirmation is open", async () => {
     useLocation.mockReturnValue({
       pathname: "/dashboard/workspace/workspace-1/project/project-1/board",

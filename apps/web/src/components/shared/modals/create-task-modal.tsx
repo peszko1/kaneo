@@ -57,7 +57,9 @@ import {
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import { getColumnIcon } from "@/lib/column";
 import { getStatusDisplayLabel } from "@/lib/i18n/domain";
+import { useQueryClient } from "@tanstack/react-query";
 import useCreateLabel from "@/hooks/mutations/label/use-create-label";
+import { invalidateMyWork } from "@/lib/invalidate-my-work";
 import useCreateTask from "@/hooks/mutations/task/use-create-task";
 import useGetCustomFieldsByProject from "@/hooks/queries/custom-field/use-get-custom-fields-by-project";
 import useGetLabelsByWorkspace from "@/hooks/queries/label/use-get-labels-by-workspace";
@@ -88,6 +90,10 @@ type CreateTaskModalProps = {
   status?: string;
   projectId?: string;
   instant?: boolean;
+  // Offered first and used when no project is picked, as on the global board.
+  inboxProject?: { id: string; slug: string };
+  // A workspace label the new task starts with, such as a pinned label.
+  presetLabelName?: string;
 };
 
 type Priority = "no-priority" | "low" | "medium" | "high" | "urgent";
@@ -132,6 +138,8 @@ function CreateTaskModalContent({
   status,
   projectId,
   instant = false,
+  inboxProject,
+  presetLabelName,
 }: CreateTaskModalProps) {
   const { t } = useTranslation();
   const { project, setProject } = useProjectStore();
@@ -149,6 +157,7 @@ function CreateTaskModalContent({
   const { data: workspaceUsers } = useGetActiveWorkspaceUsers(
     workspace?.id || "",
   );
+  const queryClient = useQueryClient();
   const { mutateAsync: createLabel } = useCreateLabel();
   const { data: workspaceLabels = [] } = useGetLabelsByWorkspace(
     workspace?.id || "",
@@ -189,25 +198,51 @@ function CreateTaskModalContent({
   const { data: workspaceProjects } = useGetProjects({
     workspaceId: workspace?.id || "",
   });
+  const projectChoices = useMemo(
+    () => [
+      ...(inboxProject
+        ? [{ ...inboxProject, name: t("tasks:ideas.title") }]
+        : []),
+      ...(workspaceProjects ?? []),
+    ],
+    [inboxProject, workspaceProjects, t],
+  );
   // Only a project from this workspace's query may receive new content.
   // The global project store can still contain the last visited workspace.
-  const resolvedProject = workspaceProjects?.find(
-    (candidate) => candidate.id === (explicitProjectId || selectedProjectId),
+  const resolvedProject = projectChoices.find(
+    (candidate) =>
+      candidate.id ===
+      (explicitProjectId || selectedProjectId || inboxProject?.id),
   );
   const resolvedProjectId = resolvedProject?.id ?? "";
   const { data: projectDefaultLabels, isSuccess: defaultLabelsLoaded } =
     useGetProjectDefaultLabels(resolvedProjectId);
-  const labels = useMemo<Label[]>(
-    () =>
-      labelsChoice ??
-      (projectDefaultLabels ?? []).map((label) => ({
-        ...label,
-        taskId: null,
-        workspaceId: workspace?.id ?? "",
-        createdAt: "",
-      })),
-    [labelsChoice, projectDefaultLabels, workspace?.id],
-  );
+  const presetLabel = presetLabelName
+    ? workspaceLabels.find(
+        (label) => label.name.toLowerCase() === presetLabelName.toLowerCase(),
+      )
+    : undefined;
+  const labels = useMemo<Label[]>(() => {
+    if (labelsChoice) return labelsChoice;
+    const defaults = (projectDefaultLabels ?? []).map((label) => ({
+      ...label,
+      taskId: null,
+      workspaceId: workspace?.id ?? "",
+      createdAt: "",
+    }));
+    return presetLabel &&
+      !defaults.some((label) => label.name === presetLabel.name)
+      ? [
+          ...defaults,
+          {
+            ...presetLabel,
+            taskId: null,
+            workspaceId: workspace?.id ?? "",
+            createdAt: "",
+          },
+        ]
+      : defaults;
+  }, [labelsChoice, projectDefaultLabels, presetLabel, workspace?.id]);
   const { data: projectMembers } = useGetProjectMembers({
     workspaceId: workspace?.id || "",
     projectId: resolvedProjectId,
@@ -537,6 +572,8 @@ function CreateTaskModalContent({
           console.error("Failed to create label:", error);
         }
       }
+      // Boards filtered by label refetched before the labels were attached.
+      if (labels.length > 0) invalidateMyWork(queryClient);
 
       stagedAssetsRef.current = [];
       if (!activeRef.current) return;
@@ -817,7 +854,7 @@ function CreateTaskModalContent({
                   </PopoverTrigger>
                   <PopoverContent className="w-48 p-1" align="start">
                     <div className="space-y-1">
-                      {workspaceProjects?.map((workspaceProject) => (
+                      {projectChoices.map((workspaceProject) => (
                         <button
                           key={workspaceProject.id}
                           type="button"
