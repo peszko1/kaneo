@@ -3528,6 +3528,11 @@
 				"white": "White",
 				"volume": "Volume",
 				"hint": "Plays while focus time runs, and stops during breaks. Brown noise is the deepest, white noise the brightest."
+			},
+			"urge": {
+				"prompt": "Want to stop? Click here and take a breath.",
+				"resisted_one": "Well done! You won {{count}} time!",
+				"resisted_other": "Well done! You won {{count}} times!"
 			}
 		},
 		"ideas": {

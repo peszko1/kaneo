@@ -3658,6 +3658,13 @@
 				"title": "Background noise",
 				"volume": "Volume",
 				"white": "White"
+			},
+			"urge": {
+				"prompt": "Want to stop? Click here and take a breath.",
+				"resisted_few": "Well done! You won {{count}} times!",
+				"resisted_many": "Well done! You won {{count}} times!",
+				"resisted_one": "Well done! You won {{count}} time!",
+				"resisted_other": "Well done! You won {{count}} times!"
 			}
 		},
 		"ideas": {

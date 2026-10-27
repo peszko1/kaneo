@@ -3938,6 +3938,13 @@
 				"white": "Biały",
 				"volume": "Głośność",
 				"hint": "Gra, gdy trwa czas skupienia, i milknie w przerwach. Szum brązowy jest najgłębszy, biały najjaśniejszy."
+			},
+			"urge": {
+				"prompt": "Chcesz przerwać? Kliknij tutaj i weź oddech.",
+				"resisted_one": "Brawo! Wygrałeś {{count}} raz!",
+				"resisted_few": "Brawo! Wygrałeś {{count}} razy!",
+				"resisted_many": "Brawo! Wygrałeś {{count}} razy!",
+				"resisted_other": "Brawo! Wygrałeś {{count}} razy!"
 			}
 		},
 		"ideas": {
