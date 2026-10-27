@@ -194,11 +194,11 @@ function FocusPanel({ session }: { session: FocusSession }) {
               {t("tasks:focus.actions.extendBreak")}
             </Button>
           )}
-          <FocusDoneButton taskId={session.taskId} />
-          <Button size="lg" variant="ghost" onClick={stop}>
+          <Button size="lg" variant="outline" onClick={stop}>
             <Square />
             {t("tasks:focus.actions.stop")}
           </Button>
+          <FocusDoneButton taskId={session.taskId} />
         </div>
       </div>
     </>

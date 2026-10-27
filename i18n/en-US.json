@@ -3480,13 +3480,13 @@
 				"pause": "Pause",
 				"resume": "Resume",
 				"skip": "Skip",
-				"stop": "Stop",
+				"stop": "End session",
 				"minimize": "Minimize",
 				"stopAlarm": "Stop alarm",
 				"takeBreak": "Take a break",
 				"extendBreak": "+5 min",
 				"extendBreakLabel": "Add 5 minutes to the break",
-				"markDone": "Done"
+				"markDone": "Mark as done"
 			},
 			"mode": {
 				"label": "Timer mode",
