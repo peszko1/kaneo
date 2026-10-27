@@ -31,8 +31,19 @@ export const DEFAULT_PROJECT_COLUMNS = [
   { name: "Done", slug: "done", position: 3, isFinal: true },
 ] as const;
 
-async function seedDefaultColumns(tx: Transaction, projectId: string) {
-  for (const col of DEFAULT_PROJECT_COLUMNS) {
+type ProjectColumnSeed = {
+  name: string;
+  slug: string;
+  position: number;
+  isFinal: boolean;
+};
+
+async function seedColumns(
+  tx: Transaction,
+  projectId: string,
+  columns: readonly ProjectColumnSeed[],
+) {
+  for (const col of columns) {
     await tx.insert(columnTable).values({
       projectId,
       name: col.name,
@@ -63,7 +74,7 @@ export async function insertProject(
     .returning();
 
   if (createdProject) {
-    await seedDefaultColumns(tx, createdProject.id);
+    await seedColumns(tx, createdProject.id, DEFAULT_PROJECT_COLUMNS);
     await grantProjectToRestrictedMember(tx, {
       workspaceId,
       userId,
@@ -77,6 +88,7 @@ export async function insertProject(
 export async function insertUnplacedProject(
   tx: Transaction,
   { workspaceId, name, icon, slug, userId }: NewProject,
+  columns: readonly ProjectColumnSeed[] = DEFAULT_PROJECT_COLUMNS,
 ) {
   const [createdProject] = await tx
     .insert(projectTable)
@@ -84,7 +96,7 @@ export async function insertUnplacedProject(
     .returning();
 
   if (createdProject) {
-    await seedDefaultColumns(tx, createdProject.id);
+    await seedColumns(tx, createdProject.id, columns);
     await grantProjectToRestrictedMember(tx, {
       workspaceId,
       userId,

@@ -67,6 +67,17 @@ describe("private inbox", () => {
     const inbox = await mine.inbox(workspace.id);
     expect(inbox).toMatchObject({ slug: "INBOX", isInbox: true });
     expect((await mine.inbox(workspace.id)).id).toBe(inbox.id);
+    // No review step, so the global board never asks which column to use.
+    const columns = await db
+      .select({ slug: schema.columnTable.slug })
+      .from(schema.columnTable)
+      .where(eq(schema.columnTable.projectId, inbox.id))
+      .orderBy(schema.columnTable.position);
+    expect(columns.map((column) => column.slug)).toEqual([
+      "to-do",
+      "in-progress",
+      "done",
+    ]);
     expect((await as(owner).inbox(workspace.id)).slug).toBe("INBOX2");
 
     const created = await mine.json("POST", `/task/${inbox.id}`, {
