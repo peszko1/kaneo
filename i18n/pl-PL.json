@@ -1013,11 +1013,7 @@
 		},
 		"home": {
 			"activity": {
-				"commented": "commented",
-				"empty": "Nothing has happened in the last 30 days.",
-				"loadError": "Activity couldn't be loaded.",
-				"title": "Activity",
-				"updated": "updated the task"
+				"loadError": "Activity couldn't be loaded."
 			},
 			"greeting": {
 				"afternoon": "Good afternoon",
@@ -1026,23 +1022,6 @@
 			},
 			"newTask": "New task",
 			"pageTitle": "Home",
-			"projects": {
-				"all": "All projects",
-				"tasks_few": "{{count}} tasks",
-				"tasks_many": "{{count}} tasks",
-				"tasks_one": "{{count}} task",
-				"tasks_other": "{{count}} tasks",
-				"title": "Your projects",
-				"loadError": "Projects couldn't be loaded."
-			},
-			"upNext": {
-				"assigned_few": "{{count}} assigned to you",
-				"assigned_many": "{{count}} assigned to you",
-				"assigned_one": "{{count}} assigned to you",
-				"assigned_other": "{{count}} assigned to you",
-				"title": "Up next",
-				"viewAll": "View all"
-			},
 			"week": {
 				"more_few": "+{{count}} more",
 				"more_many": "+{{count}} more",
@@ -1053,7 +1032,20 @@
 			"focusToday_one": "Dziś zarejestrowano: {{time}} w {{count}} wpisie",
 			"focusToday_few": "Dziś zarejestrowano: {{time}} w {{count}} wpisach",
 			"focusToday_many": "Dziś zarejestrowano: {{time}} w {{count}} wpisach",
-			"focusToday_other": "Dziś zarejestrowano: {{time}} w {{count}} wpisu"
+			"focusToday_other": "Dziś zarejestrowano: {{time}} w {{count}} wpisu",
+			"timeSpent": {
+				"title": "Spędzony czas",
+				"range": "Zakres czasu",
+				"days_one": "Dziś",
+				"days_few": "{{count}} dni",
+				"days_many": "{{count}} dni",
+				"days_other": "{{count}} dnia",
+				"loadError": "Nie udało się wczytać zarejestrowanego czasu.",
+				"empty_one": "Dziś nie zarejestrowano czasu.",
+				"empty_few": "Brak zarejestrowanego czasu w ostatnich {{count}} dniach.",
+				"empty_many": "Brak zarejestrowanego czasu w ostatnich {{count}} dniach.",
+				"empty_other": "Brak zarejestrowanego czasu w ostatnich {{count}} dnia."
+			}
 		},
 		"myTasks": {
 			"emptyDescription": "Tasks assigned to you across this workspace show up here.",

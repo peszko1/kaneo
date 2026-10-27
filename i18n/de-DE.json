@@ -3626,11 +3626,7 @@
 		},
 		"home": {
 			"activity": {
-				"commented": "hat kommentiert",
-				"empty": "In den letzten 30 Tagen ist nichts passiert.",
-				"loadError": "Aktivitäten konnten nicht geladen werden.",
-				"title": "Aktivität",
-				"updated": "hat die Aufgabe aktualisiert"
+				"loadError": "Aktivitäten konnten nicht geladen werden."
 			},
 			"greeting": {
 				"afternoon": "Guten Tag",
@@ -3639,26 +3635,22 @@
 			},
 			"newTask": "Neue Aufgabe",
 			"pageTitle": "Startseite",
-			"projects": {
-				"all": "Alle Projekte",
-				"tasks_one": "{{count}} Aufgabe",
-				"tasks_other": "{{count}} Aufgaben",
-				"title": "Deine Projekte",
-				"loadError": "Projekte konnten nicht geladen werden."
-			},
-			"upNext": {
-				"assigned_one": "{{count}} dir zugewiesen",
-				"assigned_other": "{{count}} dir zugewiesen",
-				"title": "Als Nächstes",
-				"viewAll": "Alle ansehen"
-			},
 			"week": {
 				"more_one": "+{{count}} weitere",
 				"more_other": "+{{count}} weitere",
 				"truncated": "Die Wochenvorschau enthält nur die ersten {{shown}} von {{total}} zugewiesenen Aufgaben."
 			},
 			"focusToday_one": "Tracked today: {{time}} in {{count}} entry",
-			"focusToday_other": "Tracked today: {{time}} in {{count}} entries"
+			"focusToday_other": "Tracked today: {{time}} in {{count}} entries",
+			"timeSpent": {
+				"days_one": "Today",
+				"days_other": "{{count}} days",
+				"empty_one": "No time tracked today.",
+				"empty_other": "No time tracked in the last {{count}} days.",
+				"loadError": "Tracked time could not be loaded.",
+				"range": "Time range",
+				"title": "Time spent"
+			}
 		},
 		"myTasks": {
 			"emptyDescription": "Hier erscheinen die Aufgaben, die dir in diesem Workspace zugewiesen sind.",

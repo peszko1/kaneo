@@ -49,3 +49,23 @@ export const projectTimeTotalsSchema = z
     ),
   })
   .openapi("ProjectTimeTotals");
+
+export const taskTimeTotalsSchema = z
+  .object({
+    tasks: z.array(
+      z.object({
+        taskId: z.string(),
+        taskNumber: z.number().nullable(),
+        taskTitle: z.string(),
+        projectId: z.string(),
+        projectName: z.string(),
+        projectSlug: z.string(),
+        projectIcon: z.string().nullable(),
+        totalSeconds: z.number().openapi({
+          description:
+            "Seconds of the caller's finished time entries on the task that started in the range.",
+        }),
+      }),
+    ),
+  })
+  .openapi("TaskTimeTotals");

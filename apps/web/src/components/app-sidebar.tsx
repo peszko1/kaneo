@@ -41,8 +41,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="overflow-hidden gap-1 py-1">
         <NavMain />
-        <NavProjects />
         <NavPinnedLabels />
+        <NavProjects />
       </SidebarContent>
       <SidebarFooter>
         <FocusSidebarTimer />

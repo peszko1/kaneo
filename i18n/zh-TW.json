@@ -3571,25 +3571,17 @@
 				"truncated": "本週預覽只顯示 {{total}} 個指派任務中的前 {{shown}} 個。",
 				"more_other": "還有 {{count}} 個"
 			},
-			"upNext": {
-				"title": "接下來",
-				"assigned_other": "{{count}} 個指派給你",
-				"viewAll": "查看全部"
-			},
-			"projects": {
-				"title": "你的專案",
-				"all": "所有專案",
-				"loadError": "無法載入專案。",
-				"tasks_other": "{{count}} 個任務"
-			},
 			"activity": {
-				"title": "動態",
-				"commented": "已留言",
-				"updated": "更新了任務",
-				"empty": "過去 30 天沒有任何動態。",
 				"loadError": "無法載入動態。"
 			},
-			"focusToday_other": "Tracked today: {{time}} in {{count}} entries"
+			"focusToday_other": "Tracked today: {{time}} in {{count}} entries",
+			"timeSpent": {
+				"days_other": "{{count}} days",
+				"empty_other": "No time tracked in the last {{count}} days.",
+				"loadError": "Tracked time could not be loaded.",
+				"range": "Time range",
+				"title": "Time spent"
+			}
 		},
 		"myWork": {
 			"empty": "沒有指派給你的任務",

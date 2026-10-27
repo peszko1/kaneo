@@ -1,14 +1,16 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import {
+  ChevronDown,
   CircleCheck,
+  Ellipsis,
   House,
   Inbox,
   ListChecks,
-  type LucideIcon,
   Mail,
   SquareKanban,
   Users,
 } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   SidebarGroup,
@@ -22,14 +24,8 @@ import useGetNotifications from "@/hooks/queries/notification/use-get-notificati
 import useGetAssignedTasks from "@/hooks/queries/task/use-get-assigned-tasks";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { cn } from "@/lib/cn";
-
-type NavItem = {
-  title: string;
-  icon: LucideIcon;
-  url: string;
-  count?: number;
-  emphasizeCount?: boolean;
-};
+import { ItemCount } from "./item-count";
+import { type NavItem, NavMainItem } from "./nav-main-item";
 
 export function NavMain() {
   const { t } = useTranslation();
@@ -41,6 +37,7 @@ export function NavMain() {
   const { data: invitations = [] } = usePendingInvitations();
   const { data: notifications = [] } = useGetNotifications(workspace?.id);
   const { data: assignedTasks } = useGetAssignedTasks(workspace?.id, true);
+  const [moreOpen, setMoreOpen] = useState(false);
 
   if (!workspace) return null;
 
@@ -51,6 +48,18 @@ export function NavMain() {
 
   const navItems: NavItem[] = [
     { title: t("navigation:sidebar.home"), icon: House, url: homeUrl },
+    {
+      title: t("navigation:sidebar.habits"),
+      icon: ListChecks,
+      url: "/dashboard/habits",
+    },
+    {
+      title: t("navigation:sidebar.globalBoard"),
+      icon: SquareKanban,
+      url: "/dashboard/global-board",
+    },
+  ];
+  const moreItems: NavItem[] = [
     {
       title: t("navigation:sidebar.inbox"),
       icon: Inbox,
@@ -65,16 +74,6 @@ export function NavMain() {
       count: assignedTasks?.total,
     },
     {
-      title: t("navigation:sidebar.globalBoard"),
-      icon: SquareKanban,
-      url: "/dashboard/global-board",
-    },
-    {
-      title: t("navigation:sidebar.habits"),
-      icon: ListChecks,
-      url: "/dashboard/habits",
-    },
-    {
       title: t("navigation:sidebar.members"),
       icon: Users,
       url: `${homeUrl}/members`,
@@ -83,7 +82,7 @@ export function NavMain() {
 
   // Invitations to other workspaces only matter while one is waiting.
   if (invitations.length > 0) {
-    navItems.push({
+    moreItems.push({
       title: t("navigation:sidebar.invitations"),
       icon: Mail,
       url: "/dashboard/invitations",
@@ -92,36 +91,56 @@ export function NavMain() {
     });
   }
 
+  // The page you are on stays visible, and so does anything waiting for you.
+  const showMore = moreOpen || moreItems.some((item) => item.url === pathname);
+  const waiting = moreItems
+    .filter((item) => item.emphasizeCount)
+    .reduce((sum, item) => sum + (item.count ?? 0), 0);
+
   return (
     <SidebarGroup className="gap-1 p-2">
       <SidebarGroupContent>
         <SidebarMenu className="gap-0.5">
           {navItems.map((item) => (
-            <SidebarMenuItem key={item.url}>
-              <SidebarMenuButton
-                tooltip={item.title}
-                isActive={pathname === item.url}
-                size="default"
-                className="h-8 text-sm"
-                onClick={() => navigate({ to: item.url })}
-              >
-                <item.icon aria-hidden="true" />
-                <span>{item.title}</span>
-                {item.count ? (
-                  <span
-                    className={cn(
-                      "ml-auto flex h-4.5 min-w-4.5 shrink-0 items-center justify-center rounded-full px-1 text-[11px] tabular-nums",
-                      item.emphasizeCount
-                        ? "bg-foreground font-semibold text-background"
-                        : "font-medium text-muted-foreground",
-                    )}
-                  >
-                    {item.count > 99 ? "99+" : item.count}
-                  </span>
-                ) : null}
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            <NavMainItem
+              key={item.url}
+              item={item}
+              isActive={pathname === item.url}
+              onClick={() => navigate({ to: item.url })}
+            />
           ))}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip={t("navigation:sidebar.more")}
+              aria-expanded={showMore}
+              size="default"
+              className="h-8 text-sm text-muted-foreground"
+              onClick={() => setMoreOpen(!showMore)}
+            >
+              <Ellipsis aria-hidden="true" />
+              <span>{t("navigation:sidebar.more")}</span>
+              {!showMore && waiting > 0 ? (
+                <ItemCount count={waiting} emphasize />
+              ) : null}
+              <ChevronDown
+                aria-hidden="true"
+                className={cn(
+                  "ml-auto transition-transform motion-reduce:transition-none",
+                  showMore && "rotate-180",
+                  !showMore && waiting > 0 && "ml-0",
+                )}
+              />
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          {showMore &&
+            moreItems.map((item) => (
+              <NavMainItem
+                key={item.url}
+                item={item}
+                isActive={pathname === item.url}
+                onClick={() => navigate({ to: item.url })}
+              />
+            ))}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

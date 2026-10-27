@@ -9,11 +9,13 @@ import { workspaceAccess } from "../utils/workspace-access-middleware";
 import createTimeEntry from "./controllers/create-time-entry";
 import getTimeEntriesByTaskId from "./controllers/get-time-entries";
 import getProjectTimeTotals from "./controllers/get-project-time-totals";
+import getTaskTimeTotals from "./controllers/get-task-time-totals";
 import getTimeEntry from "./controllers/get-time-entry";
 import getTimeSummary from "./controllers/get-time-summary";
 import updateTimeEntry from "./controllers/update-time-entry";
 import {
   projectTimeTotalsSchema,
+  taskTimeTotalsSchema,
   timeEntryListSchema,
   timeEntrySchema,
   timeSummarySchema,
@@ -60,6 +62,30 @@ const getTimeSummaryRoute = createRoute({
     200: jsonResponse(
       "The caller's tracked time in the range",
       timeSummarySchema,
+    ),
+    400: errorResponse("Invalid workspace ID or timestamps"),
+    403: errorResponse("Missing task:read permission"),
+    404: errorResponse("Workspace not found"),
+  },
+});
+
+const getTaskTimeTotalsRoute = createRoute({
+  method: "get",
+  operationId: "getTaskTimeTotals",
+  path: "/task-totals",
+  tags: ["Time Entries"],
+  summary: "Get my time per task",
+  description:
+    "Total the caller's own finished time entries that started in a range, per task, across the workspace's projects the caller can access. Tasks with the most time come first. Running entries are not counted.",
+  middleware: [
+    workspaceAccess.fromQuery(),
+    requireWorkspacePermission({ task: ["read"] }),
+  ] as const,
+  request: { query: timeSummaryQuery },
+  responses: {
+    200: jsonResponse(
+      "The caller's tracked time per task in the range",
+      taskTimeTotalsSchema,
     ),
     400: errorResponse("Invalid workspace ID or timestamps"),
     403: errorResponse("Missing task:read permission"),
@@ -169,6 +195,18 @@ const timeEntry = apiRouter()
     const { workspaceId, from, to } = c.req.valid("query");
     return c.json(
       await getTimeSummary({
+        workspaceId,
+        userId: c.get("userId"),
+        from: new Date(from),
+        to: new Date(to),
+      }),
+      200,
+    );
+  })
+  .openapi(getTaskTimeTotalsRoute, async (c) => {
+    const { workspaceId, from, to } = c.req.valid("query");
+    return c.json(
+      await getTaskTimeTotals({
         workspaceId,
         userId: c.get("userId"),
         from: new Date(from),

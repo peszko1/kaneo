@@ -3637,28 +3637,20 @@
 				"more_one": "+{{count}} more",
 				"more_other": "+{{count}} more"
 			},
-			"upNext": {
-				"title": "Up next",
-				"assigned_one": "{{count}} assigned to you",
-				"assigned_other": "{{count}} assigned to you",
-				"viewAll": "View all"
-			},
-			"projects": {
-				"title": "Your projects",
-				"all": "All projects",
-				"loadError": "Projects couldn't be loaded.",
-				"tasks_one": "{{count}} task",
-				"tasks_other": "{{count}} tasks"
-			},
 			"activity": {
-				"title": "Activity",
-				"commented": "commented",
-				"updated": "updated the task",
-				"empty": "Nothing has happened in the last 30 days.",
 				"loadError": "Activity couldn't be loaded."
 			},
 			"focusToday_one": "Tracked today: {{time}} in {{count}} entry",
-			"focusToday_other": "Tracked today: {{time}} in {{count}} entries"
+			"focusToday_other": "Tracked today: {{time}} in {{count}} entries",
+			"timeSpent": {
+				"title": "Time spent",
+				"range": "Time range",
+				"days_one": "Today",
+				"days_other": "{{count}} days",
+				"loadError": "Tracked time could not be loaded.",
+				"empty_one": "No time tracked today.",
+				"empty_other": "No time tracked in the last {{count}} days."
+			}
 		},
 		"myWork": {
 			"empty": "Nothing assigned to you",
