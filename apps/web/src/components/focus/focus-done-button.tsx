@@ -26,7 +26,7 @@ export function FocusDoneButton({ taskId }: { taskId: string }) {
   return (
     <Button
       size="lg"
-      variant="outline"
+      variant="ghost"
       disabled={isPending}
       onClick={async () => {
         try {
