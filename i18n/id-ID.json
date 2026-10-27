@@ -3189,7 +3189,10 @@
 		},
 		"kanban": {
 			"addTask": "Tambah tugas",
-			"automaticallySortedHint": "Diurutkan otomatis berdasarkan {{sort}}"
+			"automaticallySortedHint": "Diurutkan otomatis berdasarkan {{sort}}",
+			"backlog": "Backlog",
+			"foldBacklog": "Fold backlog",
+			"openBacklog_other": "Open backlog, {{count}} tasks"
 		},
 		"pr": {
 			"merged": "Digabung",
@@ -3384,7 +3387,8 @@
 				"done": "Done",
 				"in-progress": "In Progress",
 				"to-do": "To Do",
-				"unmapped": "Needs a column"
+				"unmapped": "Needs a column",
+				"backlog": "Backlog"
 			},
 			"loadError": "Couldn't load the board.",
 			"loadingMore": "Loading…",

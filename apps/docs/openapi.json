@@ -11302,15 +11302,16 @@
             "schema": {
               "type": "string",
               "enum": [
+                "backlog",
                 "to-do",
                 "in-progress",
                 "done",
                 "unmapped"
               ],
-              "description": "The board column to page through. `unmapped` lists tasks whose project column cannot be placed on to-do, in-progress, or done without guessing."
+              "description": "The board column to page through. `backlog` lists tasks in their project's backlog. `unmapped` lists tasks whose project column cannot be placed on to-do, in-progress, or done without guessing."
             },
             "required": true,
-            "description": "The board column to page through. `unmapped` lists tasks whose project column cannot be placed on to-do, in-progress, or done without guessing.",
+            "description": "The board column to page through. `backlog` lists tasks in their project's backlog. `unmapped` lists tasks whose project column cannot be placed on to-do, in-progress, or done without guessing.",
             "name": "globalStatus",
             "in": "query"
           },

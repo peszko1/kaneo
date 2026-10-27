@@ -3189,7 +3189,10 @@
 		},
 		"kanban": {
 			"addTask": "Thêm công việc",
-			"automaticallySortedHint": "Tự động sắp xếp theo {{sort}}"
+			"automaticallySortedHint": "Tự động sắp xếp theo {{sort}}",
+			"backlog": "Backlog",
+			"foldBacklog": "Fold backlog",
+			"openBacklog_other": "Open backlog, {{count}} tasks"
 		},
 		"pr": {
 			"merged": "Đã gộp",
@@ -3384,7 +3387,8 @@
 				"done": "Done",
 				"in-progress": "In Progress",
 				"to-do": "To Do",
-				"unmapped": "Needs a column"
+				"unmapped": "Needs a column",
+				"backlog": "Backlog"
 			},
 			"loadError": "Couldn't load the board.",
 			"loadingMore": "Loading…",

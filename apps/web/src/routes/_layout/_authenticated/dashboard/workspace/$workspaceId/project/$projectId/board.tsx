@@ -123,6 +123,7 @@ function RouteComponent() {
         ...column,
         tasks: sortTasks(column.tasks, sort),
       })),
+      plannedTasks: sortTasks(filteredProject.plannedTasks ?? [], sort),
     };
   }, [filters.filteredProject, sort]);
 

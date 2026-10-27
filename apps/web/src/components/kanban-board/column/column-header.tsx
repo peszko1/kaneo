@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { Archive, Plus, ArchiveIcon } from "lucide-react";
+import { Archive, Plus, ArchiveIcon, PanelLeftClose } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import CreateTaskModal from "@/components/shared/modals/create-task-modal";
@@ -14,11 +14,13 @@ import { ArchiveTasksModal } from "../../shared/modals/archive-tasks-modal";
 type ColumnHeaderProps = {
   column: ProjectWithTasks["columns"][number];
   disableCollectionActions?: boolean;
+  onFold?: () => void;
 };
 
 export function ColumnHeader({
   column,
   disableCollectionActions = false,
+  onFold,
 }: ColumnHeaderProps) {
   const { t } = useTranslation();
   const { project, setProject } = useProjectStore();
@@ -71,6 +73,18 @@ export function ColumnHeader({
       </div>
 
       <div className="flex items-center">
+        {onFold && (
+          <button
+            type="button"
+            onClick={onFold}
+            aria-expanded={true}
+            className="flex size-6 cursor-pointer items-center justify-center rounded-md text-chip-icon transition-colors hover:bg-chip-hover hover:text-board-title"
+            title={t("tasks:kanban.foldBacklog")}
+            aria-label={t("tasks:kanban.foldBacklog")}
+          >
+            <PanelLeftClose className="size-3.5" />
+          </button>
+        )}
         {canTask && column.isFinal && column.tasks.length > 0 && (
           <button
             type="button"

@@ -26,9 +26,9 @@ const listParam = <T extends z.ZodType<string>>(item: T, description: string) =>
     .openapi({ description });
 
 export const globalBoardTasksQuery = z.object({
-  globalStatus: z.enum([...GLOBAL_STATUSES, "unmapped"]).openapi({
+  globalStatus: z.enum(["backlog", ...GLOBAL_STATUSES, "unmapped"]).openapi({
     description:
-      "The board column to page through. `unmapped` lists tasks whose project column cannot be placed on to-do, in-progress, or done without guessing.",
+      "The board column to page through. `backlog` lists tasks in their project's backlog. `unmapped` lists tasks whose project column cannot be placed on to-do, in-progress, or done without guessing.",
   }),
   workspaceId: listParam(z.string().min(1), "Workspace IDs."),
   projectId: listParam(z.string().min(1), "Project IDs."),

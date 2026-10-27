@@ -134,6 +134,11 @@ describe("API integration: global board", () => {
 
     const todo = await board(app, "globalStatus=to-do");
     expect(titles(todo)).toEqual(["Client task", "Visible web task"]);
+    // The backlog lane holds planned tasks only, from visible projects.
+    await addTask(agencyHidden, "Restricted planned task", "planned");
+    expect(titles(await board(app, "globalStatus=backlog"))).toEqual([
+      "Planned task",
+    ]);
     expect(
       todo.tasks.find((task) => task.title === "Client task"),
     ).toMatchObject({ projectName: "App", workspaceName: "Client" });

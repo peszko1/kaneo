@@ -3258,7 +3258,11 @@
 		},
 		"kanban": {
 			"addTask": "Add task",
-			"automaticallySortedHint": "Automatically sorted by {{sort}}"
+			"automaticallySortedHint": "Automatically sorted by {{sort}}",
+			"backlog": "Backlog",
+			"openBacklog_one": "Open backlog, {{count}} task",
+			"openBacklog_other": "Open backlog, {{count}} tasks",
+			"foldBacklog": "Fold backlog"
 		},
 		"pr": {
 			"merged": "Merged",
@@ -3436,7 +3440,8 @@
 				"to-do": "To Do",
 				"in-progress": "In Progress",
 				"done": "Done",
-				"unmapped": "Needs a column"
+				"unmapped": "Needs a column",
+				"backlog": "Backlog"
 			},
 			"unmappedDescription": "These tasks sit in a column that can't be placed on To Do, In Progress, or Done, such as one named Done that isn't marked final. Move them with the task menu.",
 			"emptyTitle": "No projects to show",

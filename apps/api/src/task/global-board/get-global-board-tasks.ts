@@ -31,7 +31,7 @@ import {
 import type { GlobalStatus } from "./global-status";
 
 export type GlobalBoardTasksQuery = GlobalBoardFilterQuery & {
-  globalStatus: GlobalStatus | "unmapped";
+  globalStatus: "backlog" | GlobalStatus | "unmapped";
   q?: string;
   page: number;
   limit: number;
@@ -79,9 +79,14 @@ async function getGlobalBoardTasks(
   if (scope.projects.length === 0) return empty;
 
   const statusCondition =
-    query.globalStatus === "unmapped"
-      ? not(inColumns(Object.values(scope.columnIds).flat()))
-      : inColumns(scope.columnIds[query.globalStatus]);
+    query.globalStatus === "backlog"
+      ? eq(taskTable.status, "planned")
+      : and(
+          notInArray(taskTable.status, [...VIRTUAL_STATUSES]),
+          query.globalStatus === "unmapped"
+            ? not(inColumns(Object.values(scope.columnIds).flat()))
+            : inColumns(scope.columnIds[query.globalStatus]),
+        );
   const q = query.q?.trim();
 
   const where = and(
@@ -89,7 +94,6 @@ async function getGlobalBoardTasks(
       taskTable.projectId,
       scope.projects.map((project) => project.id),
     ),
-    notInArray(taskTable.status, [...VIRTUAL_STATUSES]),
     statusCondition,
     ...globalBoardFilterConditions(query, userId),
     q ? searchCondition(q) : undefined,

@@ -15,7 +15,10 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { useReducedMotion } from "framer-motion";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { BACKLOG_COLUMN_ID } from "@/components/kanban-board/backlog-column";
 import { boardCollisionDetection } from "@/components/kanban-board/board-collision-detection";
+import { FoldedBacklog } from "@/components/kanban-board/folded-backlog";
+import { useBacklogOpen } from "@/components/kanban-board/use-backlog-open";
 import type {
   GlobalBoardMeta,
   GlobalBoardProject,
@@ -71,6 +74,7 @@ export function GlobalBoard({
     GlobalBoardLane,
     ReturnType<typeof useGlobalBoardTasks>
   > = {
+    backlog: useGlobalBoardTasks("backlog", filters),
     "to-do": useGlobalBoardTasks("to-do", filters),
     "in-progress": useGlobalBoardTasks("in-progress", filters),
     done: useGlobalBoardTasks("done", filters),
@@ -108,6 +112,16 @@ export function GlobalBoard({
 
   const laneName = (lane: GlobalBoardLane) =>
     t(`tasks:globalBoard.lanes.${lane}`);
+  const [backlogOpen, toggleBacklog] = useBacklogOpen("global");
+  // Every project has a backlog, so a drop there needs no column choice.
+  const backlogColumn: ProjectColumn = {
+    slug: BACKLOG_COLUMN_ID,
+    name: t("tasks:kanban.backlog"),
+    icon: null,
+    isFinal: false,
+    position: -1,
+    globalStatus: null,
+  };
 
   // Without a column the card only goes to the top of its own lane.
   const onMenuMove = (
@@ -210,6 +224,10 @@ export function GlobalBoard({
       return;
     }
 
+    if (lane === "backlog") {
+      finish(backlogColumn);
+      return;
+    }
     const project = projects.get(task.projectId);
     const target = resolveDropTarget(project, task.status, lane);
     if (target.kind === "move") finish(target.column);
@@ -239,8 +257,8 @@ export function GlobalBoard({
     queries.unmapped.data?.pages.at(-1)?.pagination.total ?? 0;
   const lanes: GlobalBoardLane[] =
     unmappedTotal > 0 || drag?.from === "unmapped"
-      ? [...GLOBAL_BOARD_LANES, "unmapped"]
-      : [...GLOBAL_BOARD_LANES];
+      ? ["backlog", ...GLOBAL_BOARD_LANES, "unmapped"]
+      : ["backlog", ...GLOBAL_BOARD_LANES];
   const dragging = drag !== null && !drag.dropped;
 
   return (
@@ -269,23 +287,45 @@ export function GlobalBoard({
         )}
       >
         <div className="flex h-full min-w-max gap-4 px-4 py-3 md:px-5">
-          {lanes.map((lane) => (
-            <GlobalBoardLaneColumn
-              key={lane}
-              lane={lane}
-              title={laneName(lane)}
-              description={
-                lane === "unmapped"
-                  ? t("tasks:globalBoard.unmappedDescription")
-                  : undefined
-              }
-              query={queries[lane]}
-              tasks={shownTasks(lane)}
-              projects={projects}
-              canMoveIn={canMoveIn}
-              onMenuMove={onMenuMove}
-            />
-          ))}
+          {lanes.map((lane) =>
+            lane === "backlog" && !backlogOpen ? (
+              <div key={lane} className="h-full shrink-0 snap-start">
+                <FoldedBacklog
+                  id={lane}
+                  name={laneName(lane)}
+                  count={
+                    (queries.backlog.data?.pages.at(-1)?.pagination.total ??
+                      0) +
+                    (drag?.lane === "backlog" && drag.from !== "backlog"
+                      ? 1
+                      : 0) -
+                    (drag?.from === "backlog" && drag.lane !== "backlog"
+                      ? 1
+                      : 0)
+                  }
+                  dropData={{ column: { tasks: shownTasks(lane) }, lane }}
+                  onOpen={toggleBacklog}
+                />
+              </div>
+            ) : (
+              <GlobalBoardLaneColumn
+                key={lane}
+                lane={lane}
+                title={laneName(lane)}
+                description={
+                  lane === "unmapped"
+                    ? t("tasks:globalBoard.unmappedDescription")
+                    : undefined
+                }
+                query={queries[lane]}
+                tasks={shownTasks(lane)}
+                projects={projects}
+                canMoveIn={canMoveIn}
+                onMenuMove={onMenuMove}
+                onFold={lane === "backlog" ? toggleBacklog : undefined}
+              />
+            ),
+          )}
         </div>
       </div>
       <DragOverlay dropAnimation={reduceMotion ? null : dropAnimation}>

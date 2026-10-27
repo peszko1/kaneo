@@ -3286,7 +3286,12 @@
 		},
 		"kanban": {
 			"addTask": "Añadir tarea",
-			"automaticallySortedHint": "Ordenado automáticamente por {{sort}}"
+			"automaticallySortedHint": "Ordenado automáticamente por {{sort}}",
+			"backlog": "Backlog",
+			"foldBacklog": "Fold backlog",
+			"openBacklog_many": "Open backlog, {{count}} tasks",
+			"openBacklog_one": "Open backlog, {{count}} task",
+			"openBacklog_other": "Open backlog, {{count}} tasks"
 		},
 		"pr": {
 			"merged": "Mergeada",
@@ -3510,7 +3515,8 @@
 				"done": "Done",
 				"in-progress": "In Progress",
 				"to-do": "To Do",
-				"unmapped": "Needs a column"
+				"unmapped": "Needs a column",
+				"backlog": "Backlog"
 			},
 			"loadError": "Couldn't load the board.",
 			"loadingMore": "Loading…",
