@@ -1,4 +1,8 @@
-import { audioContext } from "./audio-context";
+import {
+  audioContext,
+  onAudioContextReplaced,
+  replaceAudioContext,
+} from "./audio-context";
 
 const BEEP_HZ = 880;
 const BEEP_SECONDS = 0.18;
@@ -10,11 +14,14 @@ const LOOKAHEAD_MS = 90_000;
 const TOP_UP_MS = 15_000;
 
 // Browsers keep audio suspended until the page gets a user gesture. Calling
-// this from a click lets a later alarm play without one. Safari also needs a
-// sound to start inside the gesture, so this plays one silent sample.
+// this from a click lets a later alarm play without one. A context that is
+// not running gets replaced, because Safari may never resume it. Safari also
+// needs a sound to start inside the gesture, so this plays one silent sample.
 export function unlockAlarmSound() {
-  const ctx = audioContext();
-  if (!ctx || ctx.state === "running") return;
+  const current = audioContext();
+  if (!current || current.state === "running") return;
+  const ctx = replaceAudioContext();
+  if (!ctx) return;
   void ctx.resume();
   const source = ctx.createBufferSource();
   source.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
@@ -35,12 +42,13 @@ function beep(ctx: AudioContext, output: AudioNode, at: number) {
   oscillator.stop(at + BEEP_SECONDS);
 }
 
-// Call from a click: the resume() call must run before the first await.
-export async function playTestSound() {
-  const ctx = audioContext();
+// Call from a click. It always starts a new context, so the button also
+// brings back sound that a silent Safari context lost.
+export function playTestSound() {
+  const ctx = replaceAudioContext();
   if (!ctx) return;
-  unlockAlarmSound();
-  await ctx.resume();
+  void ctx.resume();
+  // The audio clock stands still until the context runs, so these wait for it.
   const at = ctx.currentTime + 0.05;
   beep(ctx, ctx.destination, at);
   beep(ctx, ctx.destination, at + BEEP_SECONDS + BEEP_GAP_SECONDS);
@@ -49,6 +57,18 @@ export async function playTestSound() {
 // Plays a double beep every REPEAT_MS from `fromMs` (a wall-clock time, which
 // may be in the future) until the returned function is called.
 export function startAlarmSound(fromMs: number) {
+  let stopRinging = ring(fromMs);
+  const stopFollowing = onAudioContextReplaced(() => {
+    stopRinging();
+    stopRinging = ring(fromMs);
+  });
+  return () => {
+    stopFollowing();
+    stopRinging();
+  };
+}
+
+function ring(fromMs: number) {
   const ctx = audioContext();
   if (!ctx) return () => {};
 

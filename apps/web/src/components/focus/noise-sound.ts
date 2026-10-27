@@ -1,4 +1,4 @@
-import { audioContext } from "./audio-context";
+import { audioContext, onAudioContextReplaced } from "./audio-context";
 import { makeNoise, type NoiseColor } from "./noise";
 
 // A 20-second stereo loop is too long to hear it repeat.
@@ -37,6 +37,29 @@ function noiseBuffer(ctx: AudioContext, color: NoiseColor) {
 // Plays the noise until `stop()`, and fades it out at `endsAtMs` (a
 // wall-clock time) when given, so it ends with the phase in a background tab.
 export function startNoiseSound(
+  color: NoiseColor,
+  volume: number,
+  endsAtMs: number | null,
+): NoiseSound {
+  let level = volume;
+  let sound = play(color, level, endsAtMs);
+  const stopFollowing = onAudioContextReplaced(() => {
+    sound.stop();
+    sound = play(color, level, endsAtMs);
+  });
+  return {
+    setVolume: (next) => {
+      level = next;
+      sound.setVolume(next);
+    },
+    stop: () => {
+      stopFollowing();
+      sound.stop();
+    },
+  };
+}
+
+function play(
   color: NoiseColor,
   volume: number,
   endsAtMs: number | null,
