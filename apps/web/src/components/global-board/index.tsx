@@ -14,6 +14,7 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import { useReducedMotion } from "framer-motion";
 import { useCallback, useMemo, useState } from "react";
+import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { useTranslation } from "react-i18next";
 import { BACKLOG_COLUMN_ID } from "@/components/kanban-board/backlog-column";
 import { boardCollisionDetection } from "@/components/kanban-board/board-collision-detection";
@@ -34,6 +35,7 @@ import { EASE_OUT_CSS } from "@/lib/motion";
 import { toast } from "@/lib/toast";
 import { type BoardDrag, dropIndex, laneTasksDuringDrag } from "./board-drag";
 import { type ColumnChoice, ColumnChoiceDialog } from "./column-choice-dialog";
+import { GlobalBoardAddTask } from "./global-board-add-task";
 import { GlobalBoardCardBody } from "./global-board-card-body";
 import {
   GLOBAL_BOARD_LANES,
@@ -65,6 +67,8 @@ export function GlobalBoard({
   const reduceMotion = useReducedMotion();
   const [drag, setDrag] = useState<BoardDrag | null>(null);
   const [choice, setChoice] = useState<ColumnChoice | null>(null);
+  const [addingTo, setAddingTo] = useState<GlobalBoardLane | null>(null);
+  const { canCreateTasks } = useWorkspacePermission();
   const move = useMoveGlobalBoardTask(filters, {
     // A newer drag may have started; only release the one that was dropped.
     onSettled: () => setDrag((current) => (current?.dropped ? null : current)),
@@ -323,6 +327,11 @@ export function GlobalBoard({
                 canMoveIn={canMoveIn}
                 onMenuMove={onMenuMove}
                 onFold={lane === "backlog" ? toggleBacklog : undefined}
+                onAdd={
+                  canCreateTasks() && (lane === "backlog" || lane === "to-do")
+                    ? () => setAddingTo(lane)
+                    : undefined
+                }
               />
             ),
           )}
@@ -338,6 +347,13 @@ export function GlobalBoard({
         ) : null}
       </DragOverlay>
       <ColumnChoiceDialog choice={choice} onClose={() => setChoice(null)} />
+      {addingTo && (
+        <GlobalBoardAddTask
+          lane={addingTo}
+          filters={filters}
+          onClose={() => setAddingTo(null)}
+        />
+      )}
     </DndContext>
   );
 }

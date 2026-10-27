@@ -3,11 +3,12 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { PanelLeftClose } from "lucide-react";
+import { PanelLeftClose, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { columnVariants } from "@/components/kanban-board/column";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/cn";
 import type { GlobalBoardProject } from "@/fetchers/task/get-global-board-meta";
 import type { GlobalBoardTask } from "@/fetchers/task/get-global-board-tasks";
 import type useGlobalBoardTasks from "@/hooks/queries/task/use-global-board-tasks";
@@ -30,6 +31,7 @@ type GlobalBoardLaneProps = {
     column?: GlobalBoardProject["columns"][number],
   ) => void;
   onFold?: () => void;
+  onAdd?: () => void;
 };
 
 export function GlobalBoardLaneColumn({
@@ -42,6 +44,7 @@ export function GlobalBoardLaneColumn({
   canMoveIn,
   onMenuMove,
   onFold,
+  onAdd,
 }: GlobalBoardLaneProps) {
   const { t } = useTranslation();
   // Shaped like a project board column so the board's collision detection
@@ -70,12 +73,26 @@ export function GlobalBoardLaneColumn({
             <span className="font-normal text-muted-foreground text-xs tabular-nums">
               {total}
             </span>
+            {onAdd && (
+              <button
+                type="button"
+                onClick={onAdd}
+                className="ml-auto flex size-6 cursor-pointer items-center justify-center rounded-md text-chip-icon transition-colors hover:bg-chip-hover hover:text-board-title"
+                title={t("tasks:kanban.addTask")}
+                aria-label={t("tasks:kanban.addTask")}
+              >
+                <Plus className="size-3.5" />
+              </button>
+            )}
             {onFold && (
               <button
                 type="button"
                 onClick={onFold}
                 aria-expanded={true}
-                className="ml-auto flex size-6 cursor-pointer items-center justify-center rounded-md text-chip-icon transition-colors hover:bg-chip-hover hover:text-board-title"
+                className={cn(
+                  "flex size-6 cursor-pointer items-center justify-center rounded-md text-chip-icon transition-colors hover:bg-chip-hover hover:text-board-title",
+                  !onAdd && "ml-auto",
+                )}
                 title={t("tasks:kanban.foldBacklog")}
                 aria-label={t("tasks:kanban.foldBacklog")}
               >

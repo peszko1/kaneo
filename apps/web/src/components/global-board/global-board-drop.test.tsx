@@ -26,6 +26,10 @@ const mocks = vi.hoisted(() => ({
 vi.mock("@/components/kanban-board/folded-backlog", () => ({
   FoldedBacklog: () => null,
 }));
+vi.mock("@/hooks/use-workspace-permission", () => ({
+  useWorkspacePermission: () => ({ canCreateTasks: () => false }),
+}));
+vi.mock("./global-board-add-task", () => ({ GlobalBoardAddTask: () => null }));
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: Record<string, string>) =>
