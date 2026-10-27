@@ -27,6 +27,10 @@ export const projectSchema = z
       description:
         "Highest task number issued in this project; the next task gets this plus one.",
     }),
+    isInbox: z.boolean().openapi({
+      description:
+        "True for the caller's private inbox: a hidden project for ideas that only its owner can see.",
+    }),
   })
   .openapi("Project");
 
@@ -80,6 +84,7 @@ export function toPublicProject<
   T extends {
     backgroundObjectKey: string | null;
     backgroundMimeType: string | null;
+    inboxOwnerId?: string | null;
   },
 >(project: T | undefined) {
   if (!project)
@@ -89,7 +94,8 @@ export function toPublicProject<
   const {
     backgroundObjectKey: _key,
     backgroundMimeType: _mime,
+    inboxOwnerId,
     ...publicProject
   } = project;
-  return publicProject;
+  return { ...publicProject, isInbox: Boolean(inboxOwnerId) };
 }

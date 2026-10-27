@@ -650,11 +650,12 @@
 			"more": "Więcej",
 			"backToBoard": "Wróć do tablicy",
 			"home": "Home",
-			"inbox": "Inbox",
+			"inbox": "Powiadomienia",
 			"invitePeople": "Invite people",
 			"myTasks": "My tasks",
 			"globalBoard": "Global board",
-			"habits": "Nawyki"
+			"habits": "Nawyki",
+			"ideas": "Inbox"
 		},
 		"projectList": {
 			"viewProject": "Zobacz projekt",
@@ -718,7 +719,7 @@
 				"views": "Widoki",
 				"tasks": "Zadania",
 				"list": "Tablica i lista",
-				"inbox": "Skrzynka odbiorcza",
+				"inbox": "Powiadomienia",
 				"filters": "Filtry",
 				"editor": "Edytor"
 			},
@@ -734,7 +735,7 @@
 				"dismissToasts": "Zamknij wszystkie powiadomienia",
 				"toggleSidebar": "Przełącz pasek boczny",
 				"goToHome": "Przejdź do strony głównej",
-				"goToInbox": "Przejdź do skrzynki odbiorczej",
+				"goToInbox": "Przejdź do powiadomień",
 				"goToMyTasks": "Przejdź do moich zadań",
 				"goToProjects": "Przejdź do projektów",
 				"goToSettings": "Przejdź do ustawień",
@@ -925,7 +926,7 @@
 			}
 		},
 		"inbox": {
-			"back": "Inbox",
+			"back": "Powiadomienia",
 			"earlier": "Earlier",
 			"emptyFilter": "Nothing here",
 			"filters": {
@@ -935,7 +936,7 @@
 				"unread": "Unread"
 			},
 			"openTask": "Open task",
-			"pageTitle": "Inbox",
+			"pageTitle": "Powiadomienia",
 			"recentActivity": "Recent activity",
 			"selectPrompt": "Select a notification to read it",
 			"taskUnavailable": "This task is no longer available.",
@@ -943,7 +944,7 @@
 			"unread": "Unread",
 			"loadError": "Notifications couldn't be loaded.",
 			"taskLoadError": "This task couldn’t be loaded.",
-			"actionError": "Nie udało się zaktualizować skrzynki odbiorczej. Spróbuj ponownie.",
+			"actionError": "Nie udało się zaktualizować powiadomień. Spróbuj ponownie.",
 			"readCleared": "Usunięto przeczytane powiadomienia"
 		}
 	},
@@ -3938,6 +3939,15 @@
 				"volume": "Głośność",
 				"hint": "Gra, gdy trwa czas skupienia, i milknie w przerwach. Szum brązowy jest najgłębszy, biały najjaśniejszy."
 			}
+		},
+		"ideas": {
+			"title": "Inbox",
+			"description": "Wrzucaj tu pomysły, żeby nie trzymać ich w głowie. Widzisz je tylko ty. Gdy pomysł dojrzeje, przenieś go do projektu albo przeciągnij po globalnej tablicy.",
+			"placeholder": "Wpisz pomysł i naciśnij Enter",
+			"empty": "Pusto. Wpisz pomysł powyżej.",
+			"loadError": "Nie udało się wczytać inboxu.",
+			"addError": "Nie udało się zapisać pomysłu.",
+			"moveToProject": "Przenieś do projektu"
 		}
 	},
 	"press": {

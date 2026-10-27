@@ -850,6 +850,10 @@
           "lastTaskNumber": {
             "type": "number",
             "description": "Highest task number issued in this project; the next task gets this plus one."
+          },
+          "isInbox": {
+            "type": "boolean",
+            "description": "True for the caller's private inbox: a hidden project for ideas that only its owner can see."
           }
         },
         "required": [
@@ -864,7 +868,8 @@
           "isPublic",
           "archivedAt",
           "position",
-          "lastTaskNumber"
+          "lastTaskNumber",
+          "isInbox"
         ]
       },
       "ProjectListItem": {
@@ -9777,6 +9782,71 @@
           },
           "409": {
             "description": "Another project in the workspace uses this key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiKeyRateLimited"
+          }
+        }
+      }
+    },
+    "/project/inbox": {
+      "get": {
+        "operationId": "getInboxProject",
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Get my inbox",
+        "description": "Get the caller's private inbox in a workspace, creating it on first use. The inbox is a hidden project for ideas: only its owner sees it, and it is left out of project lists. Its tasks show on the global board.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "workspaceId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The caller's inbox project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing task:create permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found",
             "content": {
               "application/json": {
                 "schema": {

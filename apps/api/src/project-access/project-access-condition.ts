@@ -4,7 +4,16 @@ export function projectAccessCondition(
   userId: string | SQLWrapper,
   projectId: string | SQLWrapper,
 ) {
-  return sql<boolean>`(
+  // A private inbox is visible to its owner alone, whatever their role. The
+  // outer parentheses keep a caller's NOT applying to the whole condition.
+  return sql<boolean>`((
+    NOT EXISTS (
+      SELECT 1 FROM project AS inbox_project
+      WHERE inbox_project.id = ${projectId}
+        AND inbox_project.inbox_owner_id IS NOT NULL
+        AND inbox_project.inbox_owner_id <> ${userId}
+    )
+  ) AND (
     EXISTS (
       SELECT 1 FROM "user" AS access_user
       WHERE access_user.id = ${userId}
@@ -30,5 +39,5 @@ export function projectAccessCondition(
             AND access_grant.project_id = access_project.id
         )
     )
-  )`;
+  ))`;
 }

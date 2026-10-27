@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import {
+  Bell,
   ChevronDown,
   CircleCheck,
   Ellipsis,
@@ -49,6 +50,11 @@ export function NavMain() {
   const navItems: NavItem[] = [
     { title: t("navigation:sidebar.home"), icon: House, url: homeUrl },
     {
+      title: t("navigation:sidebar.ideas"),
+      icon: Inbox,
+      url: `${homeUrl}/ideas`,
+    },
+    {
       title: t("navigation:sidebar.habits"),
       icon: ListChecks,
       url: "/dashboard/habits",
@@ -62,7 +68,7 @@ export function NavMain() {
   const moreItems: NavItem[] = [
     {
       title: t("navigation:sidebar.inbox"),
-      icon: Inbox,
+      icon: Bell,
       url: `${homeUrl}/inbox`,
       count: unreadCount,
       emphasizeCount: true,

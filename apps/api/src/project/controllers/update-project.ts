@@ -38,6 +38,12 @@ async function updateProject(
       });
     }
 
+    if (isPublic && existingProject.inboxOwnerId) {
+      throw new HTTPException(400, {
+        message: "An inbox cannot be made public",
+      });
+    }
+
     if (isPublic !== existingProject.isPublic && !canShare) {
       throw new HTTPException(403, {
         message:

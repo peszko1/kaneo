@@ -396,8 +396,16 @@ export const projectTable = pgTable(
     backgroundObjectKey: text("background_object_key"),
     backgroundMimeType: text("background_mime_type"),
     backgroundVersion: text("background_version"),
+    // Set on a member's private inbox: a hidden project only they can see.
+    inboxOwnerId: text("inbox_owner_id").references(() => userTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   },
   (table) => [
+    uniqueIndex("project_workspace_inbox_owner_unique")
+      .on(table.workspaceId, table.inboxOwnerId)
+      .where(sql`${table.inboxOwnerId} is not null`),
     index("project_background_object_key_idx")
       .on(table.backgroundObjectKey)
       .where(sql`${table.backgroundObjectKey} is not null`),
