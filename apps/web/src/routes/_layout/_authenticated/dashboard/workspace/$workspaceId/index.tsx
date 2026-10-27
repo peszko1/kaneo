@@ -4,11 +4,9 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TrialExpiredCallout } from "@/components/billing/trial-expired-callout";
 import WorkspaceLayout from "@/components/common/workspace-layout";
-import { ActivityFeed } from "@/components/home/activity-feed";
 import { getDayPart } from "@/components/home/day-part";
 import { FocusToday } from "@/components/home/focus-today";
-import { HomeProjects } from "@/components/home/home-projects";
-import { UpNext } from "@/components/home/up-next";
+import { TimeSpent } from "@/components/home/time-spent";
 import { WeekStrip } from "@/components/home/week-strip";
 import PageTitle from "@/components/page-title";
 import CreateProjectModal from "@/components/shared/modals/create-project-modal";
@@ -30,19 +28,12 @@ function RouteComponent() {
   const { t } = useTranslation();
   const day = useLocalDay();
   const { workspaceId } = Route.useParams();
-  const {
-    data: assigned,
-    isLoading,
-    isError,
-  } = useGetAssignedTasks(workspaceId);
+  const { data: assigned } = useGetAssignedTasks(workspaceId);
   const { data: projects } = useGetProjects({ workspaceId }, true);
   const { canCreateTasks, canCreateProjects } = useWorkspacePermission();
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const needsProjectFirst = projects?.length === 0 && canCreateProjects();
-  const openCreateProject = canCreateProjects()
-    ? () => setIsCreateProjectOpen(true)
-    : undefined;
 
   const greetings = {
     morning: t("workspace:home.greeting.morning"),
@@ -100,22 +91,7 @@ function RouteComponent() {
               </p>
             )}
 
-            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
-              <div className="flex min-w-0 flex-col gap-9">
-                <UpNext
-                  tasks={assigned?.tasks}
-                  total={assigned?.total ?? 0}
-                  isLoading={isLoading}
-                  isError={isError}
-                  workspaceId={workspaceId}
-                />
-                <HomeProjects
-                  workspaceId={workspaceId}
-                  onCreateProject={openCreateProject}
-                />
-              </div>
-              <ActivityFeed workspaceId={workspaceId} />
-            </div>
+            <TimeSpent workspaceId={workspaceId} />
           </div>
         </div>
       </WorkspaceLayout>

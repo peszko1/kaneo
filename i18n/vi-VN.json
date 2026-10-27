@@ -3561,11 +3561,7 @@
 		},
 		"home": {
 			"activity": {
-				"commented": "commented",
-				"empty": "Nothing has happened in the last 30 days.",
-				"loadError": "Activity couldn't be loaded.",
-				"title": "Activity",
-				"updated": "updated the task"
+				"loadError": "Activity couldn't be loaded."
 			},
 			"greeting": {
 				"afternoon": "Good afternoon",
@@ -3574,22 +3570,18 @@
 			},
 			"newTask": "New task",
 			"pageTitle": "Home",
-			"projects": {
-				"all": "All projects",
-				"tasks_other": "{{count}} tasks",
-				"title": "Your projects",
-				"loadError": "Projects couldn't be loaded."
-			},
-			"upNext": {
-				"assigned_other": "{{count}} assigned to you",
-				"title": "Up next",
-				"viewAll": "View all"
-			},
 			"week": {
 				"more_other": "+{{count}} more",
 				"truncated": "The week preview includes only the first {{shown}} of {{total}} assigned tasks."
 			},
-			"focusToday_other": "Tracked today: {{time}} in {{count}} entries"
+			"focusToday_other": "Tracked today: {{time}} in {{count}} entries",
+			"timeSpent": {
+				"days_other": "{{count}} days",
+				"empty_other": "No time tracked in the last {{count}} days.",
+				"loadError": "Tracked time could not be loaded.",
+				"range": "Time range",
+				"title": "Time spent"
+			}
 		},
 		"myTasks": {
 			"emptyDescription": "Tasks assigned to you across this workspace show up here.",
