@@ -3,6 +3,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { PanelLeftClose } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { columnVariants } from "@/components/kanban-board/column";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ type GlobalBoardLaneProps = {
     from: GlobalBoardLane,
     column?: GlobalBoardProject["columns"][number],
   ) => void;
+  onFold?: () => void;
 };
 
 export function GlobalBoardLaneColumn({
@@ -39,6 +41,7 @@ export function GlobalBoardLaneColumn({
   projects,
   canMoveIn,
   onMenuMove,
+  onFold,
 }: GlobalBoardLaneProps) {
   const { t } = useTranslation();
   // Shaped like a project board column so the board's collision detection
@@ -67,6 +70,18 @@ export function GlobalBoardLaneColumn({
             <span className="font-normal text-muted-foreground text-xs tabular-nums">
               {total}
             </span>
+            {onFold && (
+              <button
+                type="button"
+                onClick={onFold}
+                aria-expanded={true}
+                className="ml-auto flex size-6 cursor-pointer items-center justify-center rounded-md text-chip-icon transition-colors hover:bg-chip-hover hover:text-board-title"
+                title={t("tasks:kanban.foldBacklog")}
+                aria-label={t("tasks:kanban.foldBacklog")}
+              >
+                <PanelLeftClose className="size-3.5" />
+              </button>
+            )}
           </h2>
           {description && (
             <p className="mt-0.5 text-muted-foreground text-xs">

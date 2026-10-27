@@ -3243,7 +3243,11 @@
 		},
 		"kanban": {
 			"addTask": "Talep ekle",
-			"automaticallySortedHint": "{{sort}} ölçütüne göre otomatik olarak sıralandı"
+			"automaticallySortedHint": "{{sort}} ölçütüne göre otomatik olarak sıralandı",
+			"backlog": "Backlog",
+			"foldBacklog": "Fold backlog",
+			"openBacklog_one": "Open backlog, {{count}} task",
+			"openBacklog_other": "Open backlog, {{count}} tasks"
 		},
 		"pr": {
 			"merged": "Birleştirildi",
@@ -3447,7 +3451,8 @@
 				"done": "Done",
 				"in-progress": "In Progress",
 				"to-do": "To Do",
-				"unmapped": "Needs a column"
+				"unmapped": "Needs a column",
+				"backlog": "Backlog"
 			},
 			"loadError": "Couldn't load the board.",
 			"loadingMore": "Loading…",

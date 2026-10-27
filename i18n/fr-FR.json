@@ -3297,7 +3297,12 @@
 		},
 		"kanban": {
 			"addTask": "Ajouter une tâche",
-			"automaticallySortedHint": "Tri automatique par {{sort}}"
+			"automaticallySortedHint": "Tri automatique par {{sort}}",
+			"backlog": "Backlog",
+			"foldBacklog": "Fold backlog",
+			"openBacklog_many": "Open backlog, {{count}} tasks",
+			"openBacklog_one": "Open backlog, {{count}} task",
+			"openBacklog_other": "Open backlog, {{count}} tasks"
 		},
 		"pr": {
 			"merged": "Fusionné",
@@ -3510,7 +3515,8 @@
 				"done": "Done",
 				"in-progress": "In Progress",
 				"to-do": "To Do",
-				"unmapped": "Needs a column"
+				"unmapped": "Needs a column",
+				"backlog": "Backlog"
 			},
 			"loadError": "Couldn't load the board.",
 			"loadingMore": "Loading…",

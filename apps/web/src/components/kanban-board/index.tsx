@@ -22,12 +22,19 @@ import reorderTasks, { type TaskReorder } from "@/fetchers/task/reorder-tasks";
 import { toast } from "@/lib/toast";
 import { useTranslation } from "react-i18next";
 import { rollbackBoardReorder } from "./apply-reorder";
+import {
+  BACKLOG_COLUMN_ID,
+  withBacklogColumn,
+  withoutBacklogColumn,
+} from "./backlog-column";
+import { FoldedBacklog } from "./folded-backlog";
+import { useBacklogOpen } from "./use-backlog-open";
 import { boardCollisionDetection } from "./board-collision-detection";
 import { findTaskColumn } from "./drag-preview/find-task-column";
 import { moveBoardTask } from "./move-task";
 import { useDragPreview } from "./drag-preview/use-drag-preview";
 import { useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTaskViewShortcuts } from "@/components/project/task-view-keys/use-task-view-shortcuts";
 import { useProjectBackground } from "@/hooks/use-project-background";
 import { cn } from "@/lib/cn";
@@ -65,8 +72,16 @@ function KanbanBoard({
   const [activeIsFinal, setActiveIsFinal] = useState<boolean | undefined>();
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [sortHintColumnId, setSortHintColumnId] = useState<string | null>(null);
-  const dragPreview = useDragPreview(project);
   const { t } = useTranslation();
+  const backlogName = t("tasks:kanban.backlog");
+  // The board as drawn and dragged: the backlog first, then the columns.
+  const board = useMemo(
+    () =>
+      project?.columns ? withBacklogColumn(project, backlogName) : project,
+    [project, backlogName],
+  );
+  const [backlogOpen, toggleBacklog] = useBacklogOpen(project.id);
+  const dragPreview = useDragPreview(board);
   const { mutate: reorder, isPending: isReordering } = useMutation({
     meta: { queuesOffline: true },
     // Runs offline too, where saveTaskEdit queues the move.
@@ -98,12 +113,17 @@ function KanbanBoard({
           variables.projectId,
         ]);
         const restored = current
-          ? rollbackBoardReorder(current, previous, variables.tasks)
+          ? rollbackBoardReorder(
+              withBacklogColumn(current, backlogName),
+              withBacklogColumn(previous, backlogName),
+              variables.tasks,
+            )
           : null;
         if (restored) {
-          queryClient.setQueryData(["tasks", variables.projectId], restored);
+          const unfolded = withoutBacklogColumn(restored);
+          queryClient.setQueryData(["tasks", variables.projectId], unfolded);
           if (useProjectStore.getState().project?.id === variables.projectId)
-            setProject(restored);
+            setProject(unfolded);
         }
       }
       toast.error(t("tasks:board.reorderFailed"));
@@ -191,9 +211,7 @@ function KanbanBoard({
       dragPreview.hover(active, over);
       return;
     }
-    setSortHintColumnId(
-      findTaskColumn(project, over.id.toString())?.id ?? null,
-    );
+    setSortHintColumnId(findTaskColumn(board, over.id.toString())?.id ?? null);
   };
 
   const commitMove = (
@@ -210,15 +228,17 @@ function KanbanBoard({
     );
     if (!canonical) return;
 
+    const drawn = withBacklogColumn(canonical, backlogName);
     const moved =
       insertAfterTarget === undefined
-        ? moveBoardTask(canonical, activeId, overId, isAutomaticallySorted)
-        : moveBoardTask(canonical, activeId, overId, false, insertAfterTarget);
+        ? moveBoardTask(drawn, activeId, overId, isAutomaticallySorted)
+        : moveBoardTask(drawn, activeId, overId, false, insertAfterTarget);
     if (!moved || !moved.tasks.length) return;
     for (const task of moved.tasks)
       markBoardCacheChanged(queryClient, project.id, task.id);
-    setProject(moved.project);
-    queryClient.setQueryData(["tasks", project.id], moved.project);
+    const next = withoutBacklogColumn(moved.project);
+    setProject(next);
+    queryClient.setQueryData(["tasks", project.id], next);
     reorder({
       projectId: project.id,
       tasks: moved.tasks,
@@ -297,7 +317,7 @@ function KanbanBoard({
   }
 
   const activeTask = activeId
-    ? project.columns
+    ? board.columns
         .flatMap((col) => col.tasks)
         .find((task) => task.id === activeId)
     : null;
@@ -330,31 +350,48 @@ function KanbanBoard({
           )}
         >
           <div className="flex h-full min-w-max gap-4 px-4 py-4 md:px-5">
-            {(dragPreview.preview ?? project).columns.map((column) => (
-              <div
-                key={column.id}
-                className="h-full max-w-96 min-w-[min(20rem,calc(100vw-4.5rem))] shrink-0 flex-1 snap-start"
-              >
-                <Column
-                  column={column}
-                  activeTaskId={activeId?.toString() ?? null}
-                  sortHint={
-                    column.id === sortHintColumnId
-                      ? t("tasks:kanban.automaticallySortedHint", {
-                          sort: t(
-                            sortedByNumber
-                              ? "tasks:sort.fields.number"
-                              : "tasks:sort.fields.priority",
-                          ),
-                        })
-                      : undefined
-                  }
-                  disableDragDrop={disableDragDrop}
-                  disableSorting={isAutomaticallySorted}
-                  disableCollectionActions={disableCollectionActions}
-                />
-              </div>
-            ))}
+            {(dragPreview.preview ?? board).columns.map((column) =>
+              column.id === BACKLOG_COLUMN_ID && !backlogOpen ? (
+                <div key={column.id} className="h-full shrink-0 snap-start">
+                  <FoldedBacklog
+                    id={column.id}
+                    name={column.name}
+                    count={column.tasks.length}
+                    dropData={{ column }}
+                    onOpen={toggleBacklog}
+                  />
+                </div>
+              ) : (
+                <div
+                  key={column.id}
+                  className="h-full max-w-96 min-w-[min(20rem,calc(100vw-4.5rem))] shrink-0 flex-1 snap-start"
+                >
+                  <Column
+                    column={column}
+                    activeTaskId={activeId?.toString() ?? null}
+                    sortHint={
+                      column.id === sortHintColumnId
+                        ? t("tasks:kanban.automaticallySortedHint", {
+                            sort: t(
+                              sortedByNumber
+                                ? "tasks:sort.fields.number"
+                                : "tasks:sort.fields.priority",
+                            ),
+                          })
+                        : undefined
+                    }
+                    disableDragDrop={disableDragDrop}
+                    disableSorting={isAutomaticallySorted}
+                    disableCollectionActions={disableCollectionActions}
+                    onFold={
+                      column.id === BACKLOG_COLUMN_ID
+                        ? toggleBacklog
+                        : undefined
+                    }
+                  />
+                </div>
+              ),
+            )}
           </div>
         </div>
       </div>

@@ -23,6 +23,9 @@ const mocks = vi.hoisted(() => ({
   rendered: {} as Record<string, string[]>,
 }));
 
+vi.mock("@/components/kanban-board/folded-backlog", () => ({
+  FoldedBacklog: () => null,
+}));
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: Record<string, string>) =>
@@ -188,6 +191,7 @@ beforeEach(() => {
       task("p2", "web", "in-review"),
     ],
     done: [task("d1", "web", "done")],
+    backlog: [],
     unmapped: [],
   };
 });
@@ -229,6 +233,24 @@ describe("global board drag and drop", () => {
         index: 0,
         visibleIds: ["o", "d1"],
         column: meta.projects[1]?.columns[1],
+      }),
+    );
+  });
+
+  it("moves a card into the folded backlog without asking for a column", () => {
+    render(<GlobalBoard meta={meta} filters={{}} />);
+    const moving = laneTask("to-do", 2);
+    start(moving, "to-do");
+    overCard("backlog", "backlog");
+    endOver("backlog", "backlog");
+
+    expect(mocks.move).toHaveBeenCalledWith(
+      expect.objectContaining({
+        task: moving,
+        from: "to-do",
+        to: "backlog",
+        visibleIds: ["o"],
+        column: expect.objectContaining({ slug: "planned" }),
       }),
     );
   });

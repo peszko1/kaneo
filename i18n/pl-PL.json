@@ -3562,7 +3562,13 @@
 		},
 		"kanban": {
 			"addTask": "Dodaj zadanie",
-			"automaticallySortedHint": "Automatyczne sortowanie: {{sort}}"
+			"automaticallySortedHint": "Automatyczne sortowanie: {{sort}}",
+			"backlog": "Backlog",
+			"openBacklog_one": "Otwórz backlog, {{count}} zadanie",
+			"openBacklog_few": "Otwórz backlog, {{count}} zadania",
+			"openBacklog_many": "Otwórz backlog, {{count}} zadań",
+			"openBacklog_other": "Otwórz backlog, {{count}} zadania",
+			"foldBacklog": "Zwiń backlog"
 		},
 		"labels": {
 			"empty": "Brak dostępnych etykiet"
@@ -3853,7 +3859,8 @@
 				"done": "Done",
 				"in-progress": "In Progress",
 				"to-do": "To Do",
-				"unmapped": "Needs a column"
+				"unmapped": "Needs a column",
+				"backlog": "Backlog"
 			},
 			"loadError": "Couldn't load the board.",
 			"loadingMore": "Loading…",

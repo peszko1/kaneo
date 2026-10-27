@@ -43,6 +43,7 @@ vi.mock("@tanstack/react-router", () => ({
   useNavigate: () => vi.fn(),
   useRouter: () => ({ preloadRoute: () => Promise.resolve() }),
 }));
+vi.mock("./folded-backlog", () => ({ FoldedBacklog: () => null }));
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: { sort?: string }) =>

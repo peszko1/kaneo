@@ -74,6 +74,30 @@ describe("API integration: global board move", () => {
     taskNumber = 0;
   });
 
+  it("moves a task into the backlog lane and back onto the board", async () => {
+    const me = await createWorkspaceMember({ role: "admin" });
+    const web = await createProjectFixture({ workspaceId: me.workspace.id });
+    const task = await addTask(web, "W1", 0);
+    const api = client(me.user);
+
+    const toBacklog = await api.move({
+      taskId: task.id,
+      status: "planned",
+      visibleTaskIds: [task.id],
+    });
+    expect(toBacklog.status).toBe(200);
+    expect(await api.lane("backlog")).toEqual(["W1"]);
+    expect(await api.lane("to-do")).toEqual([]);
+
+    await api.move({
+      taskId: task.id,
+      status: web.columns.todo.slug,
+      visibleTaskIds: [task.id],
+    });
+    expect(await api.lane("backlog")).toEqual([]);
+    expect(await api.lane("to-do")).toEqual(["W1"]);
+  });
+
   it("keeps a personal lane order and mirrors same-project order on the project board", async () => {
     const me = await createWorkspaceMember({ role: "admin" });
     const web = await createProjectFixture({ workspaceId: me.workspace.id });

@@ -14,6 +14,7 @@ type ColumnProps = {
   disableDragDrop?: boolean;
   disableSorting?: boolean;
   disableCollectionActions?: boolean;
+  onFold?: () => void;
 };
 
 export const columnVariants = cva(
@@ -67,6 +68,7 @@ function Column({
   disableDragDrop = false,
   disableSorting = false,
   disableCollectionActions = false,
+  onFold,
 }: ColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: column.id,
@@ -86,6 +88,7 @@ function Column({
         <ColumnHeader
           column={column}
           disableCollectionActions={disableCollectionActions}
+          onFold={onFold}
         />
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-1.5 pt-1.5 pb-1.5 [-webkit-overflow-scrolling:touch]">

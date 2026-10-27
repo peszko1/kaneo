@@ -3351,7 +3351,13 @@
 		},
 		"kanban": {
 			"addTask": "Додати завдання",
-			"automaticallySortedHint": "Автоматично відсортовано за полем «{{sort}}»"
+			"automaticallySortedHint": "Автоматично відсортовано за полем «{{sort}}»",
+			"backlog": "Backlog",
+			"foldBacklog": "Fold backlog",
+			"openBacklog_few": "Open backlog, {{count}} tasks",
+			"openBacklog_many": "Open backlog, {{count}} tasks",
+			"openBacklog_one": "Open backlog, {{count}} task",
+			"openBacklog_other": "Open backlog, {{count}} tasks"
 		},
 		"pr": {
 			"merged": "Змерджено",
@@ -3573,7 +3579,8 @@
 				"done": "Done",
 				"in-progress": "In Progress",
 				"to-do": "To Do",
-				"unmapped": "Needs a column"
+				"unmapped": "Needs a column",
+				"backlog": "Backlog"
 			},
 			"loadError": "Couldn't load the board.",
 			"loadingMore": "Loading…",
