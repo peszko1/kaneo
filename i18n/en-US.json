@@ -2467,11 +2467,12 @@
 			"more": "More",
 			"backToBoard": "Back to board",
 			"home": "Home",
-			"inbox": "Inbox",
+			"inbox": "Notifications",
 			"myTasks": "My tasks",
 			"globalBoard": "Global board",
 			"habits": "Habits",
-			"invitePeople": "Invite people"
+			"invitePeople": "Invite people",
+			"ideas": "Inbox"
 		},
 		"projectList": {
 			"viewProject": "View Project",
@@ -2535,7 +2536,7 @@
 				"views": "Views",
 				"tasks": "Tasks",
 				"list": "Board and list",
-				"inbox": "Inbox",
+				"inbox": "Notifications",
 				"filters": "Filters",
 				"editor": "Editor"
 			},
@@ -2551,7 +2552,7 @@
 				"dismissToasts": "Dismiss all toasts",
 				"toggleSidebar": "Toggle sidebar",
 				"goToHome": "Go to home",
-				"goToInbox": "Go to inbox",
+				"goToInbox": "Go to notifications",
 				"goToMyTasks": "Go to my tasks",
 				"goToProjects": "Go to projects",
 				"goToSettings": "Go to settings",
@@ -2730,7 +2731,7 @@
 			}
 		},
 		"inbox": {
-			"pageTitle": "Inbox",
+			"pageTitle": "Notifications",
 			"unread": "Unread",
 			"today": "Today",
 			"earlier": "Earlier",
@@ -2743,12 +2744,12 @@
 			"emptyFilter": "Nothing here",
 			"loadError": "Notifications couldn't be loaded.",
 			"selectPrompt": "Select a notification to read it",
-			"back": "Inbox",
+			"back": "Notifications",
 			"openTask": "Open task",
 			"recentActivity": "Recent activity",
 			"taskUnavailable": "This task is no longer available.",
 			"taskLoadError": "This task couldn’t be loaded.",
-			"actionError": "Couldn't update your inbox. Try again.",
+			"actionError": "Couldn't update your notifications. Try again.",
 			"readCleared": "Deleted read notifications"
 		}
 	},
@@ -3528,6 +3529,15 @@
 				"volume": "Volume",
 				"hint": "Plays while focus time runs, and stops during breaks. Brown noise is the deepest, white noise the brightest."
 			}
+		},
+		"ideas": {
+			"title": "Inbox",
+			"description": "Dump ideas here to get them out of your head. Only you see them. Move one to a project when it is ready, or drag it across the global board.",
+			"placeholder": "Type an idea and press Enter",
+			"empty": "Nothing here. Type an idea above.",
+			"loadError": "The inbox could not be loaded.",
+			"addError": "The idea could not be saved.",
+			"moveToProject": "Move to project"
 		}
 	},
 	"invitations": {

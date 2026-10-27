@@ -2471,7 +2471,8 @@
 			"invitePeople": "Invite people",
 			"myTasks": "My tasks",
 			"globalBoard": "Global board",
-			"habits": "Habits"
+			"habits": "Habits",
+			"ideas": "Inbox"
 		},
 		"projectList": {
 			"viewProject": "Layihəyə bax",
@@ -3528,6 +3529,15 @@
 				"volume": "Volume",
 				"white": "White"
 			}
+		},
+		"ideas": {
+			"addError": "The idea could not be saved.",
+			"description": "Dump ideas here to get them out of your head. Only you see them. Move one to a project when it is ready, or drag it across the global board.",
+			"empty": "Nothing here. Type an idea above.",
+			"loadError": "The inbox could not be loaded.",
+			"moveToProject": "Move to project",
+			"placeholder": "Type an idea and press Enter",
+			"title": "Inbox"
 		}
 	},
 	"invitations": {

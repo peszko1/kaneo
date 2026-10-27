@@ -498,6 +498,13 @@
       "when": 1793014912987,
       "tag": "0070_two_factor",
       "breakpoints": true
+    },
+    {
+      "idx": 71,
+      "version": "7",
+      "when": 1793092946498,
+      "tag": "0071_private_inbox",
+      "breakpoints": true
     }
   ]
 }

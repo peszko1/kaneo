@@ -38,6 +38,10 @@ async function resolveDestinationStatus(
     .where(eq(columnTable.projectId, destinationProjectId))
     .orderBy(asc(columnTable.position));
 
+  // A backlog task stays in the backlog, which every project has.
+  if ((requestedStatus ?? currentStatus) === "planned")
+    return { id: null, slug: "planned", position: -1 };
+
   const [firstColumn] = destinationColumns;
 
   if (!firstColumn) {

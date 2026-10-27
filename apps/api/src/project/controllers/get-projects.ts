@@ -75,6 +75,8 @@ async function getProjects(
       eq(projectTable.workspaceId, workspaceId),
       includeArchived ? undefined : isNull(projectTable.archivedAt),
       projectAccessCondition(userId, projectTable.id),
+      // Inboxes have their own page, not a place among projects.
+      isNull(projectTable.inboxOwnerId),
     ),
     // `id` is the deterministic tie-breaker: without it, rows sharing both a
     // position and a createdAt come back in an unspecified order.

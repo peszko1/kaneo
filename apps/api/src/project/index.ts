@@ -32,6 +32,7 @@ import archiveProjectCtrl from "./controllers/archive-project";
 import createProjectCtrl from "./controllers/create-project";
 import deleteProjectCtrl from "./controllers/delete-project";
 import getProjectCtrl from "./controllers/get-project";
+import getInboxProjectCtrl from "./controllers/get-inbox-project";
 import getProjectsCtrl from "./controllers/get-projects";
 import moveProjectCtrl from "./controllers/move-project";
 import reorderProjectsCtrl from "./controllers/reorder-projects";
@@ -132,6 +133,26 @@ const createProjectRoute = createRoute({
     400: errorResponse("Invalid body, or workspace ID could not be determined"),
     403: errorResponse("Missing project:create permission"),
     409: errorResponse("Another project in the workspace uses this key"),
+    404: errorResponse("Workspace not found"),
+  },
+});
+
+const getInboxProjectRoute = createRoute({
+  method: "get",
+  operationId: "getInboxProject",
+  path: "/inbox",
+  tags: ["Projects"],
+  summary: "Get my inbox",
+  description:
+    "Get the caller's private inbox in a workspace, creating it on first use. The inbox is a hidden project for ideas: only its owner sees it, and it is left out of project lists. Its tasks show on the global board.",
+  middleware: [
+    workspaceAccess.fromQuery(),
+    requireWorkspacePermission({ task: ["create"] }),
+  ] as const,
+  request: { query: workspaceIdQuery },
+  responses: {
+    200: jsonResponse("The caller's inbox project", projectSchema),
+    403: errorResponse("Missing task:create permission"),
     404: errorResponse("Workspace not found"),
   },
 });
@@ -444,6 +465,17 @@ const project = apiRouter<BaseVariables & { workspaceId: string }>()
     );
     return c.json(toPublicProject(newProject), 200);
   })
+  .openapi(getInboxProjectRoute, async (c) =>
+    c.json(
+      toPublicProject(
+        await getInboxProjectCtrl(
+          c.req.valid("query").workspaceId,
+          c.get("userId"),
+        ),
+      ),
+      200,
+    ),
+  )
   .openapi(getProjectRoute, async (c) => {
     const { id } = c.req.valid("param");
     const workspaceId = c.get("workspaceId");

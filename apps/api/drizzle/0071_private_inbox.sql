@@ -1,0 +1,3 @@
+ALTER TABLE "project" ADD COLUMN "inbox_owner_id" text;--> statement-breakpoint
+ALTER TABLE "project" ADD CONSTRAINT "project_inbox_owner_id_user_id_fk" FOREIGN KEY ("inbox_owner_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+CREATE UNIQUE INDEX "project_workspace_inbox_owner_unique" ON "project" USING btree ("workspace_id","inbox_owner_id") WHERE "project"."inbox_owner_id" is not null;
