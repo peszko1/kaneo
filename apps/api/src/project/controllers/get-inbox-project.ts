@@ -2,8 +2,17 @@ import { and, eq } from "drizzle-orm";
 import db from "../../database";
 import { projectTable } from "../../database/schema";
 import { findProjectKeyConflict } from "../project-key";
-import { insertUnplacedProject } from "./insert-project";
+import {
+  DEFAULT_PROJECT_COLUMNS,
+  insertUnplacedProject,
+} from "./insert-project";
 import { lockProjectOrdering } from "./project-placement";
+
+// A private inbox has no review step, so the global board never asks whether
+// a task goes to In Progress or In Review.
+const INBOX_COLUMNS = DEFAULT_PROJECT_COLUMNS.filter(
+  (column) => column.slug !== "in-review",
+).map((column, position) => ({ ...column, position }));
 
 function findInbox(
   database: Pick<typeof db, "select">,
@@ -38,13 +47,17 @@ async function getInboxProject(workspaceId: string, userId: string) {
     let slug = "INBOX";
     for (let n = 2; await findProjectKeyConflict(tx, workspaceId, slug); n++)
       slug = `INBOX${n}`;
-    const created = await insertUnplacedProject(tx, {
-      workspaceId,
-      name: "Inbox",
-      icon: "Lightbulb",
-      slug,
-      userId,
-    });
+    const created = await insertUnplacedProject(
+      tx,
+      {
+        workspaceId,
+        name: "Inbox",
+        icon: "Lightbulb",
+        slug,
+        userId,
+      },
+      INBOX_COLUMNS,
+    );
     if (!created) throw new Error("Inbox project insert returned no row");
     const [inbox] = await tx
       .update(projectTable)
