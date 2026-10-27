@@ -7,6 +7,7 @@ import {
   taskTable,
 } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { copyParentLabels } from "../../label/controllers/copy-parent-labels";
 import { assertProjectAccess } from "../../project-access/assert-project-access";
 
 async function createTaskRelation({
@@ -137,6 +138,15 @@ async function createTaskRelation({
     projectId: sourceTask.projectId,
     userId,
   });
+
+  if (relationType === "subtask") {
+    await copyParentLabels({
+      parentId: sourceTaskId,
+      childId: targetTaskId,
+      workspaceId,
+      userId,
+    });
+  }
 
   return relation;
 }

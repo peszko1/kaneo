@@ -16,6 +16,11 @@ function useCreateTaskRelation() {
       queryClient.invalidateQueries({
         queryKey: ["task-relations", variables.targetTaskId],
       });
+      // The API copies the parent's labels onto a new subtask.
+      if (variables.relationType === "subtask")
+        queryClient.invalidateQueries({
+          queryKey: ["labels", variables.targetTaskId],
+        });
     },
   });
 }

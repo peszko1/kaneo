@@ -11,7 +11,12 @@ import {
   sql,
 } from "drizzle-orm";
 import db from "../../database";
-import { labelTable, projectTable, taskTable } from "../../database/schema";
+import {
+  labelTable,
+  projectTable,
+  taskRelationTable,
+  taskTable,
+} from "../../database/schema";
 import { defaultDueWeekStart, weekRange } from "./due-week-start";
 import type { GLOBAL_BOARD_FILTER_SUBJECTS } from "./schema";
 
@@ -38,20 +43,38 @@ function assigneeCondition(values: string[], userId: string) {
   );
 }
 
+// A task matches when it or its parent task carries one of the labels, so a
+// label view also lists the subtasks of a labelled task.
 function labelCondition(names: string[]) {
-  return exists(
-    db
-      .select({ one: sql`1` })
-      .from(labelTable)
-      .where(
-        and(
-          eq(labelTable.taskId, taskTable.id),
-          inArray(
-            sql`lower(${labelTable.name})`,
-            names.map((name) => name.toLowerCase()),
+  const lowered = names.map((name) => name.toLowerCase());
+  return or(
+    exists(
+      db
+        .select({ one: sql`1` })
+        .from(labelTable)
+        .where(
+          and(
+            eq(labelTable.taskId, taskTable.id),
+            inArray(sql`lower(${labelTable.name})`, lowered),
           ),
         ),
-      ),
+    ),
+    exists(
+      db
+        .select({ one: sql`1` })
+        .from(taskRelationTable)
+        .innerJoin(
+          labelTable,
+          eq(labelTable.taskId, taskRelationTable.sourceTaskId),
+        )
+        .where(
+          and(
+            eq(taskRelationTable.targetTaskId, taskTable.id),
+            eq(taskRelationTable.relationType, "subtask"),
+            inArray(sql`lower(${labelTable.name})`, lowered),
+          ),
+        ),
+    ),
   );
 }
 
