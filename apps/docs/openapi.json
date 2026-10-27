@@ -14128,6 +14128,13 @@
                 "properties": {
                   "description": {
                     "type": "string"
+                  },
+                  "expected": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The value the client last saw. If the task's value differs from it and from the new value, the API answers 409 and changes nothing. Leave it out to always apply the change."
                   }
                 },
                 "required": [
@@ -14180,6 +14187,16 @@
           },
           "404": {
             "description": "Task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Someone else changed the field after `expected`",
             "content": {
               "application/json": {
                 "schema": {

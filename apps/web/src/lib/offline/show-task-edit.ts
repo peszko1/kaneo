@@ -40,6 +40,8 @@ function fieldChange(
       return { dueDate: edit.dueDate };
     case "startDate":
       return { startDate: edit.startDate };
+    case "description":
+      return { description: edit.description };
     case "assignee": {
       const member = edit.userId
         ? cachedMember(queryClient, edit.userId)

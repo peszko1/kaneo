@@ -188,7 +188,11 @@
 			"editsConflicted_few": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay.",
 			"editsConflicted_many": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay.",
 			"editsConflicted_one": "{{count}} offline change was not saved. Someone else changed the same thing first, and their change stays.",
-			"editsConflicted_other": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay."
+			"editsConflicted_other": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay.",
+			"descriptionConflict_few": "Someone else changed {{count}} descriptions you edited offline. Open each task to keep yours or use theirs.",
+			"descriptionConflict_many": "Someone else changed {{count}} descriptions you edited offline. Open each task to keep yours or use theirs.",
+			"descriptionConflict_one": "Someone else changed a description you edited offline. Open the task to keep yours or use theirs.",
+			"descriptionConflict_other": "Someone else changed {{count}} descriptions you edited offline. Open each task to keep yours or use theirs."
 		}
 	},
 	"auth": {
@@ -3118,6 +3122,14 @@
 				"saving": "Saving…",
 				"saveFailed": "Changes could not be saved",
 				"retrySave": "Retry"
+			},
+			"conflict": {
+				"body": "You edited it offline, and they changed it before your edit reached the server. The editor shows their version.",
+				"hideMine": "Hide my version",
+				"keepMine": "Keep mine",
+				"showMine": "Show my version",
+				"title": "Someone else changed this description",
+				"useTheirs": "Use theirs"
 			}
 		},
 		"entity": {

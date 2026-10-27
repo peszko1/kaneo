@@ -833,6 +833,7 @@ const updateTaskDescriptionRoute = createRoute({
       "No access to the project, or missing task:update permission",
     ),
     404: errorResponse("Task not found"),
+    409: errorResponse("Someone else changed the field after `expected`"),
   },
 });
 
@@ -1427,12 +1428,13 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
   })
   .openapi(updateTaskDescriptionRoute, async (c) => {
     const { id } = c.req.valid("param");
-    const { description } = c.req.valid("json");
+    const { description, expected } = c.req.valid("json");
     const currentUserId = c.get("userId");
 
     const task = await updateTaskDescription({
       id,
       description,
+      expected,
       currentUserId,
     });
 

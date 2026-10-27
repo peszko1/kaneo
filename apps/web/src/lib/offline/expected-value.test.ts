@@ -48,6 +48,22 @@ describe("expectedValue", () => {
     expect(expectedValue(queryClient, title("Board title"))).toBeUndefined();
   });
 
+  it("checks nothing for a long description the device does not hold", () => {
+    queryClient.setQueryData(["task", "t1"], {
+      id: "t1",
+      description: null,
+      descriptionDeferred: true,
+    });
+    expect(
+      expectedValue(queryClient, {
+        kind: "description",
+        taskId: "t1",
+        projectId: "p1",
+        description: "Mine",
+      }),
+    ).toBeUndefined();
+  });
+
   it("checks nothing for a task this device has not loaded", () => {
     expect(
       expectedValue(queryClient, { ...title("New"), taskId: "other" }),

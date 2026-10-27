@@ -2,6 +2,7 @@ import i18n from "i18next";
 import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
 import queryClient from "@/query-client";
+import { keepDescriptionConflict } from "./description-conflicts";
 import { queuedEdits, removeEdits } from "./edit-outbox";
 import { sendTaskEdit } from "./send-task-edit";
 import { editedTaskIds } from "./task-edit";
@@ -24,6 +25,7 @@ async function sendQueue() {
   const sent: string[] = [];
   const dropped: string[] = [];
   const conflicted: string[] = [];
+  const descriptionConflicts: string[] = [];
   const touched = new Set<string>();
   try {
     for (const edit of queuedEdits()) {
@@ -36,17 +38,33 @@ async function sendQueue() {
         if (isWorthRetrying(error)) break;
         // 409: someone else changed the field or the board first, and their
         // change stays.
-        if (error instanceof HttpError && error.status === 409)
-          conflicted.push(edit.id);
-        else dropped.push(edit.id);
+        if (!(error instanceof HttpError && error.status === 409))
+          dropped.push(edit.id);
+        // Losing a description loses real text, so the user chooses.
+        else if (edit.kind === "description") {
+          keepDescriptionConflict({
+            taskId: edit.taskId,
+            projectId: edit.projectId,
+            mine: edit.description,
+            at: edit.at,
+          });
+          descriptionConflicts.push(edit.id);
+        } else conflicted.push(edit.id);
       }
       for (const id of editedTaskIds(edit)) touched.add(id);
       touched.add(edit.projectId);
     }
   } finally {
-    removeEdits([...sent, ...dropped, ...conflicted]);
+    removeEdits([...sent, ...dropped, ...conflicted, ...descriptionConflicts]);
   }
 
+  if (descriptionConflicts.length > 0) {
+    toast.error(
+      i18n.t("common:offline.descriptionConflict", {
+        count: descriptionConflicts.length,
+      }),
+    );
+  }
   if (conflicted.length > 0) {
     toast.error(
       i18n.t("common:offline.editsConflicted", { count: conflicted.length }),

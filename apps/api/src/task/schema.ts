@@ -168,7 +168,10 @@ export const updateTitleBody = z.object({
   title: z.string(),
   expected: expected(z.string()),
 });
-export const updateDescriptionBody = z.object({ description: z.string() });
+export const updateDescriptionBody = z.object({
+  description: z.string(),
+  expected: expected(z.string().nullable()),
+});
 
 const surface = z.enum(["description", "comment"]).openapi({
   description: "Where the image is used, which decides how it is scoped.",

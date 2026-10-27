@@ -176,7 +176,8 @@
 			"editsDropped_other": "{{count}} offline changes could not be saved. The tasks were deleted, or you no longer have access.",
 			"sending_other": "Sending {{count}} offline changes",
 			"waiting_other": "Offline · {{count}} changes waiting",
-			"editsConflicted_other": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay."
+			"editsConflicted_other": "{{count}} offline changes were not saved. Someone else changed the same things first, and their changes stay.",
+			"descriptionConflict_other": "Someone else changed {{count}} descriptions you edited offline. Open each task to keep yours or use theirs."
 		}
 	},
 	"auth": {
@@ -2962,6 +2963,14 @@
 				"saving": "儲存中…",
 				"saveFailed": "無法儲存變更",
 				"retrySave": "重試"
+			},
+			"conflict": {
+				"body": "You edited it offline, and they changed it before your edit reached the server. The editor shows their version.",
+				"hideMine": "Hide my version",
+				"keepMine": "Keep mine",
+				"showMine": "Show my version",
+				"title": "Someone else changed this description",
+				"useTheirs": "Use theirs"
 			}
 		},
 		"entity": {

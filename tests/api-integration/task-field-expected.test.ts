@@ -111,6 +111,33 @@ describe("API integration: offline edits send the value they last saw", () => {
     expect(response.status).toBe(200);
   });
 
+  it("treats a missing description as empty", async () => {
+    const { task } = await createTaskFixture();
+
+    const response = await put(`description/${task.id}`, {
+      description: "Mine",
+      expected: "",
+    });
+
+    expect(response.status).toBe(200);
+  });
+
+  it("keeps a description someone else wrote", async () => {
+    const { task } = await createTaskFixture();
+    await db
+      .update(schema.taskTable)
+      .set({ description: "Theirs" })
+      .where(eq(schema.taskTable.id, task.id));
+
+    const response = await put(`description/${task.id}`, {
+      description: "Mine",
+      expected: null,
+    });
+
+    expect(response.status).toBe(409);
+    expect((await stored(task.id))?.description).toBe("Theirs");
+  });
+
   it("always applies an edit without an expected value", async () => {
     const { task } = await createTaskFixture();
 
