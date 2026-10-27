@@ -104,7 +104,7 @@ export function FocusSettingsPopover() {
               variant="outline"
               size="sm"
               className="self-start"
-              onClick={() => void playTestSound()}
+              onClick={playTestSound}
             >
               <Volume2 />
               {t("tasks:focus.settings.testSound")}
