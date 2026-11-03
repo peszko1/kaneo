@@ -804,7 +804,10 @@
 			"advancedTitle": "Σύνθετα",
 			"autoAssign": "Assign tasks to me",
 			"autoAssignDescription": "When you create a task without an assignee, or move an unassigned task to another column, it's assigned to you. Applies in workspaces where your role can assign tasks.",
-			"autoAssignError": "Couldn't save this preference."
+			"autoAssignError": "Couldn't save this preference.",
+			"practiceDescription": "Show the 120h practice tracker (timer, lessons, vocal warm-up) in the sidebar. Its data syncs to your account and works offline.",
+			"practiceError": "Could not change the 120h tab. Try again.",
+			"practiceTitle": "120h tab"
 		},
 		"developerPage": {
 			"pageTitle": "Κλειδιά API",
@@ -2472,7 +2475,8 @@
 			"myTasks": "My tasks",
 			"globalBoard": "Global board",
 			"habits": "Habits",
-			"ideas": "Inbox"
+			"ideas": "Inbox",
+			"practice": "120h"
 		},
 		"projectList": {
 			"viewProject": "Προβολή έργου",

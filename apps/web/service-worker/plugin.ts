@@ -1,9 +1,18 @@
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import type { Plugin } from "vite";
 
 const routesDir = path.resolve(import.meta.dirname, "../src/routes");
+// The 120h tracker is a standalone page in public/, so its files are listed here.
+const practiceDir = path.resolve(import.meta.dirname, "../public/120h");
+
+function practiceFiles() {
+  return readdirSync(practiceDir, { recursive: true, withFileTypes: true })
+    .filter((entry) => entry.isFile() && !entry.name.endsWith(".LICENSE"))
+    .map((entry) => path.join(entry.parentPath, entry.name))
+    .sort();
+}
 
 // Emits sw.js with the files every screen needs: the entry, each route's
 // chunk, their static imports, styles, and fonts. Rarely used lazy chunks
@@ -39,10 +48,14 @@ export function serviceWorker(): Plugin {
         .filter((file) => file.startsWith("assets/"))
         .sort()
         .map((file) => `/${file}`);
-      const version = createHash("sha256")
-        .update(assets.join("\n"))
-        .digest("hex")
-        .slice(0, 12);
+      const practice = practiceFiles();
+      for (const file of practice)
+        assets.push(`/${path.relative(path.dirname(practiceDir), file)}`);
+      // Hashed asset names change with their content; the 120h files do not,
+      // so their content goes into the version.
+      const hash = createHash("sha256").update(assets.join("\n"));
+      for (const file of practice) hash.update(readFileSync(file));
+      const version = hash.digest("hex").slice(0, 12);
       const template = readFileSync(
         path.resolve(import.meta.dirname, "sw.js"),
         "utf8",

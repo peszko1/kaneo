@@ -1,0 +1,520 @@
+# Lekcje trackera 120h. Edytujesz je w zakładce 120h → Ustawienia → Lekcje (YAML).
+# start: dzień 1 planu. day: dzień planu, w którym lekcja jest sugerowana.
+start: '2026-10-30'
+lessons:
+  - id: k1
+    day: 1
+    title: gra „chord tone / scale tone” (Melody L12)
+    udemy:
+      title: Udemy Melody · L12 Chord Tones and Arpeggios (Part 1), 30 min
+      url: https://www.udemy.com/course/mwd-part2/learn/lecture/23357334
+    steps:
+      - min: 10
+        text: 'Przewroty najbliższą drogą w B♭-dur: B♭ – F – Cm – Gm. Prawa: triady, każda następna w przewrocie najbliżej poprzedniej (wspólne dźwięki zostają). Lewa: pryma, cała nuta. Rytm: 1 akord na takt, metronom 70.'
+      - min: 20
+        text: 'Gra z L12 „chord tone / scale tone”. Rytm: ćwierćnuty, 1 akord na takt. Prawa: na 1 i 3 dźwięk akordu, na 2 i 4 dźwięk skali, zawsze krokiem (sekunda) albo małym skokiem do najbliższego dźwięku akordu. Lewa: pryma akordu, cała nuta. Ta sama progresja B♭ – F – Cm – Gm, metronom 70. 4 rundy po 8 taktów, każda runda zaczyna z innego dźwięku akordu (pryma, tercja, kwinta, znów tercja).'
+      - min: 15
+        text: 'To samo w c-moll: Fm – A♭ – Cm – E♭. Metronom 70, potem 85. Nagraj ostatnią rundę Dyktafonem.'
+  - id: k3
+    day: 3
+    title: Melody L13, ćw. 1 na BT05 (B♭-dur)
+    udemy:
+      title: Udemy Melody · L13 Chord Tones and Arpeggios (Part 2), 21 min
+      url: https://www.udemy.com/course/mwd-part2/learn/lecture/23357340
+    steps:
+      - min: 5
+        text: 'Podkłady z lekcji L13: pobierz z zasobów lekcji L13 na Udemy (ZIP) albo graj z metronomem.'
+      - min: 10
+        text: 'Ćw. 1a. BT05: B♭-dur, I–V–ii–vi = B♭ – F – Cm – Gm, 85 bpm. Wypisz w notatce dźwięki każdego akordu: B♭ (B♭–D–F), F (F–A–C), Cm (C–E♭–G), Gm (G–B♭–D). Zagraj je po kolei. Prawa: pasaż w górę, ćwierćnuty. Lewa: pryma, cała nuta. Metronom 85 z podkładem.'
+      - min: 15
+        text: 'Ćw. 1b. Płynna linia z dźwięków akordu: prawa gra po jednym dźwięku akordu na ćwierćnutę, ale przy zmianie akordu idzie do najbliższego dźwięku nowego akordu (krok, nie skok). Lewa: nic, gra podkład BT05. 3 linie: zaczynasz od D, od F, od B♭. Każda 4 razy przez całą pętlę.'
+      - min: 15
+        text: 'Ćw. 1c. Gra z L12 „chord tone / scale tone”. Rytm: ćwierćnuty, 1 akord na takt. Prawa: na 1 i 3 dźwięk akordu, na 2 i 4 dźwięk skali, zawsze krokiem (sekunda) albo małym skokiem do najbliższego dźwięku akordu. Lewa: pryma akordu, cała nuta. Z podkładem BT05. Nagraj 2 pętle.'
+  - id: k4
+    day: 4
+    title: Melody L13, ćw. 1 na BT06 i BT07
+    steps:
+      - min: 15
+        text: 'Ćw. 1 na BT06: c-moll, iv–♭VI–i–♭III = Fm – A♭ – Cm – E♭, 85 bpm. Dźwięki akordów: Fm (F–A♭–C), A♭ (A♭–C–E♭), Cm (C–E♭–G), E♭ (E♭–G–B♭). Prawa: najpierw pasaże ćwierćnutami, potem płynna linia krokiem do najbliższego dźwięku akordu. Lewa: nic, gra podkład.'
+      - min: 15
+        text: 'Ćw. 1 na BT07: E-dur, IV–I–V–ii = A – E – H – F♯m, 110 bpm, zacznij od 85 (Warp w Abletonie), potem 110. Dźwięki: A (A–C♯–E), E (E–G♯–H), H (H–D♯–F♯), F♯m (F♯–A–C♯). Prawa: płynna linia z dźwięków akordu, ćwierćnuty. Lewa: pryma, cała nuta.'
+      - min: 15
+        text: 'Gra z L12 „chord tone / scale tone”. Rytm: ćwierćnuty, 1 akord na takt. Prawa: na 1 i 3 dźwięk akordu, na 2 i 4 dźwięk skali, zawsze krokiem (sekunda) albo małym skokiem do najbliższego dźwięku akordu. Lewa: pryma akordu, cała nuta. Na BT06 i BT07, po 4 pętle. Nagraj najlepszą.'
+  - id: k5
+    day: 5
+    title: Melody L13, ćw. 1 na BT08 i ćw. 2 (avoid notes)
+    steps:
+      - min: 15
+        text: 'Ćw. 1 na BT08: es-moll, i–v–♭VI–♭VII = E♭m – B♭m – C♭ – D♭, 110 bpm. Dźwięki: E♭m (E♭–G♭–B♭), B♭m (B♭–D♭–F), C♭ (C♭–E♭–G♭), D♭ (D♭–F–A♭). Prawa: płynna linia krokiem, ćwierćnuty. Lewa: pryma, cała nuta. Najpierw 85, potem 110.'
+      - min: 15
+        text: 'Ćw. 2 na BT05. W każdym akordzie zagraj po kolei wszystkie dźwięki skali B♭-dur (prawa, półnuty) i znajdź ten, który najbardziej gryzie. Sprawdź: B♭ → E♭, F → B♭, Cm → A, Gm → E♭. Połącz te 4 dźwięki w melodię (półnuty, 2 na akord: dysonans na 1, rozwiązanie krokiem na 3). Lewa: nic. Graj ją 8 razy z podkładem.'
+      - min: 15
+        text: 'Ćw. 2 na BT06 (skala c-moll). Sprawdź: Fm → D, A♭ → D, Cm → A♭, E♭ → A♭. Ta sama zasada: dysonans na 1, rozwiązanie krokiem na 3. 8 razy z podkładem, nagraj ostatnie 2.'
+  - id: k6
+    day: 6
+    title: Melody L13, ćw. 2 na BT07–BT08 i ćw. 3 na BT05
+    steps:
+      - min: 15
+        text: 'Ćw. 2 na BT07 (E-dur, 110): A → D♯, E → A, H → E, F♯m → D♯. Na BT08 (es-moll, 110): E♭m → C♭, B♭m → C♭, C♭ → F, D♭ → G♭. Prawa: półnuty, dysonans na 1, rozwiązanie krokiem na 3. Lewa: nic. Po 6 pętli.'
+      - min: 30
+        text: 'Ćw. 3 na BT05, 85 bpm: pełna melodia na 8 taktów (pętla 2 razy). Zasady z L13: na mocnych częściach taktu (1 i 3) dźwięki akordu, dźwięki skali tylko jako łączniki na słabych. Rytm: ćwierćnuty i ósemki, na końcu każdego 2-taktu półnuta. Prawa: melodia. Lewa: nic. 10 min układasz, 10 min grasz z podkładem, 10 min nagrywasz 3 podejścia.'
+  - id: k7
+    day: 7
+    title: Melody L13, ćw. 3 na BT06 i BT07
+    steps:
+      - min: 20
+        text: 'Ćw. 3 na BT06 (c-moll, 85): melodia 8 taktów, dźwięki akordu na 1 i 3, skala jako łączniki. Jeden „avoid note” z ćw. 2 wolno Ci użyć raz, na słabej części i z rozwiązaniem krokiem. Rytm: ćwierćnuty i ósemki, półnuta co 2 takty. Lewa: nic. Nagraj.'
+      - min: 25
+        text: 'Ćw. 3 na BT07 (E-dur, najpierw 85, potem 110): melodia 8 taktów, te same zasady. Przy 110: ósemki tylko na 2 i 4. Prawa: melodia. Lewa: pryma, cała nuta (na 110 tylko pierwsza nuta taktu). Nagraj.'
+  - id: k8
+    day: 8
+    title: Melody L13, ćw. 3 na BT08 i nagranie 4 melodii
+    steps:
+      - min: 20
+        text: 'Ćw. 3 na BT08 (es-moll, 110): melodia 8 taktów, zasady jak wczoraj. Prawa: melodia, ćwierćnuty i ósemki. Lewa: nic.'
+      - min: 25
+        text: 'Nagranie: 4 melodie z ćw. 3 (BT05, BT06, BT07, BT08), każda 2 pętle, w jednym podejściu z przerwą 1 takt. Prawa: melodia. Lewa: pryma, cała nuta. Plik: data_melodie_L13.'
+  - id: k10
+    day: 10
+    title: Melody L14, chromatyka na BT05 i BT06
+    udemy:
+      title: Udemy Melody · L14 Chromatic Notes – Stepping Outside the Key, 27 min
+      url: https://www.udemy.com/course/mwd-part2/learn/lecture/23357346
+    steps:
+      - min: 10
+        text: 'Dźwięki chromatyczne z L14 na sucho: dojście półtonem z dołu do każdego dźwięku akordu. B♭: A→B♭, C♯→D, E→F. Prawa: ósemka chromatyczna na „i” przed 1, dźwięk akordu na 1. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 15
+        text: 'Nowa melodia na BT05 (85), 8 taktów: szkielet z dźwięków akordu jak w L13 + 4 chromatyczne dźwięki przejściowe, zawsze na słabej ósemce i z rozwiązaniem półtonem. Prawa: melodia. Lewa: nic. Nagraj.'
+      - min: 20
+        text: Nowa melodia na BT06 (85), 8 taktów, te same zasady, plus 1 chromatyczne dojście z góry (np. A → A♭ na A♭-dur). Nagraj 2 podejścia.
+  - id: k11
+    day: 11
+    title: Melody L14, chromatyka na BT07 i BT08
+    steps:
+      - min: 20
+        text: 'Nowa melodia na BT07 (110), 8 taktów: dużo chromatyki (co takt jedno dojście półtonem). Rytm: ósemki, dojście zawsze na „i”. Prawa: melodia. Lewa: pryma na 1.'
+      - min: 15
+        text: 'Nowa melodia na BT08 (110), 8 taktów, chromatyka oszczędnie: najwyżej 2 dźwięki spoza skali w całej melodii. Prawa: melodia. Lewa: nic.'
+      - min: 10
+        text: 'Nagranie: 4 melodie z L14 po kolei, porównaj z melodiami z L13 (dzień 8). W notatce: która chromatyka brzmi najlepiej.'
+  - id: k12
+    day: 12
+    title: Melody L15, improwizacja nad burdonem i artykulacja
+    udemy:
+      title: Udemy Melody · L15 Instruments and Articulation, 20 min
+      url: https://www.udemy.com/course/mwd-part2/learn/lecture/23357354
+    steps:
+      - min: 5
+        text: 'Minilogue: jeden patch (piła, cutoff na połowie). Burdon: Drone D z kursu (odtwarzacz niżej, pętla). Głośność tak, żeby minilogue był wyraźnie nad burdonem.'
+      - min: 20
+        text: 'Improwizacja nad burdonem D, D-dorycki (D–E–F–G–A–H–C), metronom 80. Prawa: minilogue. Lewa: nic (gra burdon z odtwarzacza). 4 rundy po 4 minuty, każda z inną artykulacją z L15: (1) legato, (2) staccato, (3) akcenty co 3 ósemki, (4) długie dźwięki z ruchem cutoffu lewą ręką.'
+      - min: 20
+        text: 'Ten sam patch, zmieniasz tylko obwiednie: AMP EG attack 0 → 1/2, release 0 → 1/2, FILTER EG intensity w górę. Dla każdego ustawienia 1 fraza 4-taktowa nad burdonem. Ćwierćnuty i ósemki. Nagraj wszystkie, zrób zdjęcie każdego ustawienia.'
+  - id: k13
+    day: 13
+    title: Melody L15, jeden patch nad progresją
+    steps:
+      - min: 5
+        text: 'Model D: jeden patch na całą lekcję (oscylator 1 piła 8'', filtr na godzinie 12, glide 0). Podkład BT06.'
+      - min: 25
+        text: 'Improwizacja nad BT06 (85) tylko na Model D, cel z L15: wycisnąć z jednego patcha wszystko. 5 rund po 4 pętle: (1) legato bez glide, (2) legato z glide 3, (3) staccato krótki decay, (4) filtr ręką lewą w czasie gry, (5) wszystko naraz. Prawa: melodia z dźwięków akordu na 1 i 3. Lewa: gałki.'
+      - min: 15
+        text: 'Nagraj najlepszą rundę 8 pętli. W notatce: która artykulacja najbardziej zmienia charakter melodii.'
+  - id: k14
+    day: 14
+    title: 'Melody L16, powtórka: tryby, chromatyka, artykulacja'
+    udemy:
+      title: Udemy Melody · L16 Musical Warp Drive – Part 2 – Review, 19 min
+      url: https://www.udemy.com/course/mwd-part2/learn/lecture/23357366
+    steps:
+      - min: 15
+        text: 'Tryby, 8 min: ta sama 4-taktowa melodia (prawa, ćwierćnuty) od D w trzech trybach: D-dorycki, D-eolski, D-miksolidyjski, nad Drone D. Lewa: nic. Metronom 80. Potem 7 min: po jednej pętli improwizacji nad podkładami z Melody L10, skalą ich tonacji: BT01 (G-eolska), BT02 (D-jońska), BT03 (B♭-eolska), BT04 (A♭-jońska). Prawa: ćwierćnuty i ósemki. Lewa: pryma tonacji, cała nuta.'
+      - min: 15
+        text: 'Chromatyka: melodia z dnia 10 (BT05) zagrana z dodatkowym dojściem półtonem w każdym takcie. Prawa: melodia. Lewa: pryma. Z podkładem.'
+      - min: 15
+        text: 'Artykulacja: melodia z dnia 8 (BT07) na minilogue w 3 wersjach: legato, staccato, akcenty. Nagraj wszystkie 3. Koniec kursu Melody.'
+  - id: k15
+    day: 15
+    title: Harmony L1–L2, dur i moll ze słuchu
+    udemy:
+      title: Udemy Harmony · L2 Overview (dur i moll ze słuchu)
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25806750
+    links:
+      - title: 'musictheory.net: rozpoznawanie akordów ze słuchu (darmowe, Safari na iPadzie)'
+        url: https://www.musictheory.net/exercises/ear-chord
+    steps:
+      - min: 15
+        text: 'Dur i moll z L2. Prawa: triada C-dur, potem c-moll (zmienia się tylko tercja E → E♭). Lewa: pryma C, cała nuta. To samo od każdego z 12 dźwięków po kole kwintowym: C, G, D, A, E, H, F♯, D♭, A♭, E♭, B♭, F. Rytm: dur 1 takt, moll 1 takt, metronom 60. Śpiewasz tercję na „la”.'
+      - min: 20
+        text: 'musictheory.net (link): Chord Ear Training, w ustawieniach tylko Major i Minor, root position. Serie po 20, aż do 100% trafień (cel z L2). Zanim klikniesz, zaśpiewaj tercję.'
+      - min: 10
+        text: 'Odwrotnie: zamknij oczy, losowo graj dur albo moll (prawa, triada, różne wysokości), mów na głos przed otworzeniem oczu, co było. 20 prób.'
+  - id: k17
+    day: 17
+    title: Harmony L3, diatonika durowa (arkusz)
+    udemy:
+      title: Udemy Harmony · L3 Diatonic Harmony – Major
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950332
+    steps:
+      - min: 15
+        text: 'Arkusz „Diatonic Triads: Major” (PDF, link wyżej): 4 zadania, czyli triady w 7 tonacjach, cyfry na akordy, akordy na cyfry i rozpoznawanie tonacji. Piszesz w notatce albo na wydruku. Pisownia: w każdej tonacji każda litera raz (np. w E: D♯°, nie E♭°). Na końcu sprawdzasz z odpowiedziami (drugi PDF).'
+      - min: 15
+        text: 'Triady diatoniczne w C, G, F: I – ii – iii – IV – V – vi – vii° – I. Prawa: triada w pozycji zasadniczej, ćwierćnuty, w górę i w dół. Lewa: pryma, ćwierćnuty. Metronom 70. Mów nazwę akordu na głos (np. „Dm”).'
+      - min: 15
+        text: To samo w D i B♭, potem wszystkie 5 tonacji w przewrotach najbliższą drogą (prawa), lewa pryma, cała nuta, metronom 60.
+  - id: k18
+    day: 18
+    title: Harmony L4, 5 progresji w C
+    udemy:
+      title: Udemy Harmony · L4 Major – progresje
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950336
+    steps:
+      - min: 10
+        text: 'Zasada z L4: 4 takty, 1 akord na takt, tylko akordy diatoniczne. Prawa: triada najbliższą drogą. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 25
+        text: '5 progresji w C, każda z innym założeniem: (1) zaczyna i kończy na I, (2) kończy na V, (3) zawiera vii°, (4) zaczyna od vi, (5) zawiera iii. Każdą zapisz cyframi rzymskimi i nazwami, zagraj 4 razy.'
+      - min: 10
+        text: 'Nagraj wszystkie 5 po kolei, 2 razy każda. W notatce: która brzmi najlepiej.'
+  - id: k19
+    day: 19
+    title: Harmony L4, progresje w G i F
+    steps:
+      - min: 20
+        text: '5 progresji w G, założenia jak wczoraj (1–5). Prawa: triada najbliższą drogą. Lewa: pryma, cała nuta. Metronom 70, każda 4 razy.'
+      - min: 20
+        text: 5 progresji w F, te same założenia, ale nie powtarzasz progresji z C i G (inne cyfry). Prawa i lewa jak wyżej.
+      - min: 5
+        text: Nagraj progresje (3) z G i F, czyli te z vii°.
+  - id: k20
+    day: 20
+    title: Harmony L4, progresje w D i B♭
+    steps:
+      - min: 20
+        text: '5 progresji w D, założenia (1)–(5). Prawa: triada najbliższą drogą. Lewa: pryma ósemkami (żeby poczuć puls). Metronom 70.'
+      - min: 20
+        text: 5 progresji w B♭, te same założenia. Prawa i lewa jak wyżej.
+      - min: 5
+        text: Nagraj 1 ulubioną progresję z każdej z 5 tonacji (C, G, F, D, B♭).
+  - id: k21
+    day: 21
+    title: Harmony L5–L6, diatonika molowa
+    udemy:
+      title: Udemy Harmony · L5 Diatonic Harmony – Minor
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950338
+    steps:
+      - min: 15
+        text: 'Arkusz „Diatonic Triads: Minor” (PDF, link wyżej): 4 zadania jak w arkuszu durowym, w 7 tonacjach molowych. Sprawdzasz z odpowiedziami (drugi PDF). Potem w a, e, d zaznacz, gdzie moll harmoniczny daje V dur i vii°.'
+      - min: 15
+        text: 'Triady diatoniczne w a, e, d: i – ii° – III – iv – v (i V) – VI – VII – i. Prawa: triada, ćwierćnuty, w górę i w dół. Lewa: pryma, ćwierćnuty. Metronom 70, nazwy na głos.'
+      - min: 15
+        text: '5 progresji w a (L6), 4 takty, 1 akord na takt: (1) i…i, (2) kończy na V, (3) zawiera ii°, (4) zaczyna od VI, (5) zawiera VII. Prawa: triada najbliższą drogą. Lewa: pryma, cała nuta.'
+  - id: k22
+    day: 22
+    title: Harmony L6, progresje w e, d, h, g
+    udemy:
+      title: Udemy Harmony · L6 Minor – progresje
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950344
+    steps:
+      - min: 25
+        text: 'Po 5 progresji w e i d, założenia (1)–(5) jak wczoraj. Prawa: triada najbliższą drogą. Lewa: pryma, cała nuta. Metronom 70, każda 4 razy.'
+      - min: 15
+        text: Po 5 progresji w h i g, te same założenia. Rytm jak wyżej.
+      - min: 5
+        text: Nagraj progresje (2) z każdej z 5 tonacji molowych (te kończące na V).
+  - id: k24
+    day: 24
+    title: Harmony L7, progresje z melodią (dur)
+    udemy:
+      title: Udemy Harmony · L7 Melodizing
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950350
+    steps:
+      - min: 10
+        text: 'Zasada z L7: najpierw progresja, potem melodia z dźwięków akordu na mocnych częściach i skali jako łączników. 4 takty, 1 akord na takt.'
+      - min: 35
+        text: '5 progresji durowych, każda w innej tonacji: C, G, D, A, F (możesz wziąć z dni 18–20). Do każdej melodia. Prawa: melodia, ćwierćnuty i ósemki. Lewa: triada w niskim rejestrze, cała nuta. Metronom 80. Po 7 min na progresję, ostatnia minuta: nagranie.'
+  - id: k25
+    day: 25
+    title: Harmony L7, progresje z melodią (moll)
+    steps:
+      - min: 35
+        text: '5 progresji molowych z melodią, każda w innej tonacji: e, h, d, g, c (żadnej z dur z wczoraj). Prawa: melodia. Lewa: triada, cała nuta. Metronom 80. Po 7 min na progresję.'
+      - min: 10
+        text: Nagraj 10 progresji z melodią (5 dur z wczoraj + 5 moll) w jednym podejściu.
+  - id: k26
+    day: 26
+    title: Harmony L8, harmonizacja „Wlazł kotek”
+    udemy:
+      title: Udemy Harmony · L8 Harmonizing Melodies
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950354
+    steps:
+      - min: 10
+        text: 'Melodia „Wlazł kotek na płotek” w C, prawa, ze słuchu: G–E–E–F–D–D–C–E–G… Zapisz dźwięki.'
+      - min: 25
+        text: 'Ćwiczenie z L8: każdy dźwięk melodii dostaje osobny akord z I, IV albo V, w którym ten dźwięk jest. Trzy głosy, melodia na górze. Prawa: melodia + 1 dźwięk akordu pod nią. Lewa: pryma. Rytm: ćwierćnuty, metronom 60.'
+      - min: 10
+        text: Nagraj harmonizację 2 razy. Potem zaśpiewaj melodię i graj tylko akordy.
+  - id: k28
+    day: 28
+    title: Harmony L9–L10, progresje funkcyjne po 4 akordy
+    udemy:
+      title: Udemy Harmony · L10 Functional Harmony – progresje
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950390
+    steps:
+      - min: 10
+        text: 'Funkcje z L9: T = I, iii, vi; S = IV, ii; D = V, vii°. Zagraj w C każdą grupę po kolei. Prawa: triada. Lewa: pryma. Rytm: 1 akord na takt, metronom 70. Mów na głos T, S, D.'
+      - min: 35
+        text: 'Ćwiczenie z L10, część 1: 6 progresji po 4 akordy, 3 dur (C, G, F) i 3 moll (a, e, d). Każda w porządku T – S – D – T, każdy akord z uzasadnieniem w notatce (np. „ii jako S zamiast IV”). Prawa: triada najbliższą drogą. Lewa: pryma, cała nuta. Każda 4 razy.'
+  - id: k29
+    day: 29
+    title: Harmony L10, progresje funkcyjne po 8 akordów
+    steps:
+      - min: 35
+        text: 'Ćwiczenie z L10, część 2: 6 progresji po 8 akordów, 3 dur (D, B♭, A) i 3 moll (h, g, c). Każda funkcja może trwać 1 lub 2 akordy, ostatnie 2 akordy zawsze D – T. Uzasadnienie każdego akordu w notatce. Prawa: triada najbliższą drogą. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 10
+        text: Nagraj 12 progresji z dni 28–29, każda raz.
+  - id: k31
+    day: 31
+    title: Harmony L11, reharmonizacja zamiennikami
+    udemy:
+      title: Udemy Harmony · L11 Functional Substitutes
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950396
+    steps:
+      - min: 20
+        text: '„Wlazł kotek” z dnia 26: ta sama melodia, ale zamienniki funkcyjne z L11: zamiast I wstaw vi albo iii, zamiast IV wstaw ii, gdzie dźwięk melodii jest w akordzie. Trzy głosy, melodia na górze. Prawa: melodia + 1 głos. Lewa: pryma. Ćwierćnuty, metronom 60.'
+      - min: 20
+        text: '„London Bridge Is Falling Down” w F (prawa ze słuchu: C–D–C–B♭–A–B♭–C…). Najpierw harmonizacja I/IV/V, potem wersja z zamiennikami. Rytm i ręce jak wyżej.'
+      - min: 5
+        text: 'Nagraj obie piosenki: wersja prosta, potem z zamiennikami.'
+  - id: k32
+    day: 32
+    title: 'Harmony L12, akordy sus: dwa pierwsze zastosowania'
+    udemy:
+      title: Udemy Harmony · L12 Suspended Chords
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950480
+    steps:
+      - min: 10
+        text: 'Sus2 i sus4 po kole kwintowym: Csus2 – C – Csus4 – C, potem G, D, A… Prawa: triada. Lewa: pryma. Rytm: ćwierćnuty, metronom 70. Pamiętaj z L12: na III nie ma sus2, na IV nie ma sus4 (dźwięk spoza tonacji).'
+      - min: 20
+        text: '3 progresje, w których sus jest ruchem wewnątrz akordu (np. V: Gsus4 na 1, G na 3). Tonacje C, G, D. Prawa: triada, sus na 1, rozwiązanie na 3. Lewa: pryma, cała nuta.'
+      - min: 15
+        text: 3 progresje, w których sus całkowicie zastępuje akord (np. I – IVsus2 – vi – Vsus4). Tonacje F, B♭, a. Ręce jak wyżej, 1 akord na takt.
+  - id: k33
+    day: 33
+    title: Harmony L12–L13, trzecie zastosowanie sus i akordy zmniejszone
+    udemy:
+      title: Udemy Harmony · L13 Diminished
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950490
+    steps:
+      - min: 15
+        text: '3 progresje z trzecim zastosowaniem sus z L12 (sus jako akord przejściowy między dwoma akordami). Tonacje E, e, d. Prawa: triada najbliższą drogą. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 30
+        text: 'Progresje z L13 w C, G, D, F, B♭: I – vii° – I i I – ii – vii° – I. W moll (a, e, d): i – iv – V – vii° – i. Prawa: triada najbliższą drogą. Lewa: pryma, cała nuta. Rytm: 1 akord na takt, metronom 70.'
+  - id: k34
+    day: 34
+    title: Harmony L13–L14, zmniejszone i zwiększone
+    udemy:
+      title: Udemy Harmony · L14 Augmented
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950526
+    steps:
+      - min: 15
+        text: Progresje z vii° z wczoraj w A, E, A♭, E♭ i w h, g, c. Ręce i rytm jak wczoraj.
+      - min: 20
+        text: 'L14: I – I+ – IV i I – I+ – vi w C, G, F, D, B♭. I+ = kwinta podniesiona (C–E–G♯). Prawa: triada, kwinta idzie półtonem w górę. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 10
+        text: Nagraj po jednej progresji z L12, L13 i L14.
+  - id: k35
+    day: 35
+    title: Harmony L15–L16, maj7, m7, 7 po kole kwintowym
+    udemy:
+      title: Udemy Harmony · L16 Primary Sevenths, 25 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950564
+    steps:
+      - min: 25
+        text: 'Ćwiczenie z L16: Cmaj7, Cm7, C7, potem G, D, A, E, H, F♯, D♭, A♭, E♭, B♭, F. Wymawiasz nazwę akordu na głos, zanim go zagrasz. Prawa: 4 dźwięki w pozycji zasadniczej. Lewa: pryma. Rytm: 1 akord na takt, metronom 60.'
+      - min: 20
+        text: To samo, ale prawa bez prymy (3–5–7 + nona albo pryma u góry), lewa pryma. Metronom 60, potem 72.
+  - id: k36
+    day: 36
+    title: Harmony L16, I–IV–ii–V w septymach
+    steps:
+      - min: 35
+        text: 'Progresja z L16: Imaj7 – IVmaj7 – ii7 – V7 (w C: Cmaj7 – Fmaj7 – Dm7 – G7) w C, F, G, B♭, D, E♭. Prawa: czterodźwięki najbliższą drogą. Lewa: pryma, cała nuta. Rytm: 1 akord na takt, metronom 70.'
+      - min: 10
+        text: Nagraj progresję w 3 tonacjach bez zatrzymania.
+  - id: k38
+    day: 38
+    title: 'Harmony L17, ćw. 1: trójdźwięki na septymy'
+    udemy:
+      title: Udemy Harmony · L17 Primary Sevenths – How to Use, 27 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950566
+    steps:
+      - min: 30
+        text: 'Ćw. 1 z L17: zamień 5 progresji trójdźwiękowych na septymowe. (1) I–vi–IV–V → Imaj7–vi7–IVmaj7–V7, (2) I–V–ii–IV, (3)–(5) trzy Twoje progresje z dni 18–20. Każdą w 2 voicingach: prawa z prymą i bez prymy. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 15
+        text: 'V7sus z L17: w każdej progresji zamień V7 na V7sus4 → V7 (sus na 1, rozwiązanie na 3). Ręce jak wyżej. Nagraj 2 progresje.'
+  - id: k39
+    day: 39
+    title: 'Harmony L17, ćw. 2: własne progresje septymowe'
+    steps:
+      - min: 35
+        text: 'Ćw. 2 z L17: 5 własnych progresji septymowych, 4 takty, 1 akord na takt, tonacje: D, A, E♭, a, e. Każda zawiera co najmniej jeden V7sus. Prawa: czterodźwięki bez prymy, najbliższą drogą. Lewa: pryma ćwierćnutami. Metronom 80.'
+      - min: 10
+        text: Nagraj wszystkie 5.
+  - id: k40
+    day: 40
+    title: Harmony L18, m7♭5 i molowe ii–V–i
+    udemy:
+      title: Udemy Harmony · L18 The m7b5 Chord, 10 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950584
+    steps:
+      - min: 10
+        text: 'm7♭5 po kole kwintowym: Cm7♭5 (C–E♭–G♭–B♭), Gm7♭5… Mówisz nazwę na głos. Prawa: 4 dźwięki. Lewa: pryma. 1 akord na takt, metronom 60.'
+      - min: 30
+        text: 'Molowe ii–V–i z L18 w 5 tonacjach: a (Hm7♭5 – E7 – Am7), d, g, c, e. Prawa: czterodźwięki najbliższą drogą bez prymy. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 5
+        text: Nagraj ii–V–i w 5 tonacjach bez zatrzymania.
+  - id: k41
+    day: 41
+    title: Harmony L19, akord zmniejszony septymowy
+    udemy:
+      title: Udemy Harmony · L19 The Diminished 7th Chord, 28 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950600
+    steps:
+      - min: 15
+        text: 'dim7 po kole kwintowym: Cdim7 (C–E♭–G♭–A), G, D… Zauważ: są tylko 3 różne zestawy dźwięków. Prawa: 4 dźwięki. Lewa: pryma. Mów nazwę na głos. Metronom 60.'
+      - min: 25
+        text: 'dim7 zamiast V7 (L19): w C, G, F, D progresja I – IV – vii°7 – I (w C: C – F – H°7 – C). Prawa: najbliższą drogą. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 5
+        text: Nagraj w 2 tonacjach.
+  - id: k42
+    day: 42
+    title: Harmony L19–L20, dim7 przejściowy i mMaj7
+    udemy:
+      title: Udemy Harmony · L20 The Minor-Major Seventh, 11 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950616
+    steps:
+      - min: 25
+        text: 'Ćwiczenie z L19: dim7 pół tonu pod każdym akordem I–IV–V. W C: H°7 → C, E°7 → F, F♯°7 → G. Potem w G i F. Prawa: dim7 na „4 i”, akord docelowy na 1. Lewa: pryma. Metronom 70.'
+      - min: 20
+        text: 'mMaj7 po kole kwintowym (L20): CmMaj7 = C–E♭–G–H. Linia opadająca: Cm – CmMaj7 – Cm7 – Cm6. Prawa: pryma idzie w dół półtonami C–H–B♭–A. Lewa: pryma C, cała nuta. W c, g, d, a.'
+  - id: k43
+    day: 43
+    title: Harmony L21, akordy 6 i m6
+    udemy:
+      title: Udemy Harmony · L21 Sixth Chords, 18 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950624
+    steps:
+      - min: 10
+        text: 'C6 (C–E–G–A) i Cm6 (C–E♭–G–A) po kole kwintowym. Prawa: 4 dźwięki. Lewa: pryma. Mów nazwę. Metronom 60.'
+      - min: 30
+        text: 'Ćwiczenie z L21: 5 progresji mieszających akordy 6 i 7, tonacje: F, C, G, d, a. Każda ma co najmniej jeden 6 albo m6 i jeden septymowy. Prawa: najbliższą drogą bez prymy. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 5
+        text: Nagraj wszystkie 5.
+  - id: k45
+    day: 45
+    title: Harmony L22, nony i 5 progresji durowych
+    udemy:
+      title: Udemy Harmony · L22 Extended Chords – Ninths, 25 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950632
+    steps:
+      - min: 15
+        text: 'Nony po kole kwintowym z L22: Cmaj9, Cm9, C9. Prawa: 3–5–7–9 (bez prymy). Lewa: pryma. Mów nazwę. Metronom 60.'
+      - min: 30
+        text: '5 progresji durowych w 3 wersjach z L22: trójdźwięki → septymy → nony. Tonacje: C, F, G, D, B♭. Prawa: najbliższą drogą. Lewa: pryma, cała nuta. 1 akord na takt, metronom 70.'
+  - id: k46
+    day: 46
+    title: Harmony L22, 5 progresji molowych z nonami
+    steps:
+      - min: 35
+        text: '5 progresji molowych w 3 wersjach (trójdźwięki → septymy → nony): a, d, e, g, c. W moll uważaj na ♭9 na V. Prawa: najbliższą drogą bez prymy. Lewa: pryma, cała nuta. Metronom 70.'
+      - min: 10
+        text: Nagraj 10 progresji z dni 45–46 w wersji z nonami.
+  - id: k47
+    day: 47
+    title: Harmony L23, undecymy
+    udemy:
+      title: Udemy Harmony · L23 Elevenths, 35 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950634
+    steps:
+      - min: 15
+        text: 'Akordy 11 z L23: Cm11 (C | E♭–G–B♭–D–F), C11 i Cmaj7♯11. Kwintę można pominąć. Prawa: 4 górne dźwięki. Lewa: pryma (albo pryma + septyma). Metronom 60.'
+      - min: 30
+        text: 'Progresje z L23 grane do płynności, w C, F, G, d: każdą 8 razy z rzędu bez błędu. Prawa: najbliższą drogą. Lewa: pryma, cała nuta. Metronom 60, potem 72.'
+  - id: k48
+    day: 48
+    title: Harmony L24, tercdecymy
+    udemy:
+      title: Udemy Harmony · L24 Thirteenths, 23 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950644
+    steps:
+      - min: 15
+        text: 'Akordy 13 z L24: C13 (lewa C + B♭, prawa E–A–D). Cmaj13, Cm13. Po kole kwintowym przez 6 tonacji. Metronom 60.'
+      - min: 30
+        text: 'Porównanie z L24: ta sama progresja ii–V–I w C, F, B♭ w wersji 7 → 9 → 11 → 13. Prawa: górne dźwięki. Lewa: pryma + septyma. Rytm: 1 akord na takt, metronom 70. Nagraj wersje 7 i 13 z jednej tonacji.'
+  - id: k49
+    day: 49
+    title: Harmony L25, dodawanie i pomijanie dźwięków
+    udemy:
+      title: Udemy Harmony · L25 Adding and Omitting, 18 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950662
+    steps:
+      - min: 25
+        text: 'Ćwiczenie z L25: Cmaj7 i C7 grane kolejno bez kwinty, bez prymy w prawej, z dodaną 9, z dodaną 6, z ♯11. Po każdej zmianie zatrzymaj się na 4 ćwierćnuty i nazwij brzmienie jednym słowem w notatce. Prawa: zmiany. Lewa: pryma. Metronom 60.'
+      - min: 20
+        text: 'To samo dla Am7 i G7 (♭9, 13, sus). Nagraj tabelę brzmień: po 1 takcie każdego wariantu.'
+  - id: k50
+    day: 50
+    title: Harmony L26, kompozycja 1 (100 bpm, trójdźwięki)
+    udemy:
+      title: Udemy Harmony · L26 Final Exercise, 5 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950672
+    steps:
+      - min: 25
+        text: 'Kompozycja 1 z L26: D-dur, 100 bpm, tylko trójdźwięki. 8 akordów po jednym na takt, w porządku funkcji: T – S – D – T | T – S – D – T. Akordy z każdej funkcji wybierasz z L9–L11. Prawa: triada najbliższą drogą. Lewa: pryma ósemkami.'
+      - min: 20
+        text: 'Melodia na górze (L7): dźwięki akordu na 1 i 3, skala jako łączniki. Prawa: melodia. Lewa: triada w niskim rejestrze, półnuty. Nagraj szkic.'
+  - id: k52
+    day: 52
+    title: kompozycja 1 (przejścia) i kompozycja 2 (80 bpm, 6 i 7)
+    steps:
+      - min: 15
+        text: 'Kompozycja 1: dwa przejścia z L26, czyli wariant progresji z innym akordem w taktach 4 i 8 (np. sus albo vii°). Forma: A – A’ – A – A’. Nagraj całość.'
+      - min: 30
+        text: 'Kompozycja 2 z L26: F-dur, 80 bpm, akordy 6 i septymowe. 8 akordów po jednym na takt, porządek T – S – D – T | T – S – D – T, co najmniej dwa akordy 6. Prawa: najbliższą drogą bez prymy. Lewa: pryma, cała nuta.'
+  - id: k53
+    day: 53
+    title: 'kompozycja 2: melodia i przejścia'
+    steps:
+      - min: 25
+        text: 'Melodia do kompozycji 2: dźwięki akordu na 1 i 3, raz dźwięk 6 jako dźwięk akordu na mocnej części. Prawa: melodia. Lewa: czterodźwięk w niskim rejestrze, półnuty.'
+      - min: 20
+        text: Dwa przejścia (wariant w taktach 4 i 8, np. dim7 przejściowy z L19). Forma A – A’ – A – A’. Nagraj.
+  - id: k54
+    day: 54
+    title: kompozycja 3 (120 bpm, akordy rozszerzone)
+    udemy:
+      title: Udemy Harmony · L27 Final Exercise – Demonstration, 17 min
+      url: https://www.udemy.com/course/music-theory-chords-and-harmony-for-composition/learn/lecture/25950676
+    steps:
+      - min: 25
+        text: 'Kompozycja 3 z L26: G-dur, 120 bpm, akordy rozszerzone (9, 11, 13). 8 akordów po jednym na takt, T – S – D – T | T – S – D – T. Prawa: górne dźwięki. Lewa: pryma + septyma, ćwierćnuty.'
+      - min: 20
+        text: 'Melodia: rytm ósemkowy, napięcia (9, 13) dozwolone na mocnej części, jeśli są w akordzie. Prawa: melodia. Lewa: akord na 1 i „2 i”.'
+  - id: k55
+    day: 55
+    title: 'kompozycja 3: przejścia i nagranie'
+    steps:
+      - min: 20
+        text: Dwa przejścia w kompozycji 3 (wariant w taktach 4 i 8). Forma A – A’ – A – A’.
+      - min: 25
+        text: 'Nagranie kompozycji 3 w Abletonie: klawisze MIDI (prawa melodia, lewa akordy), metronom 120. 3 podejścia, zostaw najlepsze.'
+  - id: k56
+    day: 56
+    title: 3 kompozycje w jednym podejściu
+    steps:
+      - min: 15
+        text: 'Nagranie: kompozycje 1, 2, 3 po kolei, każda w swoim tempie (100, 80, 120). Prawa: melodia. Lewa: akordy jak w dniach 50–55.'
+      - min: 20
+        text: 'Gra z L12 „chord tone / scale tone”. Rytm: ćwierćnuty, 1 akord na takt. Prawa: na 1 i 3 dźwięk akordu, na 2 i 4 dźwięk skali, zawsze krokiem (sekunda) albo małym skokiem do najbliższego dźwięku akordu. Lewa: pryma akordu, cała nuta. Nad kompozycją 3 (120 bpm), ósemki zamiast ćwierćnut. 4 rundy.'
+      - min: 10
+        text: 'Odsłuch i notatka: która kompozycja nadaje się na własny utwór z wokalem (dzień 56, blok tematu).'

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>120h</title>
+<style>
+:root {
+  --bg: #f6f4ef; --surface: #ffffff; --ink: #1d2433; --muted: #6b7280; --line: #e5e1d8;
+  --accent: #c2410c; --accent-ink: #ffffff; --ok: #15803d; --brk: #2563eb; --soft: #fbeee6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151c; --surface: #1b1f29; --ink: #eceae4; --muted: #9aa1ad; --line: #2c3240;
+    --accent: #fb923c; --accent-ink: #1b1f29; --ok: #4ade80; --brk: #60a5fa; --soft: #2a2119;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151c; --surface: #1b1f29; --ink: #eceae4; --muted: #9aa1ad; --line: #2c3240;
+  --accent: #fb923c; --accent-ink: #1b1f29; --ok: #4ade80; --brk: #60a5fa; --soft: #2a2119;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 24px);
+}
+main { max-width: 760px; margin: 0 auto; padding: 12px 16px; }
+h2 { font-size: 1.05rem; margin: 0 0 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin: 12px 0; }
+.muted { color: var(--muted); }
+small { font-size: .82rem; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 10px;
+  padding: 8px 14px; cursor: pointer; min-height: 40px;
+}
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+input, select, textarea {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; min-height: 40px; max-width: 100%;
+}
+textarea { width: 100%; min-height: 70px; resize: vertical; }
+a { color: var(--accent); }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* licznik */
+#timer { text-align: center; padding: 20px 16px 18px; }
+.phase { font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.phase.work { color: var(--accent); }
+.phase.brk { color: var(--brk); }
+#clock { font-size: clamp(64px, 20vw, 120px); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.05; margin: 6px 0 14px; }
+#startBtn {
+  width: min(320px, 100%); min-height: 84px; font-size: 1.6rem; border-radius: 42px;
+  background: var(--accent); color: var(--accent-ink); border: 0; font-weight: 700;
+}
+#startBtn.running { background: var(--surface); color: var(--ink); border: 2px solid var(--line); }
+.tbtns { justify-content: center; margin-top: 12px; }
+.progress { margin-top: 18px; text-align: left; }
+.bar { height: 12px; background: var(--line); border-radius: 6px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--ok); width: 0; transition: width .4s; }
+.stats { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.stats b { font-size: 1.15rem; }
+
+/* dzień */
+.daynav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.daynav h2 { margin: 0; text-align: center; flex: 1; }
+.steps { padding-left: 20px; margin: 8px 0; }
+.steps li { margin: 6px 0; }
+.steps .min { color: var(--muted); font-variant-numeric: tabular-nums; }
+.udemy { background: var(--soft); border-radius: 10px; padding: 10px 12px; margin: 8px 0; }
+.tag { display: inline-block; font-size: .75rem; padding: 2px 8px; border-radius: 10px; background: var(--line); color: var(--muted); }
+.entries { list-style: none; padding: 0; margin: 8px 0 0; }
+.entries li { display: flex; gap: 8px; align-items: center; padding: 6px 0; border-top: 1px solid var(--line); }
+.entries li span.n { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.entries button { min-height: 32px; padding: 4px 10px; }
+
+/* rozśpiewka */
+#vNow { text-align: center; margin: 10px 0; }
+#vVowel { font-size: 2.6rem; font-weight: 700; }
+#vKey { font-size: 1.1rem; }
+.reg { font-weight: 600; }
+.reg.chest { color: var(--accent); } .reg.mix { color: #a855f7; } .reg.head { color: var(--brk); }
+details summary { cursor: pointer; color: var(--muted); padding: 6px 0; }
+label.f { display: flex; flex-direction: column; gap: 2px; font-size: .85rem; color: var(--muted); }
+label.f > * { color: var(--ink); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.vchips label { display: inline-flex; align-items: center; gap: 4px; margin-right: 10px; }
+</style>
+</head>
+<body>
+<main>
+
+<section class="card" id="timer">
+  <div class="phase" id="phase">Gotowy</div>
+  <div id="clock">25:00</div>
+  <button id="startBtn" type="button">▶ Start</button>
+  <div class="row tbtns">
+    <button type="button" id="stopBtn">■ Zakończ sesję</button>
+    <button type="button" id="skipBtn">Pomiń fazę</button>
+  </div>
+  <div class="progress">
+    <div class="bar"><i id="bar"></i></div>
+    <div class="stats">
+      <span>Razem <b id="total">0 h</b> / <span id="goal">120 h</span></span>
+      <span>Dziś <b id="today">0 min</b></span>
+      <span>Zostało <b id="left">120 h</b></span>
+    </div>
+    <div class="muted" id="eta" style="margin-top:4px;font-size:.85rem"></div>
+    <div class="muted" id="sync" style="margin-top:4px;font-size:.8rem"></div>
+  </div>
+</section>
+
+<section class="card" id="day">
+  <div class="daynav">
+    <button type="button" id="prevDay" aria-label="Poprzedni dzień">‹</button>
+    <h2 id="dayTitle"></h2>
+    <button type="button" id="nextDay" aria-label="Następny dzień">›</button>
+  </div>
+
+  <h2 style="margin-top:16px">Czas tego dnia</h2>
+  <ul class="entries" id="entries"></ul>
+  <form class="row" id="addForm" style="margin-top:10px">
+    <input id="addH" type="number" min="0" step="1" placeholder="h" style="width:70px" aria-label="Godziny">
+    <input id="addM" type="number" min="0" step="1" placeholder="min" style="width:80px" aria-label="Minuty">
+    <input id="addNote" type="text" placeholder="co (opcjonalnie)" style="flex:1;min-width:140px" aria-label="Notatka">
+    <button class="primary" type="submit">+ Dodaj</button>
+  </form>
+
+  <h2 style="margin-top:20px">Plan na ten dzień</h2>
+  <textarea id="plan" placeholder="Twój plan, np. rozśpiewka 15 min, lekcja 45 min, jam 30 min"></textarea>
+
+  <h2 style="margin-top:20px">Sugestia lekcji <span class="tag" id="lessonTag">sugestia</span></h2>
+  <select id="lessonSel" style="width:100%"></select>
+  <div id="lesson"></div>
+</section>
+
+<section class="card" id="voice">
+  <h2>Rozśpiewka: 1-2-3-4-5-4-3-2-1</h2>
+  <p class="muted" style="margin:0 0 6px">Kolejno na <b>mmm</b>, <b>brrr</b>, <b>jooo</b>, <b>jaaa</b>. Pianino gra akord, potem wzór. Co tonację pół tonu wyżej.</p>
+  <div id="vNow">
+    <div id="vVowel">–</div>
+    <div id="vKey" class="muted">naciśnij ▶</div>
+    <div class="bar" style="margin-top:10px"><i id="vBar"></i></div>
+  </div>
+  <div class="row" style="justify-content:center">
+    <button class="primary" type="button" id="vPlay">▶ Graj rozśpiewkę</button>
+    <button type="button" id="vNext">Następna samogłoska</button>
+  </div>
+  <details style="margin-top:10px">
+    <summary>Ustawienia rozśpiewki</summary>
+    <div class="grid" style="margin-top:8px">
+      <label class="f">Najniższy dźwięk<select id="vLow"></select></label>
+      <label class="f">Najwyższy dźwięk<select id="vHigh"></select></label>
+      <label class="f">Tempo (bpm)<input id="vBpm" type="number" min="60" max="200" step="5"></label>
+      <label class="f">Po dojściu do góry<select id="vDown"><option value="0">koniec</option><option value="1">wracaj w dół</option></select></label>
+    </div>
+    <div class="vchips" style="margin-top:10px" id="vVowels"></div>
+    <label style="display:inline-flex;gap:6px;align-items:center;margin-top:8px"><input type="checkbox" id="vMel"> pianino gra też melodię (nie tylko akordy)</label>
+  </details>
+</section>
+
+<section class="card">
+  <details>
+    <summary>Ustawienia i kopia zapasowa</summary>
+    <div class="grid" style="margin-top:8px">
+      <label class="f">Godziny sprzed aplikacji<input id="sBase" type="number" min="0" step="0.5"></label>
+      <label class="f">Cel (h)<input id="sGoal" type="number" min="1" step="1"></label>
+      <label class="f">Praca (min)<input id="sWork" type="number" min="1" max="120"></label>
+      <label class="f">Przerwa (min)<input id="sBrk" type="number" min="1" max="60"></label>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button type="button" id="exportBtn">Eksportuj JSON</button>
+      <label class="row" style="gap:6px"><button type="button" id="importBtn">Importuj JSON</button><input type="file" id="importFile" accept="application/json" hidden></label>
+    </div>
+    <p class="muted" style="font-size:.85rem">Dane zapisują się najpierw na urządzeniu, a potem synchronizują z Kaneo (Twoje konto). Eksport to kopia zapasowa; import dołącza dane, np. z pierwszej wersji aplikacji.</p>
+    <h2 style="margin-top:16px">Lekcje (YAML)</h2>
+    <p class="muted" style="font-size:.85rem;margin-top:0">Każda lekcja: <code>id</code>, <code>day</code> (dzień planu), <code>title</code>, opcjonalnie <code>udemy</code> (title, url), <code>links</code>, <code>steps</code> (min, text). <code>start</code> to data dnia 1.</p>
+    <textarea id="yaml" spellcheck="false" style="min-height:260px;font:12px/1.4 ui-monospace,Menlo,monospace"></textarea>
+    <div class="row" style="margin-top:8px">
+      <button type="button" class="primary" id="yamlSave">Zapisz lekcje</button>
+      <button type="button" id="yamlReset">Przywróć domyślne</button>
+    </div>
+  </details>
+</section>
+
+</main>
+<p class="muted" id="yamlError" role="status" style="font-size:.85rem;padding:0 16px;max-width:760px;margin:0 auto"></p>
+<script src="vendor/js-yaml.min.js"></script>
+<script src="store.js"></script>
+<script src="warmup.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
