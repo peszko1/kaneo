@@ -63,20 +63,24 @@ const sumDayStored = (d) =>
     .filter((e) => e.date === d)
     .reduce((a, e) => a + e.min, 0);
 
-// ---------- licznik pomodoro ----------
-// Stan licznika: {phase, left (ms), at (ms, start biegnącego odcinka) | null}.
+// ---------- licznik ----------
+// Dwa tryby (ustawienie settings.mode, nowy tryb działa od następnej sesji):
+// - "flow" (domyślny): zwykły licznik w górę, {phase:"work", flow:true, at, done}
+//   (done = ms z wcześniejszych odcinków tej sesji, żeby po pauzie liczył dalej);
+// - "pomodoro": {phase, left (ms), at (ms, start biegnącego odcinka) | null}.
 // Czas pracy zapisuje się jako zakończone odcinki o id "seg-<at>". To samo id na każdym
 // urządzeniu, więc gdy dwa urządzenia zobaczą koniec tej samej fazy, wpis się nie podwoi.
 // Po pracy sama rusza przerwa; po przerwie licznik czeka na Start.
 const T = () => S().timer.v;
 const timerRunning = () => !!T()?.at;
+const isFlow = (t) => (t ? !!t.flow : S().settings.mode !== "pomodoro");
 const phaseLen = (p) =>
   (p === "work" ? S().settings.work : S().settings.brk) * 60000;
 function setTimer(v) {
   S().timer = { v, u: Date.now() };
 }
 function addSegment(at, ms) {
-  if (ms < 30000) return;
+  if (ms < 5000) return;
   S().entries["seg-" + at] = {
     date: dkey(new Date(at)),
     min: ms / 60000,
@@ -88,7 +92,7 @@ function addSegment(at, ms) {
 // Doprowadza licznik do chwili `now`. Zwraca true, gdy coś się zmieniło.
 function advance(now) {
   let t = T();
-  if (!t || !t.at) return false;
+  if (!t || !t.at || t.flow) return false;
   let changed = false;
   while (t.at && now >= t.at + t.left) {
     const end = t.at + t.left;
@@ -108,9 +112,10 @@ function advance(now) {
 }
 const liveWork = () => {
   const t = T();
-  return t?.at && t.phase === "work"
-    ? Math.min(Date.now() - t.at, t.left) / 60000
-    : 0;
+  if (!t?.at || t.phase !== "work") return 0;
+  return (
+    (t.flow ? Date.now() - t.at : Math.min(Date.now() - t.at, t.left)) / 60000
+  );
 };
 const liveDate = () => (T()?.at ? dkey(new Date(T().at)) : null);
 const sumAll = () =>
@@ -125,9 +130,32 @@ function tick() {
   renderTotals();
   if (viewDate === dkey(new Date())) renderEntries();
 }
+const clock = (ms) => {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(s / 3600);
+  return (
+    (h ? `${h}:` : "") + `${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`
+  );
+};
 function renderTimer() {
   const t = T(),
     running = !!t?.at;
+  $("skipBtn").hidden = isFlow(t);
+  if (isFlow(t)) {
+    $("clock").textContent = clock(
+      (t?.done || 0) + (running ? Date.now() - t.at : 0),
+    );
+    $("phase").className = "phase work";
+    $("phase").textContent = !t
+      ? "Gotowy · siadasz i klikasz Start"
+      : running
+        ? "Gram"
+        : "Pauza";
+    const b = $("startBtn");
+    b.textContent = running ? "❚❚ Pauza" : t ? "▶ Wznów" : "▶ Start";
+    b.classList.toggle("running", running);
+    return;
+  }
   const left = t
     ? running
       ? t.at + t.left - Date.now()
@@ -181,10 +209,16 @@ $("startBtn").onclick = () => {
   audio();
   const now = Date.now();
   advance(now);
-  let t = T() || { phase: "work", left: phaseLen("work"), at: null };
+  let t =
+    T() ||
+    (isFlow(null)
+      ? { phase: "work", flow: true, at: null, done: 0 }
+      : { phase: "work", left: phaseLen("work"), at: null });
   if (t.at) {
     if (t.phase === "work") addSegment(t.at, now - t.at);
-    t = { ...t, left: t.left - (now - t.at), at: null };
+    t = t.flow
+      ? { ...t, done: (t.done || 0) + (now - t.at), at: null }
+      : { ...t, left: t.left - (now - t.at), at: null };
     keepAwake(false);
   } else {
     t = { ...t, at: now };
@@ -365,6 +399,7 @@ function renderSettings() {
   $("sGoal").value = st.goal;
   $("sWork").value = st.work;
   $("sBrk").value = st.brk;
+  $("sMode").value = st.mode === "pomodoro" ? "pomodoro" : "flow";
   if (document.activeElement !== $("yaml"))
     $("yaml").value = S().config.text || DEFAULT_YAML;
 }
@@ -383,6 +418,7 @@ $("sGoal").onchange = (e) =>
   setSetting("goal", num(e.target.value, 120) || 120);
 $("sWork").onchange = (e) => setSetting("work", num(e.target.value, 25) || 25);
 $("sBrk").onchange = (e) => setSetting("brk", num(e.target.value, 5) || 5);
+$("sMode").onchange = (e) => setSetting("mode", e.target.value);
 $("yamlSave").onclick = () => {
   const text = $("yaml").value;
   try {
