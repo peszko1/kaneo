@@ -2519,7 +2519,8 @@
 			"myTasks": "My tasks",
 			"globalBoard": "Global board",
 			"habits": "Habits",
-			"ideas": "Inbox"
+			"ideas": "Inbox",
+			"warmup": "Warm-up"
 		},
 		"projectList": {
 			"viewProject": "Vedi Progetto",
@@ -2722,6 +2723,27 @@
 		},
 		"taskHeader": {
 			"back": "Back"
+		},
+		"warmup": {
+			"bpm": "Tempo (bpm)",
+			"description": "Sing 1-2-3-4-5-4-3-2-1 on each vowel. The piano plays the chord first, then the pattern, one semitone higher each round.",
+			"down": "Come back down after the top",
+			"high": "Highest note",
+			"idle": "Press Play and sing along.",
+			"low": "Lowest note",
+			"melody": "Piano plays the melody too",
+			"nextVowel": "Next vowel",
+			"noteNames": "C C♯ D E♭ E F F♯ G A♭ A B♭ B",
+			"play": "Play",
+			"register": {
+				"chest": "chest",
+				"head": "head",
+				"mix": "mix"
+			},
+			"settings": "Settings",
+			"singOn": "Sing on “{{vowel}}”",
+			"stop": "Stop",
+			"title": "Vocal warm-up"
 		}
 	},
 	"notifications": {

@@ -2472,7 +2472,8 @@
 			"globalBoard": "Global board",
 			"habits": "Habits",
 			"invitePeople": "Invite people",
-			"ideas": "Inbox"
+			"ideas": "Inbox",
+			"warmup": "Warm-up"
 		},
 		"projectList": {
 			"viewProject": "View Project",
@@ -2673,6 +2674,27 @@
 			"deleteDescription": "Its whole history will be deleted too. This can't be undone.",
 			"cancel": "Cancel",
 			"today": "Today"
+		},
+		"warmup": {
+			"title": "Vocal warm-up",
+			"description": "Sing 1-2-3-4-5-4-3-2-1 on each vowel. The piano plays the chord first, then the pattern, one semitone higher each round.",
+			"idle": "Press Play and sing along.",
+			"play": "Play",
+			"stop": "Stop",
+			"nextVowel": "Next vowel",
+			"settings": "Settings",
+			"low": "Lowest note",
+			"high": "Highest note",
+			"bpm": "Tempo (bpm)",
+			"down": "Come back down after the top",
+			"melody": "Piano plays the melody too",
+			"singOn": "Sing on “{{vowel}}”",
+			"noteNames": "C C♯ D E♭ E F F♯ G A♭ A B♭ B",
+			"register": {
+				"chest": "chest",
+				"mix": "mix",
+				"head": "head"
+			}
 		}
 	},
 	"notifications": {

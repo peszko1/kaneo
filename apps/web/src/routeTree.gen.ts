@@ -36,6 +36,7 @@ import { Route as LayoutAuthenticatedDashboardGlobalBoardRouteImport } from './r
 import { Route as LayoutAuthenticatedDashboardHabitsRouteImport } from './routes/_layout/_authenticated/dashboard/habits'
 import { Route as LayoutAuthenticatedDashboardInvitationsRouteImport } from './routes/_layout/_authenticated/dashboard/invitations'
 import { Route as LayoutAuthenticatedDashboardSettingsRouteImport } from './routes/_layout/_authenticated/dashboard/settings'
+import { Route as LayoutAuthenticatedDashboardWarmupRouteImport } from './routes/_layout/_authenticated/dashboard/warmup'
 import { Route as LayoutAuthenticatedDashboardSettingsAccountRouteImport } from './routes/_layout/_authenticated/dashboard/settings/account'
 import { Route as LayoutAuthenticatedDashboardSettingsAdminRouteImport } from './routes/_layout/_authenticated/dashboard/settings/admin'
 import { Route as LayoutAuthenticatedDashboardSettingsProjectsRouteImport } from './routes/_layout/_authenticated/dashboard/settings/projects'
@@ -216,6 +217,12 @@ const LayoutAuthenticatedDashboardSettingsRoute =
   LayoutAuthenticatedDashboardSettingsRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => LayoutAuthenticatedDashboardRoute,
+  } as any)
+const LayoutAuthenticatedDashboardWarmupRoute =
+  LayoutAuthenticatedDashboardWarmupRouteImport.update({
+    id: '/warmup',
+    path: '/warmup',
     getParentRoute: () => LayoutAuthenticatedDashboardRoute,
   } as any)
 const LayoutAuthenticatedDashboardSettingsAccountRoute =
@@ -504,6 +511,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/habits': typeof LayoutAuthenticatedDashboardHabitsRoute
   '/dashboard/invitations': typeof LayoutAuthenticatedDashboardInvitationsRoute
   '/dashboard/settings': typeof LayoutAuthenticatedDashboardSettingsRouteWithChildren
+  '/dashboard/warmup': typeof LayoutAuthenticatedDashboardWarmupRoute
   '/dashboard/': typeof LayoutAuthenticatedDashboardIndexRoute
   '/dashboard/settings/account': typeof LayoutAuthenticatedDashboardSettingsAccountRouteWithChildren
   '/dashboard/settings/admin': typeof LayoutAuthenticatedDashboardSettingsAdminRouteWithChildren
@@ -567,6 +575,7 @@ export interface FileRoutesByTo {
   '/dashboard/habits': typeof LayoutAuthenticatedDashboardHabitsRoute
   '/dashboard/invitations': typeof LayoutAuthenticatedDashboardInvitationsRoute
   '/dashboard/settings': typeof LayoutAuthenticatedDashboardSettingsRouteWithChildren
+  '/dashboard/warmup': typeof LayoutAuthenticatedDashboardWarmupRoute
   '/dashboard': typeof LayoutAuthenticatedDashboardIndexRoute
   '/dashboard/settings/account': typeof LayoutAuthenticatedDashboardSettingsAccountRouteWithChildren
   '/dashboard/settings/admin': typeof LayoutAuthenticatedDashboardSettingsAdminRouteWithChildren
@@ -634,6 +643,7 @@ export interface FileRoutesById {
   '/_layout/_authenticated/dashboard/habits': typeof LayoutAuthenticatedDashboardHabitsRoute
   '/_layout/_authenticated/dashboard/invitations': typeof LayoutAuthenticatedDashboardInvitationsRoute
   '/_layout/_authenticated/dashboard/settings': typeof LayoutAuthenticatedDashboardSettingsRouteWithChildren
+  '/_layout/_authenticated/dashboard/warmup': typeof LayoutAuthenticatedDashboardWarmupRoute
   '/_layout/_authenticated/dashboard/': typeof LayoutAuthenticatedDashboardIndexRoute
   '/_layout/_authenticated/dashboard/settings/account': typeof LayoutAuthenticatedDashboardSettingsAccountRouteWithChildren
   '/_layout/_authenticated/dashboard/settings/admin': typeof LayoutAuthenticatedDashboardSettingsAdminRouteWithChildren
@@ -701,6 +711,7 @@ export interface FileRouteTypes {
     | '/dashboard/habits'
     | '/dashboard/invitations'
     | '/dashboard/settings'
+    | '/dashboard/warmup'
     | '/dashboard/'
     | '/dashboard/settings/account'
     | '/dashboard/settings/admin'
@@ -764,6 +775,7 @@ export interface FileRouteTypes {
     | '/dashboard/habits'
     | '/dashboard/invitations'
     | '/dashboard/settings'
+    | '/dashboard/warmup'
     | '/dashboard'
     | '/dashboard/settings/account'
     | '/dashboard/settings/admin'
@@ -830,6 +842,7 @@ export interface FileRouteTypes {
     | '/_layout/_authenticated/dashboard/habits'
     | '/_layout/_authenticated/dashboard/invitations'
     | '/_layout/_authenticated/dashboard/settings'
+    | '/_layout/_authenticated/dashboard/warmup'
     | '/_layout/_authenticated/dashboard/'
     | '/_layout/_authenticated/dashboard/settings/account'
     | '/_layout/_authenticated/dashboard/settings/admin'
@@ -1071,6 +1084,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/dashboard/settings'
       preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardRoute
+    }
+    '/_layout/_authenticated/dashboard/warmup': {
+      id: '/_layout/_authenticated/dashboard/warmup'
+      path: '/warmup'
+      fullPath: '/dashboard/warmup'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardWarmupRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardRoute
     }
     '/_layout/_authenticated/dashboard/settings/account': {
@@ -1524,6 +1544,7 @@ interface LayoutAuthenticatedDashboardRouteChildren {
   LayoutAuthenticatedDashboardHabitsRoute: typeof LayoutAuthenticatedDashboardHabitsRoute
   LayoutAuthenticatedDashboardInvitationsRoute: typeof LayoutAuthenticatedDashboardInvitationsRoute
   LayoutAuthenticatedDashboardSettingsRoute: typeof LayoutAuthenticatedDashboardSettingsRouteWithChildren
+  LayoutAuthenticatedDashboardWarmupRoute: typeof LayoutAuthenticatedDashboardWarmupRoute
   LayoutAuthenticatedDashboardIndexRoute: typeof LayoutAuthenticatedDashboardIndexRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteWithChildren
   LayoutAuthenticatedDashboardWorkspaceCreateRoute: typeof LayoutAuthenticatedDashboardWorkspaceCreateRoute
@@ -1539,6 +1560,8 @@ const LayoutAuthenticatedDashboardRouteChildren: LayoutAuthenticatedDashboardRou
       LayoutAuthenticatedDashboardInvitationsRoute,
     LayoutAuthenticatedDashboardSettingsRoute:
       LayoutAuthenticatedDashboardSettingsRouteWithChildren,
+    LayoutAuthenticatedDashboardWarmupRoute:
+      LayoutAuthenticatedDashboardWarmupRoute,
     LayoutAuthenticatedDashboardIndexRoute:
       LayoutAuthenticatedDashboardIndexRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute:

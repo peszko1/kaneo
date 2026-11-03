@@ -8,6 +8,7 @@ import {
   Inbox,
   ListChecks,
   Mail,
+  Mic,
   SquareKanban,
   Users,
 } from "lucide-react";
@@ -58,6 +59,11 @@ export function NavMain() {
       title: t("navigation:sidebar.habits"),
       icon: ListChecks,
       url: "/dashboard/habits",
+    },
+    {
+      title: t("navigation:sidebar.warmup"),
+      icon: Mic,
+      url: "/dashboard/warmup",
     },
     {
       title: t("navigation:sidebar.globalBoard"),

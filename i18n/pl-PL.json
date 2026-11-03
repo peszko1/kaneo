@@ -655,7 +655,8 @@
 			"myTasks": "My tasks",
 			"globalBoard": "Global board",
 			"habits": "Nawyki",
-			"ideas": "Inbox"
+			"ideas": "Inbox",
+			"warmup": "Rozśpiewka"
 		},
 		"projectList": {
 			"viewProject": "Zobacz projekt",
@@ -860,6 +861,27 @@
 			"deleteDescription": "Cała jego historia też zostanie usunięta. Tego nie można cofnąć.",
 			"cancel": "Anuluj",
 			"today": "Dziś"
+		},
+		"warmup": {
+			"title": "Rozśpiewka",
+			"description": "Śpiewaj 1-2-3-4-5-4-3-2-1 na każdej samogłosce. Pianino gra najpierw akord, potem wzór, co rundę pół tonu wyżej.",
+			"idle": "Naciśnij Graj i śpiewaj razem z pianinem.",
+			"play": "Graj",
+			"stop": "Stop",
+			"nextVowel": "Następna samogłoska",
+			"settings": "Ustawienia",
+			"low": "Najniższy dźwięk",
+			"high": "Najwyższy dźwięk",
+			"bpm": "Tempo (bpm)",
+			"down": "Po dojściu do góry wracaj w dół",
+			"melody": "Pianino gra też melodię",
+			"singOn": "Śpiewaj na „{{vowel}}”",
+			"noteNames": "C C♯ D E♭ E F F♯ G A♭ A B H",
+			"register": {
+				"chest": "pierś",
+				"mix": "mix",
+				"head": "głowa"
+			}
 		}
 	},
 	"notifications": {
