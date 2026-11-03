@@ -539,7 +539,13 @@ function refresh() {
   if (theme === "dark" || theme === "light")
     document.documentElement.dataset.theme = theme;
   try {
-    DEFAULT_YAML = await (await fetch("lessons.yaml")).text();
+    DEFAULT_YAML = await (
+      await fetch(
+        "lessons.yaml?v=" +
+          (document.querySelector('meta[name="lessons-version"]')?.content ||
+            Date.now()),
+      )
+    ).text();
   } catch {
     DEFAULT_YAML =
       "start: 2026-10-30\nlessons:\n  - id: brak\n    day: 1\n    title: Brak lekcji (offline, brak pliku lessons.yaml)\n";

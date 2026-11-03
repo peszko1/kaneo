@@ -76,7 +76,9 @@ async function networkFirstPractice(request) {
     if (response.ok) await cache.put(key, response.clone());
     return response;
   } catch (error) {
-    const cached = await cache.match(key);
+    const cached =
+      (await cache.match(key)) ??
+      (await cache.match(request, { ignoreSearch: true }));
     if (cached) return cached;
     throw error;
   }
