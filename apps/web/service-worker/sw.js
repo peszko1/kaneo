@@ -36,6 +36,11 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET" || url.origin !== self.location.origin) return;
   if (url.pathname.startsWith("/api/") || url.pathname === "/api") return;
 
+  // The 120h tracker is its own page (in an iframe), never the SPA shell.
+  if (url.pathname.startsWith("/120h/")) {
+    event.respondWith(networkFirstPractice(request));
+    return;
+  }
   if (request.mode === "navigate") {
     event.respondWith(networkFirstShell(request));
   } else if (url.pathname.startsWith("/assets/")) {
@@ -56,6 +61,22 @@ async function networkFirstShell(request) {
     return response;
   } catch (error) {
     const cached = await caches.match(SHELL);
+    if (cached) return cached;
+    throw error;
+  }
+}
+
+// Fresh files when online, cached ones offline. The query string (API URL,
+// theme) does not change the file.
+async function networkFirstPractice(request) {
+  const cache = await caches.open(CACHE);
+  const key = new URL(request.url).pathname;
+  try {
+    const response = await fetch(request);
+    if (response.ok) await cache.put(key, response.clone());
+    return response;
+  } catch (error) {
+    const cached = await cache.match(key);
     if (cached) return cached;
     throw error;
   }

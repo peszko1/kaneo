@@ -2551,6 +2551,37 @@
           "done"
         ]
       },
+      "Practice": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "config": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "state": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {}
+          },
+          "version": {
+            "type": "number",
+            "description": "0 until the first save."
+          }
+        },
+        "required": [
+          "enabled",
+          "config",
+          "state",
+          "version"
+        ]
+      },
       "FocusSessionResult": {
         "type": "object",
         "properties": {
@@ -17809,6 +17840,124 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiKeyRateLimited"
+          }
+        }
+      }
+    },
+    "/practice": {
+      "get": {
+        "operationId": "getPractice",
+        "tags": [
+          "Practice"
+        ],
+        "summary": "Get the 120h tracker",
+        "description": "The caller's 120h practice tracker: whether the tab is on, the lessons YAML, and the tracker's own state.",
+        "responses": {
+          "200": {
+            "description": "The tracker document",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Practice"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiKeyRateLimited"
+          }
+        }
+      },
+      "put": {
+        "operationId": "savePractice",
+        "tags": [
+          "Practice"
+        ],
+        "summary": "Save the 120h tracker",
+        "description": "Replace the fields sent. Fails with 409 and the stored document when `version` is not the stored version.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "The document version this change was made on, 0 when the caller saw none. A different stored version returns 409 with the stored document."
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Show the 120h tab to this user."
+                  },
+                  "config": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 200000,
+                    "description": "Lessons as YAML. Kaneo stores the text and never reads it."
+                  },
+                  "state": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "additionalProperties": {},
+                    "description": "The tracker's own JSON (logged time, timer, settings). Kaneo never reads it."
+                  }
+                },
+                "required": [
+                  "version"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The saved document",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Practice"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The stored document, newer than `version`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Practice"
                 }
               }
             }

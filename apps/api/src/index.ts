@@ -62,6 +62,7 @@ import { migrateColumns } from "./migrations/column-migration";
 import notification from "./notification";
 import focus from "./focus";
 import habit from "./habit";
+import practice from "./practice";
 import notificationPreferences from "./notification-preferences";
 import oauth from "./oauth";
 import { createRoute, errorResponse, jsonResponse, z } from "./openapi";
@@ -837,6 +838,7 @@ export function createApp() {
   const timeEntryApi = api.route("/time-entry", timeEntry);
   const labelApi = api.route("/label", label);
   const habitApi = api.route("/habit", habit);
+  const practiceApi = api.route("/practice", practice);
   const focusApi = api.route("/focus", focus);
   const notificationApi = api.route("/notification", notification);
   const notificationPreferencesApi = api.route(
@@ -993,6 +995,7 @@ export function createApp() {
     invitationPublicApi,
     labelApi,
     habitApi,
+    practiceApi,
     focusApi,
     notificationApi,
     notificationPreferencesApi,
@@ -1128,6 +1131,7 @@ const {
   invitationPublicApi,
   labelApi,
   habitApi,
+  practiceApi,
   focusApi,
   mattermostIntegrationApi,
   notificationApi,
@@ -1172,6 +1176,7 @@ export type AppType =
   | typeof timeEntryApi
   | typeof labelApi
   | typeof habitApi
+  | typeof practiceApi
   | typeof focusApi
   | typeof notificationApi
   | typeof notificationPreferencesApi

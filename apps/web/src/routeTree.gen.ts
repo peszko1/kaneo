@@ -32,6 +32,7 @@ import { Route as LayoutAuthenticatedOnboardingRouteImport } from './routes/_lay
 import { Route as LayoutAuthenticatedProfileSetupRouteImport } from './routes/_layout/_authenticated/profile-setup'
 import { Route as InvitationAcceptInviteIdRouteImport } from './routes/invitation/accept.$inviteId'
 import { Route as LayoutAuthenticatedDashboardIndexRouteImport } from './routes/_layout/_authenticated/dashboard/index'
+import { Route as LayoutAuthenticatedDashboard120hRouteImport } from './routes/_layout/_authenticated/dashboard/120h'
 import { Route as LayoutAuthenticatedDashboardGlobalBoardRouteImport } from './routes/_layout/_authenticated/dashboard/global-board'
 import { Route as LayoutAuthenticatedDashboardHabitsRouteImport } from './routes/_layout/_authenticated/dashboard/habits'
 import { Route as LayoutAuthenticatedDashboardInvitationsRouteImport } from './routes/_layout/_authenticated/dashboard/invitations'
@@ -192,6 +193,12 @@ const LayoutAuthenticatedDashboardIndexRoute =
   LayoutAuthenticatedDashboardIndexRouteImport.update({
     id: '/',
     path: '/',
+    getParentRoute: () => LayoutAuthenticatedDashboardRoute,
+  } as any)
+const LayoutAuthenticatedDashboard120hRoute =
+  LayoutAuthenticatedDashboard120hRouteImport.update({
+    id: '/120h',
+    path: '/120h',
     getParentRoute: () => LayoutAuthenticatedDashboardRoute,
   } as any)
 const LayoutAuthenticatedDashboardGlobalBoardRoute =
@@ -500,6 +507,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof LayoutAuthenticatedOnboardingRoute
   '/profile-setup': typeof LayoutAuthenticatedProfileSetupRoute
   '/invitation/accept/$inviteId': typeof InvitationAcceptInviteIdRoute
+  '/dashboard/120h': typeof LayoutAuthenticatedDashboard120hRoute
   '/dashboard/global-board': typeof LayoutAuthenticatedDashboardGlobalBoardRoute
   '/dashboard/habits': typeof LayoutAuthenticatedDashboardHabitsRoute
   '/dashboard/invitations': typeof LayoutAuthenticatedDashboardInvitationsRoute
@@ -563,6 +571,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof LayoutAuthenticatedOnboardingRoute
   '/profile-setup': typeof LayoutAuthenticatedProfileSetupRoute
   '/invitation/accept/$inviteId': typeof InvitationAcceptInviteIdRoute
+  '/dashboard/120h': typeof LayoutAuthenticatedDashboard120hRoute
   '/dashboard/global-board': typeof LayoutAuthenticatedDashboardGlobalBoardRoute
   '/dashboard/habits': typeof LayoutAuthenticatedDashboardHabitsRoute
   '/dashboard/invitations': typeof LayoutAuthenticatedDashboardInvitationsRoute
@@ -630,6 +639,7 @@ export interface FileRoutesById {
   '/_layout/_authenticated/onboarding': typeof LayoutAuthenticatedOnboardingRoute
   '/_layout/_authenticated/profile-setup': typeof LayoutAuthenticatedProfileSetupRoute
   '/invitation/accept/$inviteId': typeof InvitationAcceptInviteIdRoute
+  '/_layout/_authenticated/dashboard/120h': typeof LayoutAuthenticatedDashboard120hRoute
   '/_layout/_authenticated/dashboard/global-board': typeof LayoutAuthenticatedDashboardGlobalBoardRoute
   '/_layout/_authenticated/dashboard/habits': typeof LayoutAuthenticatedDashboardHabitsRoute
   '/_layout/_authenticated/dashboard/invitations': typeof LayoutAuthenticatedDashboardInvitationsRoute
@@ -697,6 +707,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/profile-setup'
     | '/invitation/accept/$inviteId'
+    | '/dashboard/120h'
     | '/dashboard/global-board'
     | '/dashboard/habits'
     | '/dashboard/invitations'
@@ -760,6 +771,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/profile-setup'
     | '/invitation/accept/$inviteId'
+    | '/dashboard/120h'
     | '/dashboard/global-board'
     | '/dashboard/habits'
     | '/dashboard/invitations'
@@ -826,6 +838,7 @@ export interface FileRouteTypes {
     | '/_layout/_authenticated/onboarding'
     | '/_layout/_authenticated/profile-setup'
     | '/invitation/accept/$inviteId'
+    | '/_layout/_authenticated/dashboard/120h'
     | '/_layout/_authenticated/dashboard/global-board'
     | '/_layout/_authenticated/dashboard/habits'
     | '/_layout/_authenticated/dashboard/invitations'
@@ -1043,6 +1056,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof LayoutAuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardRoute
+    }
+    '/_layout/_authenticated/dashboard/120h': {
+      id: '/_layout/_authenticated/dashboard/120h'
+      path: '/120h'
+      fullPath: '/dashboard/120h'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboard120hRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardRoute
     }
     '/_layout/_authenticated/dashboard/global-board': {
@@ -1520,6 +1540,7 @@ const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteWithChildren =
   )
 
 interface LayoutAuthenticatedDashboardRouteChildren {
+  LayoutAuthenticatedDashboard120hRoute: typeof LayoutAuthenticatedDashboard120hRoute
   LayoutAuthenticatedDashboardGlobalBoardRoute: typeof LayoutAuthenticatedDashboardGlobalBoardRoute
   LayoutAuthenticatedDashboardHabitsRoute: typeof LayoutAuthenticatedDashboardHabitsRoute
   LayoutAuthenticatedDashboardInvitationsRoute: typeof LayoutAuthenticatedDashboardInvitationsRoute
@@ -1531,6 +1552,8 @@ interface LayoutAuthenticatedDashboardRouteChildren {
 
 const LayoutAuthenticatedDashboardRouteChildren: LayoutAuthenticatedDashboardRouteChildren =
   {
+    LayoutAuthenticatedDashboard120hRoute:
+      LayoutAuthenticatedDashboard120hRoute,
     LayoutAuthenticatedDashboardGlobalBoardRoute:
       LayoutAuthenticatedDashboardGlobalBoardRoute,
     LayoutAuthenticatedDashboardHabitsRoute:

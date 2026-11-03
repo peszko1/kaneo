@@ -655,7 +655,8 @@
 			"myTasks": "My tasks",
 			"globalBoard": "Global board",
 			"habits": "Nawyki",
-			"ideas": "Inbox"
+			"ideas": "Inbox",
+			"practice": "120h"
 		},
 		"projectList": {
 			"viewProject": "Zobacz projekt",
@@ -1778,7 +1779,10 @@
 			"advancedTitle": "Zaawansowane",
 			"autoAssign": "Assign tasks to me",
 			"autoAssignDescription": "When you create a task without an assignee, or move an unassigned task to another column, it's assigned to you. Applies in workspaces where your role can assign tasks.",
-			"autoAssignError": "Couldn't save this preference."
+			"autoAssignError": "Couldn't save this preference.",
+			"practiceTitle": "Zakładka 120h",
+			"practiceDescription": "Pokaż w menu tracker 120h (licznik, lekcje, rozśpiewka). Dane synchronizują się z Twoim kontem i działają offline.",
+			"practiceError": "Nie udało się zmienić zakładki 120h. Spróbuj ponownie."
 		},
 		"projectGeneral": {
 			"dangerZone": "Strefa niebezpieczna",

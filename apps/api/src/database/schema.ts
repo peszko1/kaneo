@@ -728,6 +728,28 @@ export const habitCheckTable = pgTable(
   (table) => [primaryKey({ columns: [table.habitId, table.date] })],
 );
 
+// One JSON document per user and kind, for self-contained features that keep
+// their data apart from Kaneo's own tables (the 120h practice tracker).
+// With Redis configured, documents live there instead.
+export const userDocumentTable = pgTable(
+  "user_document",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    kind: text("kind").notNull(),
+    data: jsonb("data").notNull(),
+    version: integer("version").notNull().default(1),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .default(utcNow)
+      .notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.userId, table.kind] })],
+);
+
 // The user's focus timer, so every device shows and controls the same one.
 // Times are the client's epoch milliseconds, kept exact because the browser
 // computes the timer from them.

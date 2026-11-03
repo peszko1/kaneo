@@ -8,6 +8,7 @@ import {
   Inbox,
   ListChecks,
   Mail,
+  Piano,
   SquareKanban,
   Users,
 } from "lucide-react";
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/sidebar";
 import { usePendingInvitations } from "@/hooks/queries/invitation/use-pending-invitations";
 import useGetNotifications from "@/hooks/queries/notification/use-get-notifications";
+import useGetPractice from "@/hooks/queries/practice/use-get-practice";
 import useGetAssignedTasks from "@/hooks/queries/task/use-get-assigned-tasks";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { cn } from "@/lib/cn";
@@ -38,6 +40,7 @@ export function NavMain() {
   const { data: invitations = [] } = usePendingInvitations();
   const { data: notifications = [] } = useGetNotifications(workspace?.id);
   const { data: assignedTasks } = useGetAssignedTasks(workspace?.id, true);
+  const { data: practice } = useGetPractice();
   const [moreOpen, setMoreOpen] = useState(false);
 
   if (!workspace) return null;
@@ -65,6 +68,14 @@ export function NavMain() {
       url: "/dashboard/global-board",
     },
   ];
+  // The 120h practice tracker, for people who switched it on in Preferences.
+  if (practice?.enabled) {
+    navItems.push({
+      title: t("navigation:sidebar.practice"),
+      icon: Piano,
+      url: "/dashboard/120h",
+    });
+  }
   const moreItems: NavItem[] = [
     {
       title: t("navigation:sidebar.inbox"),
