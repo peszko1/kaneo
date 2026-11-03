@@ -195,6 +195,7 @@ function renderTotals() {
     d.setDate(d.getDate() - i);
     w += sumDay(dkey(d));
   }
+  renderPace(tot, goal);
   const avg = w / 7,
     rest = goal - tot;
   if (rest <= 0) $("eta").textContent = "Cel osiągnięty 🎉";
@@ -204,6 +205,35 @@ function renderTotals() {
     $("eta").textContent =
       `Średnio ${fmtM(avg)} dziennie (7 dni) → koniec ok. ${end.toLocaleDateString("pl-PL", { day: "numeric", month: "long" })}`;
   } else $("eta").textContent = "";
+}
+// Ile dziennie, żeby zdążyć: to, co zostało na początku dnia, dzielone na dni
+// od dziś do terminu włącznie. Dzięki temu dzienna norma nie spada w trakcie grania.
+function renderPace(tot, goal) {
+  const today = dkey(new Date());
+  const deadline = S().settings.deadline;
+  const el = $("pace");
+  if (!deadline || tot >= goal) {
+    el.textContent = "";
+    return;
+  }
+  const days =
+    Math.round((parseKey(deadline) - parseKey(today)) / 86400000) + 1;
+  const when = parseKey(deadline).toLocaleDateString("pl-PL", {
+    day: "numeric",
+    month: "long",
+  });
+  if (days < 1) {
+    el.textContent = `Termin ${when} minął. Zostało ${fmtH(goal - tot)}: ustaw nową datę w ustawieniach.`;
+    return;
+  }
+  const doneToday = sumDay(today);
+  const perDay = (goal - (tot - doneToday)) / days;
+  const leftToday = Math.max(0, perDay - doneToday);
+  el.innerHTML = `Do ${esc(when)}: <b>${fmtM(perDay)}</b> dziennie (${days} ${days === 1 ? "dzień" : "dni"}) · ${
+    leftToday > 0
+      ? `dziś jeszcze <b>${fmtM(leftToday)}</b>`
+      : "dzisiejsza norma zrobiona ✓"
+  }`;
 }
 $("startBtn").onclick = () => {
   audio();
@@ -397,6 +427,7 @@ function renderSettings() {
   const st = S().settings;
   $("sBase").value = st.base;
   $("sGoal").value = st.goal;
+  $("sDeadline").value = st.deadline || "";
   $("sWork").value = st.work;
   $("sBrk").value = st.brk;
   $("sMode").value = st.mode === "pomodoro" ? "pomodoro" : "flow";
@@ -416,6 +447,7 @@ const setSetting = (k, v) => {
 $("sBase").onchange = (e) => setSetting("base", num(e.target.value, 0));
 $("sGoal").onchange = (e) =>
   setSetting("goal", num(e.target.value, 120) || 120);
+$("sDeadline").onchange = (e) => setSetting("deadline", e.target.value || null);
 $("sWork").onchange = (e) => setSetting("work", num(e.target.value, 25) || 25);
 $("sBrk").onchange = (e) => setSetting("brk", num(e.target.value, 5) || 5);
 $("sMode").onchange = (e) => setSetting("mode", e.target.value);
