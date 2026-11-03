@@ -106,6 +106,7 @@ label.f > * { color: var(--ink); }
       <span>Dziś <b id="today">0 min</b></span>
       <span>Zostało <b id="left">120 h</b></span>
     </div>
+    <div id="pace" style="margin-top:8px;font-size:.95rem"></div>
     <div class="muted" id="eta" style="margin-top:4px;font-size:.85rem"></div>
     <div class="muted" id="sync" style="margin-top:4px;font-size:.8rem"></div>
   </div>
@@ -166,6 +167,7 @@ label.f > * { color: var(--ink); }
     <div class="grid" style="margin-top:8px">
       <label class="f">Godziny sprzed aplikacji<input id="sBase" type="number" min="0" step="0.5"></label>
       <label class="f">Cel (h)<input id="sGoal" type="number" min="1" step="1"></label>
+      <label class="f">Zdążyć do<input id="sDeadline" type="date"></label>
       <label class="f">Licznik<select id="sMode"><option value="flow">zwykły (liczy w górę)</option><option value="pomodoro">pomodoro</option></select></label>
       <label class="f">Praca (min, pomodoro)<input id="sWork" type="number" min="1" max="120"></label>
       <label class="f">Przerwa (min, pomodoro)<input id="sBrk" type="number" min="1" max="60"></label>

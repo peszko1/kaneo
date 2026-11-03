@@ -11,7 +11,15 @@ const uid = () =>
     : String(Math.random()).slice(2) + now();
 
 const DEFAULTS = {
-  settings: { base: 8.5, goal: 120, mode: "flow", work: 25, brk: 5, u: 0 },
+  settings: {
+    base: 8.5,
+    goal: 120,
+    deadline: "2026-12-31",
+    mode: "flow",
+    work: 25,
+    brk: 5,
+    u: 0,
+  },
   voice: {
     low: 43,
     high: 72,
