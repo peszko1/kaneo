@@ -1,5 +1,5 @@
+import { previewCopy } from "./preview-copy";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import messages from "../../../../../i18n/en-US.json";
 import type { AssignedTask } from "./assigned-tasks";
 import type { PreviewActivity } from "./mock-activity";
 import { formatRelativeTime } from "./relative-time";
@@ -17,7 +17,7 @@ export function ActivityFeed({
 }) {
   return (
     <section>
-      <SectionHeader title={messages.workspace.home.activity.title} />
+      <SectionHeader title={previewCopy.activity.title} />
       <ul className="flex flex-col gap-4 pt-4">
         {activities.map((activity) => {
           const task = tasks.get(activity.taskId);
