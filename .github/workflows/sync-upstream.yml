@@ -63,11 +63,11 @@ jobs:
             exit 0
           fi
           git merge --no-edit -m "chore: merge upstream usekaneo/kaneo main" FETCH_HEAD || true
-          # This fork keeps only its own two workflows. Remove any workflow
+          # This fork keeps only its own three workflows. Remove any workflow
           # that upstream adds or changes, which also resolves those conflicts.
           for f in .github/workflows/*; do
             case "$(basename "$f")" in
-              fork-image.yml | sync-upstream.yml) ;;
+              fork-ci.yml | fork-image.yml | sync-upstream.yml) ;;
               *) git rm -q -f --ignore-unmatch "$f" ;;
             esac
           done
