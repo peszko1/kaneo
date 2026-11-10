@@ -1,11 +1,11 @@
+import { previewCopy } from "./preview-copy";
 import type { ProjectWithTasks } from "@/types/project";
-import messages from "../../../../../i18n/en-US.json";
 import { getCompletionPercentage } from "./assigned-tasks";
 import { pluralMessage } from "./fill-message";
 import { getProjectIcon } from "./project-icon";
 import { SectionHeader } from "./section-header";
 
-const copy = messages.workspace.home.projects;
+const copy = previewCopy.projects;
 
 export function HomeProjects({
   projects,

@@ -1,3 +1,4 @@
+import { previewCopy } from "./preview-copy";
 import messages from "../../../../../i18n/en-US.json";
 import { fillMessage } from "./fill-message";
 
@@ -18,7 +19,7 @@ export const MOCK_ACTIVITY: PreviewActivity[] = [
   {
     id: "a-1",
     actorName: "Dwight Schrute",
-    action: messages.workspace.home.activity.commented,
+    action: previewCopy.activity.commented,
     comment:
       "Beet research is a legitimate business expense. @Jim the receipts are in your drawer.",
     taskId: "t-105",
@@ -27,7 +28,7 @@ export const MOCK_ACTIVITY: PreviewActivity[] = [
   {
     id: "a-2",
     actorName: "Michael Scott",
-    action: messages.workspace.home.activity.commented,
+    action: previewCopy.activity.commented,
     comment: "Needs more menace. Way more menace.",
     taskId: "t-203",
     createdAt: minutesAgo(48),

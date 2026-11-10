@@ -1,3 +1,4 @@
+import { previewCopy } from "./preview-copy";
 import { format } from "date-fns";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -64,11 +65,11 @@ export function HomeView({
             <div className="flex min-w-0 flex-col gap-9">
               <section>
                 <SectionHeader
-                  title={copy.upNext.title}
+                  title={previewCopy.upNext.title}
                   detail={pluralMessage(
                     {
-                      one: copy.upNext.assigned_one,
-                      other: copy.upNext.assigned_other,
+                      one: previewCopy.upNext.assigned_one,
+                      other: previewCopy.upNext.assigned_other,
                     },
                     assignedTasks.length,
                   )}
@@ -78,7 +79,7 @@ export function HomeView({
                       onClick={onViewAllTasks}
                       className="shrink-0 text-[13px] font-medium text-muted-foreground hover:text-foreground"
                     >
-                      {copy.upNext.viewAll}
+                      {previewCopy.upNext.viewAll}
                     </button>
                   }
                 />

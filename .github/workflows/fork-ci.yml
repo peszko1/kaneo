@@ -1,10 +1,13 @@
 name: Fork CI
 
-# The checks to pass before a pull request merges into main, which Fork image
-# then builds and deploys. Same steps as Sync upstream. Named fork-ci.yml so
-# upstream changes to its own ci.yml never touch this file.
+# The checks for every pull request, and again on main after a merge. When the
+# run on main passes, Fork image builds that commit. Same steps as Sync
+# upstream. Named fork-ci.yml so upstream changes to its own ci.yml never
+# touch this file.
 on:
   pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
