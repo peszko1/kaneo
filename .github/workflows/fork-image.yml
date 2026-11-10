@@ -1,9 +1,14 @@
 name: Fork image
 
-# Builds the combined image for this fork's own deployment. Run it by hand
-# (Actions → Fork image → Run workflow, or `gh workflow run fork-image.yml`);
-# nothing deploys until dokku-infra points at the new tag.
+# Builds the combined image for this fork's own deployment. It runs on its own
+# after Fork CI passes on main (so after a merged pull request), or by hand
+# (Actions → Fork image → Run workflow, or `gh workflow run fork-image.yml`).
+# Nothing deploys until dokku-infra points at the new tag.
 on:
+  workflow_run:
+    workflows: [Fork CI]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       ref:
@@ -15,13 +20,23 @@ permissions:
   contents: read
   packages: write
 
+concurrency:
+  group: fork-image
+  cancel-in-progress: false
+
 jobs:
   build:
+    # After Fork CI: only when its run on a push to main passed.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref }}
+          # The commit Fork CI checked, not whatever main is by now.
+          ref: ${{ inputs.ref || github.event.workflow_run.head_sha }}
           persist-credentials: false
       # Tagged <app version>-gb-<short commit>, so each build names its source.
       - name: Image tag
