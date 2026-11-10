@@ -87,6 +87,32 @@ label.f { display: flex; flex-direction: column; gap: 2px; font-size: .85rem; co
 label.f > * { color: var(--ink); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
 .vchips label { display: inline-flex; align-items: center; gap: 4px; margin-right: 10px; }
+
+/* tryb stream */
+body.streaming { overflow: hidden; }
+#stream {
+  position: fixed; inset: 0; z-index: 10; background: var(--bg); color: var(--ink);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 16px; text-align: center; --big: min(19vw, 46vh);
+}
+#stream[hidden] { display: none; }
+#stream .num { font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
+#stream .big { font-size: var(--big); color: var(--accent); }
+#stream .small { font-size: calc(var(--big) * .3); margin-top: calc(var(--big) * .08); }
+#stream .lbl { font-size: calc(var(--big) * .09); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+#stream .u { font-size: .4em; font-weight: 700; color: var(--muted); margin: 0 .08em 0 .04em; }
+#stream .dot { display: inline-block; width: .6em; height: .6em; border-radius: 50%; background: var(--muted); margin-right: .5em; vertical-align: .05em; }
+#stream.running .dot { background: var(--accent); animation: blink 1.2s steps(1) infinite; }
+@keyframes blink { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { #stream.running .dot { animation: none; } }
+.stctl { position: absolute; bottom: 16px; right: 16px; display: flex; gap: 8px; opacity: .35; transition: opacity .2s; }
+.stctl:hover, .stctl:focus-within { opacity: 1; }
+#stPlay {
+  position: absolute; bottom: 16px; left: 16px; width: 72px; height: 72px; border-radius: 50%;
+  background: var(--accent); color: var(--accent-ink); border: 0; font-size: 1.8rem; font-weight: 700;
+}
+#stream.running #stPlay { background: var(--surface); color: var(--ink); border: 2px solid var(--line); opacity: .35; }
+#stream.running #stPlay:hover, #stream.running #stPlay:focus-visible { opacity: 1; }
 </style>
 </head>
 <body>
@@ -99,6 +125,7 @@ label.f > * { color: var(--ink); }
   <div class="row tbtns">
     <button type="button" id="stopBtn">■ Zakończ sesję</button>
     <button type="button" id="skipBtn">Pomiń fazę</button>
+    <button type="button" id="streamBtn">⛶ Tryb stream</button>
   </div>
   <div class="progress">
     <div class="bar"><i id="bar"></i></div>
@@ -189,10 +216,21 @@ label.f > * { color: var(--ink); }
 </section>
 
 </main>
+<section id="stream" hidden aria-label="Odliczanie do celu">
+  <div class="lbl"><span class="dot"></span><span id="stLabel">zostało z 120 h</span></div>
+  <div class="num big"><span id="stLeftH">120</span><span class="u">h</span> <span id="stLeftM">00</span><span class="u">m</span></div>
+  <div class="num small"><span class="lbl">dziś </span><span id="stDayH">0</span><span class="u">h</span> <span id="stDayM">00</span><span class="u">m</span></div>
+  <button type="button" id="stPlay" aria-label="Start">▶</button>
+  <div class="stctl">
+    <button type="button" id="stFull">⛶ Pełny ekran</button>
+    <button type="button" id="stClose">✕ Zamknij</button>
+  </div>
+</section>
 <p class="muted" id="yamlError" role="status" style="font-size:.85rem;padding:0 16px;max-width:760px;margin:0 auto"></p>
 <script src="vendor/js-yaml.min.js"></script>
 <script src="store.js"></script>
 <script src="warmup.js"></script>
 <script src="app.js"></script>
+<script src="stream.js"></script>
 </body>
 </html>
