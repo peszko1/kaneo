@@ -3,21 +3,27 @@
 // Otwiera go przycisk „Tryb stream” albo adres z ?stream=1 (np. źródło przeglądarki w OBS).
 // Start/pauza używa tego samego licznika co strona, więc czas zapisuje się tak samo.
 
-const hm = (minutes) => {
-  const m = Math.max(0, Math.floor(minutes));
-  return { h: Math.floor(m / 60), m: pad(m % 60) };
+const hms = (minutes) => {
+  const sec = Math.max(0, Math.floor(minutes * 60));
+  return {
+    h: Math.floor(sec / 3600),
+    m: pad(Math.floor((sec % 3600) / 60)),
+    s: pad(sec % 60),
+  };
 };
 let streamLoop = null;
 
 function renderStream() {
   const goal = S().settings.goal * 60;
-  const left = hm(goal - sumAll());
-  const day = hm(sumDay(dkey(new Date())));
+  const left = hms(goal - sumAll());
+  const day = hms(sumDay(dkey(new Date())));
   const running = timerRunning();
   $("stLeftH").textContent = left.h;
   $("stLeftM").textContent = left.m;
+  $("stLeftS").textContent = left.s;
   $("stDayH").textContent = day.h;
   $("stDayM").textContent = day.m;
+  $("stDayS").textContent = day.s;
   $("stLabel").textContent = `zostało z ${S().settings.goal} h`;
   $("stream").classList.toggle("running", running);
   $("stPlay").textContent = running ? "❚❚" : "▶";

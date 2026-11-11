@@ -93,13 +93,14 @@ body.streaming { overflow: hidden; }
 #stream {
   position: fixed; inset: 0; z-index: 10; background: var(--bg); color: var(--ink);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 16px; text-align: center; --big: min(19vw, 46vh);
+  padding: 16px; text-align: center; --big: min(17vw, 46vh);
 }
 #stream[hidden] { display: none; }
 #stream .num { font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
 #stream .big { font-size: var(--big); color: var(--accent); }
 #stream .small { font-size: calc(var(--big) * .3); margin-top: calc(var(--big) * .08); }
 #stream .lbl { font-size: calc(var(--big) * .09); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+#stream .sec { font-size: .6em; }
 #stream .u { font-size: .4em; font-weight: 700; color: var(--muted); margin: 0 .08em 0 .04em; }
 #stream .dot { display: inline-block; width: .6em; height: .6em; border-radius: 50%; background: var(--muted); margin-right: .5em; vertical-align: .05em; }
 #stream.running .dot { background: var(--accent); animation: blink 1.2s steps(1) infinite; }
@@ -218,8 +219,8 @@ body.streaming { overflow: hidden; }
 </main>
 <section id="stream" hidden aria-label="Odliczanie do celu">
   <div class="lbl"><span class="dot"></span><span id="stLabel">zostało z 120 h</span></div>
-  <div class="num big"><span id="stLeftH">120</span><span class="u">h</span> <span id="stLeftM">00</span><span class="u">m</span></div>
-  <div class="num small"><span class="lbl">dziś </span><span id="stDayH">0</span><span class="u">h</span> <span id="stDayM">00</span><span class="u">m</span></div>
+  <div class="num big"><span id="stLeftH">120</span><span class="u">h</span> <span id="stLeftM">00</span><span class="u">m</span> <span class="sec"><span id="stLeftS">00</span><span class="u">s</span></span></div>
+  <div class="num small"><span class="lbl">dziś </span><span id="stDayH">0</span><span class="u">h</span> <span id="stDayM">00</span><span class="u">m</span> <span class="sec"><span id="stDayS">00</span><span class="u">s</span></span></div>
   <button type="button" id="stPlay" aria-label="Start">▶</button>
   <div class="stctl">
     <button type="button" id="stFull">⛶ Pełny ekran</button>
